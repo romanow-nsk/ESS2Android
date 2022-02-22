@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import romanow.abc.core.API.RestAPIESS2;
+import romanow.abc.core.constants.Values;
 import romanow.abc.ess2.android.FileDescriptionList;
 import romanow.abc.ess2.android.R;
 import romanow.abc.core.API.RestAPIBase;
@@ -119,7 +120,8 @@ public class AppData extends Application {
     private String registrationCode="";         // Хэш-код регистрации приложения
     private boolean registeredOnServer=false;   //
     //-----------------------------------------------------------------------------
-    private AppData(){}
+    private AppData(){
+        }
     private static AppData ctx = null;          // ГОРЯЧИЙ РЕСТАРТ - обнулить stopApplication
     public static AppData ctx(){
         if (ctx==null){

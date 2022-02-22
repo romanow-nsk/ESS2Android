@@ -50,6 +50,7 @@ import romanow.abc.core.API.RestAPIBase;
 import romanow.abc.core.API.RestAPIESS2;
 import romanow.abc.core.UniException;
 import romanow.abc.core.constants.Values;
+import romanow.abc.core.constants.ValuesBase;
 import romanow.abc.core.entity.baseentityes.JInt;
 import romanow.abc.core.utils.GPSPoint;
 import romanow.abc.core.utils.Pair;
@@ -236,8 +237,14 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Values.init();                  // Статические данные
         ctx = AppData.ctx();
+        //try {
+        //    ClassLoader.getSystemClassLoader().loadClass("romanow.abc.core.constants.Values");
+        //    } catch (ClassNotFoundException e) {
+        //        int a=1;
+        //        }
+        //ValuesBase.init();
+        //Values.init();                  // Статические данные
         try {
             ctx.setContext(getApplicationContext());
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
