@@ -616,6 +616,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
 
     public void createMenuList() {
         menuList.clear();
+        new MIESS2(this);
         new MIArchive(this);
         new MIArchiveFull(this);
         new MIFullScreen(this);

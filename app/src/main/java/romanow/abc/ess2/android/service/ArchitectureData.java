@@ -259,6 +259,7 @@ public class ArchitectureData {
                 }
             }
         if (currentView==null){
+            base.errorMes("Не найден ЧМИ для Android");
             return;
             }
         renderState.setImageResource(R.drawable.connect_on);

@@ -191,7 +191,7 @@ public class AppData extends Application {
     public void sendPopup(int drawId, boolean error, boolean popup, boolean tolog, String mes){
         Intent intent = new Intent();
         intent.setAction(Event_Popup);
-        intent.putExtra("error",drawId);
+        intent.putExtra("error",error);
         intent.putExtra("drawId",drawId);
         intent.putExtra("toLog",tolog);
         intent.putExtra("popup",popup);

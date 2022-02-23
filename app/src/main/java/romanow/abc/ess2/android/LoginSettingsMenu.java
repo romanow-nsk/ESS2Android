@@ -98,7 +98,7 @@ public class LoginSettingsMenu extends SettingsMenuBase {
                                 set.setUserId(user.getOid());
                                 set.setSessionToken(user.getSessionToken());
                                 ctx.popup(false,"Вошли");
-                                base.getArchitectureData().refreshArchtectureState();
+                                //base.getArchitectureData().refreshArchtectureState();
                                 /*---------------------------- Регистрация на сервере не нужна -----------------
                                 String serverSim = user.getSimCardICC();
                                 String regCode = base.createRegistrationCode();
