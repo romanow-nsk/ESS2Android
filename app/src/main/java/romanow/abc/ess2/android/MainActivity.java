@@ -238,11 +238,6 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ctx = AppData.ctx();
-        //try {
-        //    ClassLoader.getSystemClassLoader().loadClass("romanow.abc.core.constants.Values");
-        //    } catch (ClassNotFoundException e) {
-        //        int a=1;
-        //        }
         try {
             Values.init();                  // Статические данные
             ctx.setContext(getApplicationContext());

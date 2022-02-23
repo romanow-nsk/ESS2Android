@@ -15,7 +15,7 @@ android {
         }
     }
     defaultConfig {
-        applicationId "me.romanow.lep500"
+        applicationId "romanow.abc.ess2.android"
         minSdkVersion 24
         targetSdkVersion 31
         versionCode 1
