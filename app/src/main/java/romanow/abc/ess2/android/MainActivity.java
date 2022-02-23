@@ -243,9 +243,8 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         //    } catch (ClassNotFoundException e) {
         //        int a=1;
         //        }
-        //ValuesBase.init();
-        //Values.init();                  // Статические данные
         try {
+            Values.init();                  // Статические данные
             ctx.setContext(getApplicationContext());
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             setContentView(R.layout.activity_main);
