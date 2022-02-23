@@ -3,7 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/ABC/ESS2Android/app/src/main/res/drawable/button_background.xml" value="0.198" />
+        <entry key="..\:/ABC/ESS2Android/app/src/main/res/drawable/button_background_normal.xml" value="0.1" />
+        <entry key="..\:/ABC/ESS2Android/app/src/main/res/drawable/button_background_pressed.xml" value="0.1" />
+        <entry key="..\:/ABC/ESS2Android/app/src/main/res/drawable/button_form.xml" value="0.1" />
+        <entry key="..\:/ABC/ESS2Android/app/src/main/res/drawable/button_form_normal.xml" value="0.1" />
+        <entry key="..\:/ABC/ESS2Android/app/src/main/res/drawable/button_form_pressed.xml" value="0.1" />
         <entry key="..\:/ABC/ESS2Android/app/src/main/res/layout/activity_main.xml" value="0.3623725671918443" />
+        <entry key="..\:/ABC/ESS2Android/app/src/main/res/layout/listbox_item.xml" value="0.17708333333333334" />
       </map>
     </option>
   </component>

@@ -20,7 +20,6 @@ public class MIFileProcess extends MIFileBrowser {
         public void onSelect(String path, FileDescriptionList fd, boolean longClick) {
             main.log().addView(main.createMultiGraph(R.layout.graphview,ViewProcHigh));
             main.setFullInfo(full);
-            main.hideFFTOutput = !full;
             for (FileDescription ff : fd){
                 try{
                     final InputStream is = new FileInputStream(path+"/"+ff.getOriginalFileName());

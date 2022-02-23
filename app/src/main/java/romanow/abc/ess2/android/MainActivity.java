@@ -57,6 +57,7 @@ import romanow.abc.core.utils.Pair;
 
 import romanow.abc.ess2.android.menu.*;
 import romanow.abc.ess2.android.service.AppData;
+import romanow.abc.ess2.android.service.ArchitectureData;
 import romanow.abc.ess2.android.service.BaseActivity;
 import romanow.abc.ess2.android.service.GPSService;
 import romanow.abc.ess2.android.service.NetBack;
@@ -71,23 +72,13 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     public boolean voiceRun = false;
     private AppData ctx;
     //-------------- Постоянные параметры snn-core ---------------------------------------
-    private final boolean p_Compress = false;        // Нет компрессии
-    private final int compressLevel = 0;
-    private final float kMultiple = 3.0f;
-    private final float kAmpl = 1f;
-    private final int MiddleMode = 0x01;
-    private final int DispMode = 0x02;
     private final int MiddleColor = 0x0000FF00;
     private final int DispColor = 0x000000FF;
     private final int GraphBackColor = 0x00A0C0C0;
+    final public static int DefaultTextColor=0x00035073;
     final public static String archiveFile = "LEP500Archive.json";
     final public static double ViewProcHigh = 0.6;
     final public static String VoiceFile = "LEP500.wave";
-    //------------------------------------------------------------------------------------
-    public static final int nFirstMax = 10;  // Количество максимумов в статистике (вывод)
-    public boolean hideFFTOutput = false;
-    private int waveMas = 1;
-    private double waveStartTime = 0;
     //----------------------------------------------------------------------------
     private LinearLayout log;
     private ScrollView scroll;
@@ -107,6 +98,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     private ImageView MenuButton;
     private ImageView GPSState;
     private ImageView NETState;
+    private ArchitectureData architectureData;
     //--------------------------------------------------------------------------
     private BroadcastReceiver gpsReceiver = new BroadcastReceiver() {
         @Override
@@ -129,12 +121,12 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         public void onEvent(String ss) {
             addToLog(ss);
         }
-    };
-
+        };
     public void addMenuList(MenuItemAction action) {
         menuList.add(action);
     }
-
+    public ArchitectureData getArchitectureData() {
+        return architectureData; }
     //------------------------------------------------------------------------------------------------------
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -257,6 +249,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         }
     private void onAllPermissionsEnabled(){
         try{
+            architectureData = new ArchitectureData(this);
             ctx.fileService().loadContext();
             ctx.cState(AppData.CStateGray);
             createMenuList();
@@ -304,7 +297,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 saveContext();
                 }
             String title = "СНЭЭ 2.0";
-            addToLog(false, title, 22, 0x00007020);
+            addToLog(false, title, 22, 0);
             //addToLogButton("Рег.код: "+createRegistrationCode(),true,null,null);
             //addToLogButton("ID: "+getSoftwareId64(),true,null,null);
             if (!createRegistrationCode().equals(ctx.loginSettings().getRegistrationCode())) {
@@ -314,7 +307,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 }
             else{
                 addToLog(false,"Приложение зарегистрировано\nПолная функциональность",
-                        18,0x00007020);
+                        18,0);
                 }
             } catch (Exception ee) {
                 errorMes(createFatalMessage(ee, 10));
@@ -346,7 +339,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         gpsService.stopService();
         saveContext();
         AppData.ctx().stopApplication();
-    }
+        }
 
     public void scrollDown() {
         scroll.post(new Runnable() {
@@ -373,9 +366,8 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
 
     @Override
     public void addToLogHide(String ss) {
-        if (!hideFFTOutput)
-            addToLog(ss);
-    }
+        addToLog(ss);
+        }
 
 
     public void addToLog(boolean fullInfoMes, final String ss, final int textSize) {
@@ -400,7 +392,8 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 }
                 TextView txt = new TextView(MainActivity.this);
                 txt.setText(ss);
-                txt.setTextColor(textColor | 0xFF000000);
+                int tColor = textColor==0 ? DefaultTextColor : textColor;
+                txt.setTextColor(tColor | 0xFF000000);
                 if (textSize != 0)
                     txt.setTextSize(textSize);
                 layout.addView(txt);
@@ -564,9 +557,8 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
 
     public void procArchive(FileDescription fd, boolean longClick) {
         setFullInfo(longClick);
-        hideFFTOutput = !longClick;
         procArchive(fd);
-    }
+        }
 
     //--------------------------------------------------------------------------
     public DataDescription loadArchive() {
@@ -797,7 +789,6 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             public void onClick(View v) {
                 try {
                     setFullInfo(false);
-                    hideFFTOutput = true;
                     FileInputStream fis = new FileInputStream(ctx.androidFileDirectory() + "/" + ff.getOriginalFileName());
                     addToLog(ff.toString(), greatTextSize);
                 } catch (Throwable e) {
@@ -810,7 +801,6 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             public boolean onLongClick(View v) {
                 try {
                     setFullInfo(true);
-                    hideFFTOutput = false;
                     FileInputStream fis = new FileInputStream(ctx.androidFileDirectory() + "/" + ff.getOriginalFileName());
                     addToLog(ff.toString());
                 } catch (Throwable e) {

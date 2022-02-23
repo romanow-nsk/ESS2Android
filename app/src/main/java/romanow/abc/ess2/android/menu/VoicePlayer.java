@@ -17,7 +17,6 @@ public abstract class VoicePlayer{
     private  LinearLayout voiceButton;
     public abstract void convert(String outFile, FileDescription fd);
     public VoicePlayer(FileDescription fd, final MainActivity main) {
-        main.hideFFTOutput=false;
         final String outFile = AppData.ctx().androidFileDirectory()+"/"+VoiceFile;
         convert(outFile,fd);
         //FFTAudioTextFile xx = new FFTAudioTextFile();

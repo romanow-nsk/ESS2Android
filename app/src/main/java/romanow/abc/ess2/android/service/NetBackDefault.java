@@ -3,6 +3,7 @@ package romanow.abc.ess2.android.service;
 
 import romanow.abc.core.UniException;
 import romanow.abc.core.constants.Values;
+import romanow.abc.core.utils.Pair;
 
 public abstract class NetBackDefault implements NetBack {
     public NetBackDefault(){
@@ -23,4 +24,5 @@ public abstract class NetBackDefault implements NetBack {
         AppData.ctx().addStoryMessage("Ошибка сети: "+ee.toString());
         AppData.ctx().popupAndLog(true,"Сеть недоступна");
         }
-    }
+    public abstract void onSuccess(Object val);
+}
