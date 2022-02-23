@@ -10,7 +10,6 @@ import java.io.OutputStreamWriter;
 
 import romanow.abc.core.entity.base.BugList;
 import romanow.abc.core.entity.subjectarea.WorkSettings;
-import romanow.abc.ess2.android.LEP500Settings;
 import romanow.abc.ess2.android.LoginSettings;
 import romanow.abc.ess2.android.StoryList;
 
@@ -91,14 +90,12 @@ public class FileService {
         saveJSON(ctx.loginSettings);
         saveJSON(ctx.fatalMessages);
         saveJSON(ctx.storyList);
-        saveJSON(ctx.settings);
         saveJSON(ctx.workSettings);
         }
     public void loadContext(){
         AppData ctx = AppData.ctx();
         ctx.loginSettings=(LoginSettings)loadJSON(LoginSettings.class);
         ctx.workSettings = (WorkSettings)loadJSON(WorkSettings.class);
-        ctx.settings = (LEP500Settings)loadJSON(LEP500Settings.class);
         ctx.storyList = (StoryList)loadJSON(StoryList.class);
         ctx.fatalMessages = (BugList) loadJSON(BugList.class);
     }

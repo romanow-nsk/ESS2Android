@@ -297,10 +297,10 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             //        new String(Character.toChars(0x1F349))+
             //        new String(surrogates, 0, surrogates.length)+
             //        "\uD83D\uDC7D";
-            String fatalMessage = ctx.set().fatalMessage;
+            String fatalMessage = ctx.loginSettings().getFatalMessage();
             if (fatalMessage.length()!=0){
                 addToLog(false,fatalMessage,14,0x00A00000);
-                ctx.set().fatalMessage="";
+                ctx.loginSettings().setFatalMessage("");
                 saveContext();
                 }
             String title = "СНЭЭ 2.0";
@@ -387,7 +387,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     }
 
     public void addToLog(boolean fullInfoMes, final String ss, final int textSize, final int textColor, final int imgRes) {
-        if (fullInfoMes && !ctx.set().fullInfo)
+        if (fullInfoMes && !ctx.loginSettings().isFullInfo())
             return;
         guiCall(new Runnable() {
             @Override
@@ -635,7 +635,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 log.removeAllViews();
             }
         });
-        if (!ctx.set().technicianMode)
+        if (!ctx.loginSettings().isTechnicianMode())
             new MIDeleteFromArchive(this);
         menuList.add(new MenuItemAction("Настройки") {
             @Override
@@ -643,7 +643,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 new SettingsMenu(MainActivity.this);
             }
         });
-        if (isAllEnabled() && !ctx.set().technicianMode)
+        if (isAllEnabled() && !ctx.loginSettings().isTechnicianMode())
             menuList.add(new MenuItemAction("Связь с сервером") {
                 @Override
                 public void onSelect() {
@@ -654,7 +654,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             new MIUpLoad(MainActivity.this);
             }
         new MIMap(this);
-        if (!ctx.set().technicianMode) {
+        if (!ctx.loginSettings().isTechnicianMode()) {
             new MISendMail(this);
             new MIResultsPlayer(this);
             new MIExport(this);
@@ -664,14 +664,14 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             }
         new MIExportAndSendMail(this);
         new MIAbout(this);
-        if (!ctx.set().technicianMode) {
+        if (!ctx.loginSettings().isTechnicianMode()) {
             menuList.add(new MenuItemAction("Регистрация") {
                 @Override
                 public void onSelect() {
                     new RegistrationMenu(MainActivity.this);
                 }
                 });
-            if (ctx.set().fullInfo)
+            if (ctx.loginSettings().isFullInfo())
                 new MITestCase(this);
             }
         menuList.add(new MenuItemAction("Выход") {

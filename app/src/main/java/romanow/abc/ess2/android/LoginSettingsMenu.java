@@ -4,6 +4,12 @@ import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import romanow.abc.core.API.RestAPIESS2;
 import romanow.abc.core.DBRequest;
 import romanow.abc.core.UniException;
 import romanow.abc.core.constants.Values;
@@ -92,6 +98,7 @@ public class LoginSettingsMenu extends SettingsMenuBase {
                                 set.setUserId(user.getOid());
                                 set.setSessionToken(user.getSessionToken());
                                 ctx.popup(false,"Вошли");
+                                /*---------------------------- Регистрация на сервере не нужна -----------------
                                 String serverSim = user.getSimCardICC();
                                 String regCode = base.createRegistrationCode();
                                 if (serverSim.length()==0){
@@ -129,6 +136,8 @@ public class LoginSettingsMenu extends SettingsMenuBase {
                                         ctx.setRegisteredOnServer(false);
                                         }
                                     }
+                                    */
+                               ctx.setRegisteredOnServer(true);
                                }
                             });
                         pp.cancel();

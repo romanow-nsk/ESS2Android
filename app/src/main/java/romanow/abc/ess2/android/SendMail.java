@@ -31,17 +31,17 @@ public class SendMail extends AsyncTask{
         try {
             this.context = context;
             data = fd;
-            final LEP500Settings set = AppData.ctx().set();
+            final LoginSettings set = AppData.ctx().loginSettings();
             Properties props = new Properties();
             props.put("mail.smtp.auth", "true");
-            props.put("mail.smtp.host", set.mailHost);
+            props.put("mail.smtp.host", set.getMailHost());
             props.put("mail.transport.protocol", "smtp");
-            props.put("mail.smtp.socketFactory.port", ""+set.mailPort); //143
+            props.put("mail.smtp.socketFactory.port", ""+set.getMailPort()); //143
             props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
             props.put("mail.smtp.starttls.enable", "true");
             session = Session.getDefaultInstance(props, new Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(set.mailBox, set.mailPass);
+                    return new PasswordAuthentication(set.getMailBox(), set.getMailPass());
                    }
                 });
             }
@@ -63,8 +63,8 @@ public class SendMail extends AsyncTask{
     protected Void doInBackground(Object[] objects) {
         try {
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(AppData.ctx().set().mailBox));
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(AppData.ctx().set().mailToSend));
+            message.setFrom(new InternetAddress(AppData.ctx().loginSettings().getMailBox()));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(AppData.ctx().loginSettings().getMailToSend()));
             message.setSubject("Датчик "+data.toString()); // subject line
             String text = "Опоры России гудят "+data.toString()+" "+data.getGps().toString();
             MimeMultipart multipart = new MimeMultipart();

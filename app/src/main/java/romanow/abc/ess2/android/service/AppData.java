@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import romanow.abc.core.API.RestAPIESS2;
-import romanow.abc.core.constants.Values;
 import romanow.abc.ess2.android.FileDescriptionList;
 import romanow.abc.ess2.android.R;
 import romanow.abc.core.API.RestAPIBase;
@@ -21,7 +20,6 @@ import romanow.abc.core.entity.base.BugMessage;
 import romanow.abc.core.entity.subjectarea.WorkSettings;
 import romanow.abc.core.utils.GPSPoint;
 import romanow.abc.core.utils.OwnDateTime;
-import romanow.abc.ess2.android.LEP500Settings;
 import romanow.abc.ess2.android.LoginSettings;
 import romanow.abc.ess2.android.StoryList;
 
@@ -101,7 +99,6 @@ public class AppData extends Application {
     BugList fatalMessages = new BugList();
     WorkSettings workSettings = new WorkSettings();
     StoryList storyList = new StoryList();
-    LEP500Settings settings = new LEP500Settings();
     LoginSettings loginSettings = new LoginSettings();
     Object appSynch = new Object();
     RestAPIBase service = null;
@@ -164,7 +161,6 @@ public class AppData extends Application {
     public String getActualVersion() { return actualVersion; }
     public void setActualVersion(String actualVersion) { this.actualVersion = actualVersion; }
     public Thread.UncaughtExceptionHandler getUncaughtExceptionHandler() { return oldHandler; }
-    public LEP500Settings set(){ return settings; }
     public LoginSettings loginSettings(){ return loginSettings; }
     public FileService getFileService() { return fileService; }
     public RestAPIBase getService() { return service; }

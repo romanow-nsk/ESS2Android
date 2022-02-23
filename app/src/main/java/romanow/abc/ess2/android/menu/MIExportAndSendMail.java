@@ -41,7 +41,7 @@ public class MIExportAndSendMail extends MenuItem {
             try {
                 final Intent emailIntent = new Intent(Intent.ACTION_SEND_MULTIPLE);
                 emailIntent.setType("plain/text");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppData.ctx().set().mailToSend});
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{AppData.ctx().loginSettings().getMailToSend()});
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Звенящие опоры России");
                 emailIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 ArrayList<Uri> uris = new ArrayList<Uri>();

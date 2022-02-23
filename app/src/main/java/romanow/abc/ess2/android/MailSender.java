@@ -24,12 +24,12 @@ public class MailSender{
         face = face0;
         }
     public void sendMail(FileDescription data) throws Exception{
-        LEP500Settings ws = AppData.ctx().set();
-        final String from = ws.mailBox;
+        LoginSettings ws = AppData.ctx().loginSettings();
+        final String from = ws.getMailBox();
         String username = from.substring(0,from.indexOf("@")-1);
-        String host = ws.mailHost;
-        int port = ws.mailPort;
-        final String pass = ws.mailPass;
+        String host = ws.getMailHost();
+        int port = ws.getMailPort();
+        final String pass = ws.getMailPass();
         //------------------------------------------------------------
         Properties props = System.getProperties();
         props.put("mail.smtp.auth", "true");
@@ -49,7 +49,7 @@ public class MailSender{
             });
         MimeMessage message = new MimeMessage(session); // email message
         message.setFrom(new InternetAddress(from));     // setting header fields
-        message.addRecipient(Message.RecipientType.TO, new InternetAddress(ws.mailToSend));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(ws.getMailToSend()));
         message.setSubject("Датчик "+data.toString()); // subject line
         String text = "Опоры России гудят "+data.toString()+" "+data.getGps().toString();
         MimeMultipart multipart = new MimeMultipart();

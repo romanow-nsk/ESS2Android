@@ -89,7 +89,7 @@ public abstract class BaseActivity extends AppCompatActivity implements I_Notify
                 ctx.toLog(true,ss);
                 //bigPopup("Фатальная ошибка",ss);
                 //-------------- Перезапуск с сообщением о сбое ----------------------------
-                ctx.set().fatalMessage = "Фатальная ошибка\n"+ss;
+                ctx.loginSettings().setFatalMessage("Фатальная ошибка\n"+ss);
                 saveContext();
                 overLoad(true);
                 }
