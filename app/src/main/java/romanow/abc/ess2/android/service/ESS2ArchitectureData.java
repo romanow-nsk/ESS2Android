@@ -19,11 +19,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import romanow.abc.core.DBRequest;
-import romanow.abc.core.I_ObjectEvent;
-import romanow.abc.core.UniException;
 import romanow.abc.core.Utils;
 import romanow.abc.core.constants.Values;
-import romanow.abc.core.constants.ValuesBase;
 import romanow.abc.core.entity.artifacts.Artifact;
 import romanow.abc.core.entity.metadata.Meta2Equipment;
 import romanow.abc.core.entity.metadata.Meta2GUIView;
@@ -42,8 +39,8 @@ import romanow.abc.core.script.Scaner;
 import romanow.abc.core.script.Syntax;
 import romanow.abc.core.utils.Pair;
 import romanow.abc.ess2.android.I_DownLoadString;
+import romanow.abc.ess2.android.I_DownLoadXML;
 import romanow.abc.ess2.android.I_Event;
-import romanow.abc.ess2.android.I_EventListener;
 import romanow.abc.ess2.android.MainActivity;
 import romanow.abc.ess2.android.R;
 
@@ -75,7 +72,6 @@ public class ESS2ArchitectureData {
     private AppData ctx;
     private ESS2Architecture deployed=null;
     private ESS2View currentView=null;                  // Текущий вид
-    private String debugToken;
     public ESS2ArchitectureData(MainActivity main0){
         base = main0;
         ctx = AppData.ctx();
@@ -107,12 +103,12 @@ public class ESS2ArchitectureData {
                 int state = val.o1;
                 deployState.setImageResource(archStateIcons[state]);
                 connectState.setImageResource(connStateIcons[state]);
-                base.addToLog("Состояние "+ Values.constMap().getGroupMapByValue("ArchState").get(state).title());
+                base.addToLog("Состояние архитектуры: "+ Values.constMap().getGroupMapByValue("ArchState").get(state).title());
                 if (state==Values.ASNotDeployed)
                     return;
                 long oid = val.o2;
-                int idx=-1;
                 /*
+                int idx=-1;
                 for(int i=0;i<architectures.size();i++)
                     if (architectures.get(i).getOid()==oid){
                         idx=i;
@@ -127,105 +123,111 @@ public class ESS2ArchitectureData {
                 }
             });
         }
-    //-------------------------------------------------------------------------------------------------------------------
-    private void loadDeployedArchitecture(long oid, int state) {
-        loadFullArchitecture(oid, new I_Event<ESS2Architecture>() {
-            @Override
-            public void onEvent(ESS2Architecture val) {
-                deployed = val;
-                deployed.setArchitectureState(state);
-                deployed.testFullArchitecture();
-                ModBusClientProxyDriver driver = new ModBusClientProxyDriver();
-                Object oo[]={base};
-                try {
-                    driver.openConnection(oo,null);
-                    for (ESS2Equipment equipment : deployed.getEquipments()) {
-                        equipment.createFullEquipmentPath();
-                    }
-                    for(ESS2Device device : deployed.getDevices()){         // НАстроить прокси
-                        device.setDriver(driver);
-                    }
-                } catch (Exception ee){
-                    base.addToLog("Ошибка драйвера БД: "+ee.toString());
+    //----------------------------------------------------------------------------------------------
+    public void onArchitectureLoaded(ESS2Architecture val) {
+        boolean hasErrors = val.getErrors().getErrCount()!=0;
+        if (hasErrors){
+            base.errorMes(val.getErrors().toString());
+            return;
+            }
+        base.addToLog(val.getErrors().toString());
+        deployed = val;
+        deployed.testFullArchitecture();
+        ModBusClientAndroidDriver driver = new ModBusClientAndroidDriver();
+        Object oo[]={base};
+        try {
+            //driver.openConnection(oo,null);
+            for (ESS2Equipment equipment : deployed.getEquipments()) {
+                equipment.createFullEquipmentPath();
                 }
-                refreshDeployedMetaData();
-                deployed.createStreamRegisterList();
-                deployed.setArchitectureState(state);
-                //refreshSelectedArchitecture();
+            for(ESS2Device device : deployed.getDevices()){         // НАстроить прокси
+                device.setDriver(driver);
                 }
-            });
+            } catch (Exception ee){
+                base.addToLog("Ошибка драйвера БД: "+ee.toString());
+                }
+        refreshDeployedMetaData();
+        deployed.createStreamRegisterList();
+        //refreshSelectedArchitecture();
         }
-    //-----------------------------------------------------------------------------------------------------------
-    public void loadFullArchitecture(long oid, final I_Event<ESS2Architecture> back){
-            new NetCall<DBRequest>().call(base, ctx.service.getEntity(debugToken, "ESS2Architecture", oid, 4), new NetBackDefault() {
+    //-------------------------------------------------------------------------------------------------------------------
+    private int loadCount=0;
+    private void loadDeployedArchitecture(final long oid, final int state) {
+        try {
+            new NetCall<DBRequest>().call(base, ctx.getService().getEntity(ctx.loginSettings().getSessionToken(), "ESS2Architecture", oid, 4), new NetBackDefault() {
                 @Override
-                public void onSuccess(Object val) {
-                    ESS2Architecture arch = new ESS2Architecture();
+                public void onSuccess(Object val){
                     try {
-                        arch = (ESS2Architecture)  ((DBRequest)val).get(new Gson());
+                        final ESS2Architecture arch = (ESS2Architecture) ((DBRequest) val).get(new Gson());
+                        arch.setArchitectureState(state);
                         Artifact artifact;
-                        for(ESS2Equipment equipment : arch.getEquipments()){
+                        loadCount = arch.getEquipments().size()+arch.getViews().size();
+                        for (ESS2Equipment equipment : arch.getEquipments()) {
                             ESS2MetaFile metaFile = equipment.getMetaFile().getRef();
                             artifact = metaFile.getFile().getRef();
-                            Meta2XML xml = loadXMLArtifact(artifact);
-                            arch.addErrorData(xml);
-                            equipment.setEquipment((Meta2Equipment) xml);
+                            loadXMLArtifact(artifact, new I_DownLoadXML() {
+                                @Override
+                                public void onSuccess(Meta2XML xml) {
+                                    arch.addErrorData(xml);
+                                    equipment.setEquipment((Meta2Equipment) xml);
+                                    loadCount--;
+                                    if (loadCount==0)
+                                        onArchitectureLoaded(arch);
+                                    }
+                                @Override
+                                public void onError(String mes) {
+                                    base.errorMes(mes);
+                                    loadCount--;
+                                    }
+                                });
                             }
-                        for(ESS2View view : arch.getViews()){
+                        for (ESS2View view : arch.getViews()) {
                             ESS2MetaFile metaFile = view.getMetaFile().getRef();
                             artifact = metaFile.getFile().getRef();
-                            Meta2XML xml = loadXMLArtifact(artifact);
-                            arch.addErrorData(xml);
-                            view.setView((Meta2GUIView)xml);
+                            loadXMLArtifact(artifact, new I_DownLoadXML() {
+                                @Override
+                                public void onSuccess(Meta2XML xml) {
+                                    arch.addErrorData(xml);
+                                    view.setView((Meta2GUIView) xml);
+                                    loadCount--;
+                                    if (loadCount==0)
+                                        onArchitectureLoaded(arch);
+                                    }
+                                @Override
+                                public void onError(String mes) {
+                                    base.errorMes(mes);
+                                    loadCount--;
+                                    }
+                                });
                             }
-                        } catch (Exception ex) {
-                            arch.addErrorData(Utils.createFatalMessage(ex));
-                            }
-                back.onEvent(arch);
+                    } catch (Exception ex) {
+                        ESS2Architecture arch1 = new ESS2Architecture();
+                        arch1.addErrorData(Utils.createFatalMessage(ex));
+                        onArchitectureLoaded(arch1);
+                        }
+                   }
+                });
+            } catch(Exception ee){
+                base.errorMes("!!!!!!!!"+ee.toString());
+                }
+        }
+    //------------------------------------------------------------------------------------------------------------
+    public void loadXMLArtifact(Artifact art, I_DownLoadXML back){
+        loadFileAsString(art, new I_DownLoadString() {
+            @Override
+            public void onSuccess(String ss) {
+                Meta2XML entity = (Meta2XML) new Meta2XStream().fromXML(ss);
+                entity.setHigh(null);
+                entity.createMap();
+                entity.testLocalConfiguration();
+                back.onSuccess(entity);
+                }
+            @Override
+            public void onError(String mes) {
+                back.onError(mes);
                 }
             });
         }
-    //------------------------------------------------------------------------------------------------------------
-    public Meta2XML loadXMLArtifact(Artifact art){
-        Meta2XML entity = new Meta2XML();
-        Pair<String,String> vv = loadFileAsStringSync(art);
-        if (vv.o1!=null) {
-            entity.addErrorData(vv.o1);
-        }
-        else{
-            entity = (Meta2XML) new Meta2XStream().fromXML(vv.o2);
-            System.out.println(entity.getTitle());
-            entity.setHigh(null);
-            entity.createMap();
-            entity.testLocalConfiguration();
-            }
-        return entity;
-        }
-    //----------------------------------------------------------------------------------------------------------
-    public Pair<String,String> loadFileAsStringSync(Artifact art){
-        Call<ResponseBody> call2 = ctx.service.downLoad(debugToken,art.getOid());
-        try {
-            Response<ResponseBody> bbody = call2.execute();
-            if (!bbody.isSuccessful()) {
-                String mes = httpError(bbody);
-                return new Pair<>(mes, null);
-            }
-            ResponseBody body = bbody.body();
-            long fileSize = body.contentLength();
-            InputStream in = body.byteStream();
-            InputStreamReader reader = new InputStreamReader(in,"UTF8");
-            StringBuffer buffer = new StringBuffer();
-            int cc;
-            while ((cc=reader.read())!=-1){
-                buffer.append((char) cc);
-                }
-            reader.close();
-            return new Pair<>(null,buffer.toString());
-            } catch (IOException ee) {
-                String mes = Utils.createFatalMessage(ee);
-                return new Pair<>(mes,null);
-                }
-            }
     //---------------------------------------------------------------------------------------------------------------------
     private void refreshDeployedMetaData(){
         if (deployed==null)
@@ -296,9 +298,9 @@ public class ESS2ArchitectureData {
                     public void onError(String mes) {
                         base.errorMes("Скрипт " + scriptFile.getShortName() + " " + scriptFile.getTitle() + " не загрузился");
                         base.errorMes(mes);
-                    }
-                });
-            }
+                        }
+                    });
+                }
             else{
                 scriptFile.setScriptCode(null);
                 scriptFile.setValid(false);
@@ -307,51 +309,104 @@ public class ESS2ArchitectureData {
     }
     //------------------------------------------------------------------------------------------------------------------
     public void loadFileAsString(Artifact art,final I_DownLoadString back){
-        Call<ResponseBody> call2 = ctx.service.downLoad(debugToken,art.getOid());
-        call2.enqueue(new Callback<ResponseBody>() {
+        new Thread(new Runnable() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    ResponseBody body = response.body();
-                    long fileSize = body.contentLength();
-                    InputStream in = body.byteStream();
-                    try {
-                        InputStreamReader reader = new InputStreamReader(in,"UTF8");
-                        StringBuffer buffer = new StringBuffer();
-                        int cc;
-                        while ((cc=reader.read())!=-1){
-                            buffer.append((char) cc);
-                            }
-                        reader.close();
-                        if (back!=null)
-                            back.onSuccess(buffer.toString());
-                        else
-                            base.addToLog("Текст загружен\n"+buffer.toString());
-                        } catch (IOException ee) {
-                            String mes = Utils.createFatalMessage(ee);
-                            if (back!=null)
-                                back.onError(mes);
-                            else
-                                base.errorMes(mes);
+            public void run() {
+                Call<ResponseBody> call2 = ctx.getService().downLoad(ctx.loginSettings().getSessionToken(),art.getOid());
+                call2.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, final Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            final ResponseBody body = response.body();
+                            final long fileSize = body.contentLength();
+                            new Thread(new Runnable() {             // Response уже в потоке GUI
+                                @Override
+                                public void run() {
+                                    InputStream in = body.byteStream();
+                                    try {
+                                        InputStreamReader reader = new InputStreamReader(in,"UTF8");
+                                        StringBuffer buffer = new StringBuffer();
+                                        int cc;
+                                        while ((cc=reader.read())!=-1){
+                                            buffer.append((char) cc);
+                                        }
+                                        reader.close();
+                                        base.guiCall(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                back.onSuccess(buffer.toString());
+                                            }
+                                        });
+                                    } catch (final IOException ee) {
+                                        base.guiCall(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                String mes = Utils.createFatalMessage(ee);
+                                                back.onError(mes);
+                                            }
+                                        });
+                                    }
                                 }
+                            }).start();
                         }
-                else{
-                    String mes = httpError(response);
-                    if (back!=null)
-                        back.onError(mes);
-                    else
-                        base.errorMes(mes);
+                        else{
+                            base.guiCall(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String mes = httpError(response);
+                                    back.onError(mes);
+                                }
+                            });
                         }
                     }
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, final Throwable t) {
+                        base.guiCall(new Runnable() {
+                            @Override
+                            public void run() {
+                                String mes = Utils.createFatalMessage(t);
+                                back.onError(mes);
+                            }
+                        });
+                    }
+                });
+            }
+        }).start();
+        }
+    //----------------------------------------------------------------------------------------------------------
+    public void loadFileAsStringSync(Artifact art,final I_DownLoadString back){
+        new Thread(new Runnable() {
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                String mes = Utils.createFatalMessage(t);
-                if (back!=null)
-                    back.onError(mes);
-                else
-                    base.errorMes(mes);
+            public void run() {
+                Call<ResponseBody> call2 = ctx.getService().downLoad(ctx.loginSettings().getSessionToken(),art.getOid());
+                try {
+                    Response<ResponseBody> bbody = call2.execute();
+                    if (!bbody.isSuccessful()) {
+                        String mes = httpError(bbody);
+                        base.errorMes(mes);
+                        }
+                    ResponseBody body = bbody.body();
+                    long fileSize = body.contentLength();
+                    InputStream in = body.byteStream();
+                    InputStreamReader reader = new InputStreamReader(in,"UTF8");
+                    StringBuffer buffer = new StringBuffer();
+                    int cc;
+                    while ((cc=reader.read())!=-1){
+                        buffer.append((char) cc);
+                        }
+                    reader.close();
+                    base.guiCall(new Runnable() {
+                        @Override
+                        public void run() {
+                            back.onSuccess(buffer.toString());
+                            }
+                        });
+                    } catch (IOException ee) {
+                        String mes = Utils.createFatalMessage(ee);
+                        base.errorMes(mes);
+                        }
                 }
-            });
+            }).start();
         }
     //------------------------------------------------------------------------------------------------------------------------
     public Syntax compileScriptLocal(ESS2ScriptFile scriptFile,String src){

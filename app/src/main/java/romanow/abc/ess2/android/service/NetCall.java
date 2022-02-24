@@ -14,8 +14,6 @@ public class NetCall<T> {
         gbl = AppData.ctx();
         new Thread() {
             public void run() {
-                //Блокирует GUI ----------------------------------------------------------------------------------------
-                //synchronized (gbl){
                 try {
                     gbl.cState(AppData.CStateYellow);
                     res = cl.execute();
@@ -24,9 +22,7 @@ public class NetCall<T> {
                     if (res.isSuccessful())
                         gbl.cState(AppData.CStateGreen);
                     if (back==null) return;
-                    base.runOnUiThread(new Runnable() {
-                    //---------------------------------------------------------------------------
-                    //gbl.getEvent().post(new Runnable() {
+                    base.guiCall(new Runnable() {
                         @Override
                         public void run() {
                             try {
@@ -60,9 +56,7 @@ public class NetCall<T> {
                 } catch (final Exception e) {
                     AppData.ctx().cState(AppData.CStateRed);
                     if (back==null) return;
-                    base.runOnUiThread(new Runnable() {
-                    //-----------------------------------------------------------------------------
-                    //AppData.ctx().getEvent().post(new Runnable() {
+                    base.guiCall(new Runnable() {
                         @Override
                         public void run() {
                             back.onError(UniException.net(e));

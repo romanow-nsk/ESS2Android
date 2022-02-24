@@ -221,6 +221,11 @@ public abstract class BaseActivity extends AppCompatActivity implements I_Notify
         else
             runOnUiThread(code);
         }
+    public boolean testGuiThread(int point){
+        boolean bb = Thread.currentThread()==guiThread;
+        addToLog((bb ? "" : "Не ")+"поток GUI: "+point);
+        return bb;
+        }
     public void onMessage(String mes){
         addToLog( mes);
         }

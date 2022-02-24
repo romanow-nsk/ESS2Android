@@ -850,6 +850,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             if (AppData.ctx().cState()== AppData.CStateGray)
                 return;
             String token = ctx.loginSettings().getSessionToken();
+            System.out.println(token);
             new NetCall<JInt>().call(MainActivity.this,ctx.getService().keepalive(token), new NetBack() {
                 @Override
                 public void onError(int code, String mes) {

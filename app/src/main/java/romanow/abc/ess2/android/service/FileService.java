@@ -87,17 +87,17 @@ public class FileService {
     }
     public void saveContext(){
         AppData ctx = AppData.ctx();
-        saveJSON(ctx.loginSettings);
-        saveJSON(ctx.fatalMessages);
-        saveJSON(ctx.storyList);
-        saveJSON(ctx.workSettings);
+        saveJSON(ctx.loginSettings());
+        saveJSON(ctx.fatalMessages());
+        saveJSON(ctx.storyList());
+        saveJSON(ctx.workSettings());
         }
     public void loadContext(){
         AppData ctx = AppData.ctx();
-        ctx.loginSettings=(LoginSettings)loadJSON(LoginSettings.class);
-        ctx.workSettings = (WorkSettings)loadJSON(WorkSettings.class);
-        ctx.storyList = (StoryList)loadJSON(StoryList.class);
-        ctx.fatalMessages = (BugList) loadJSON(BugList.class);
+        ctx.loginSettings((LoginSettings)loadJSON(LoginSettings.class));
+        ctx.workSettings((WorkSettings)loadJSON(WorkSettings.class));
+        ctx.storyList((StoryList)loadJSON(StoryList.class));
+        ctx.fatalMessages((BugList) loadJSON(BugList.class));
     }
 
 }

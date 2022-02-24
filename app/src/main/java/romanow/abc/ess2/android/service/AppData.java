@@ -96,15 +96,22 @@ public class AppData extends Application {
         };
     */
     //------------------------------------------------------------------------------
-    BugList fatalMessages = new BugList();
-    WorkSettings workSettings = new WorkSettings();
-    StoryList storyList = new StoryList();
-    LoginSettings loginSettings = new LoginSettings();
+    private BugList fatalMessages = new BugList();
+    private WorkSettings workSettings = new WorkSettings();
+    private StoryList storyList = new StoryList();
+    private LoginSettings loginSettings = new LoginSettings();
     Object appSynch = new Object();
-    RestAPIBase service = null;
-    RestAPIESS2 service2 = null;
+    private RestAPIBase service = null;
+    private RestAPIESS2 service2 = null;
     //---------------------------------------------------------------------------------
     private int cState = AppData.CStateGray;               // Состояние соединения
+    public WorkSettings workSettings(){ return workSettings; }
+    public StoryList storyList(){ return storyList; }
+    public BugList fatalMessages(){ return fatalMessages; }
+    public void workSettings(WorkSettings ws){ workSettings=ws; }
+    public void storyList(StoryList ss){ storyList=ss; }
+    public void fatalMessages(BugList bb){ fatalMessages=bb; }
+    public void loginSettings(LoginSettings ss){ loginSettings=ss; }
     public synchronized int cState() { return cState; }
     public synchronized void cState(int cState) {
         this.cState = cState;
