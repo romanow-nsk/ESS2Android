@@ -3,7 +3,6 @@ package romanow.abc.ess2.android;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -50,14 +49,14 @@ import romanow.abc.core.API.RestAPIBase;
 import romanow.abc.core.API.RestAPIESS2;
 import romanow.abc.core.UniException;
 import romanow.abc.core.constants.Values;
-import romanow.abc.core.constants.ValuesBase;
 import romanow.abc.core.entity.baseentityes.JInt;
 import romanow.abc.core.utils.GPSPoint;
 import romanow.abc.core.utils.Pair;
 
 import romanow.abc.ess2.android.menu.*;
 import romanow.abc.ess2.android.service.AppData;
-import romanow.abc.ess2.android.service.ArchitectureData;
+import romanow.abc.ess2.android.service.ESS2ArchitectureData;
+import romanow.abc.ess2.android.service.Base64Coder;
 import romanow.abc.ess2.android.service.BaseActivity;
 import romanow.abc.ess2.android.service.GPSService;
 import romanow.abc.ess2.android.service.NetBack;
@@ -90,15 +89,10 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     public final int REQUEST_ENABLE_WRITE = 105;
     public final int REQUEST_ENABLE_PHONE = 106;
     public final int REQUEST_ENABLE_AUDIO = 107;
-    public final int REQUEST_BLUETOOTH_CONNECT = 108;
-    public final String BT_OWN_NAME = "LEP500";
-    public final String BT_SENSOR_NAME_PREFIX = "VIBR_SENS";
-    public final int BT_DISCOVERY_TIME_IN_SEC = 300;
-    public final int BT_SCANNING_TIME_IN_SEC = 60;
     private ImageView MenuButton;
     private ImageView GPSState;
     private ImageView NETState;
-    private ArchitectureData architectureData;
+    private ESS2ArchitectureData architectureData;
     //--------------------------------------------------------------------------
     private BroadcastReceiver gpsReceiver = new BroadcastReceiver() {
         @Override
@@ -125,7 +119,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     public void addMenuList(MenuItemAction action) {
         menuList.add(action);
     }
-    public ArchitectureData getArchitectureData() {
+    public ESS2ArchitectureData getArchitectureData() {
         return architectureData; }
     //------------------------------------------------------------------------------------------------------
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -249,7 +243,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         }
     private void onAllPermissionsEnabled(){
         try{
-            architectureData = new ArchitectureData(this);
+            architectureData = new ESS2ArchitectureData(this);
             ctx.fileService().loadContext();
             ctx.cState(AppData.CStateGray);
             createMenuList();
@@ -616,7 +610,15 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
 
     public void createMenuList() {
         menuList.clear();
-        new MIESS2(this);
+        if (isAllEnabled()){
+            menuList.add(new MenuItemAction("Связь с сервером") {
+                @Override
+                public void onSelect() {
+                    new LoginSettingsMenu(MainActivity.this);
+                }
+                });
+            new MIESS2(this);
+            }
         new MIArchive(this);
         new MIArchiveFull(this);
         new MIFullScreen(this);
@@ -627,7 +629,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             public void onSelect() {
                 log.removeAllViews();
             }
-        });
+            });
         if (!ctx.loginSettings().isTechnicianMode())
             new MIDeleteFromArchive(this);
         menuList.add(new MenuItemAction("Настройки") {
@@ -636,13 +638,6 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 new SettingsMenu(MainActivity.this);
             }
         });
-        if (isAllEnabled() && !ctx.loginSettings().isTechnicianMode())
-            menuList.add(new MenuItemAction("Связь с сервером") {
-                @Override
-                public void onSelect() {
-                new LoginSettingsMenu(MainActivity.this);
-            }
-            });
         if (ctx.cState()== AppData.CStateGreen && isAllEnabled()){
             new MIUpLoad(MainActivity.this);
             }

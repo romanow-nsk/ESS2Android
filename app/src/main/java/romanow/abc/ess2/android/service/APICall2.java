@@ -1,4 +1,4 @@
-package romanow.abc.ess2.android;
+package romanow.abc.ess2.android.service;
 
 import java.io.IOException;
 
@@ -7,6 +7,7 @@ import retrofit2.Response;
 import romanow.abc.core.UniException;
 import romanow.abc.core.Utils;
 import romanow.abc.core.constants.ValuesBase;
+import romanow.abc.ess2.android.MainActivity;
 import romanow.abc.ess2.android.service.BaseActivity;
 
 public abstract class APICall2<T> {

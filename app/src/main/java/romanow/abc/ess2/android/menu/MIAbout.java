@@ -18,11 +18,9 @@ public class MIAbout extends MenuItem {
         main.addMenuList(new MenuItemAction("О программе") {
             @Override
             public void onSelect() {
-                String title ="Мобильный клиент \"Опоры России\", версия "+ AppData.apkVersion+"\n";
-                title+="анализатора  спектра частот  конструкций  башенного типа «ЛЭПтон»\n";
-                title+="ООО \"Институт электроэнергетики НГТУ\",\n";
-                title+="Встроенное ПО MVKA21, версия1.0\n";
-                title+="Контакты: rodenko@mail.ru\n";
+                String title ="Мобильный клиент \"СМУ СНЭЭ\", версия "+ AppData.apkVersion+"\n";
+                title+="Разработчик: НГТУ\n";
+                title+="Контакты: romanov@corp.nstu.ru\n";
                 title+=calcOwnMD5();
                 main.addToLog(title,16);
             }
@@ -32,7 +30,7 @@ public class MIAbout extends MenuItem {
     private String calcOwnMD5(){
         try {
             final PackageManager pm = main.getPackageManager();
-            PackageInfo info = pm.getPackageInfo("me.romanow.lep500",PackageManager.GET_META_DATA);
+            PackageInfo info = pm.getPackageInfo("romanow.abc.ess2.android",PackageManager.GET_META_DATA);
             File ff = new File(info.applicationInfo.sourceDir);
             long apkSize = ff.length();
             InputStream is = new FileInputStream(ff);

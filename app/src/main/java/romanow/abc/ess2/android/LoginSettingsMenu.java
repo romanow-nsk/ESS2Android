@@ -97,8 +97,7 @@ public class LoginSettingsMenu extends SettingsMenuBase {
                                 final LoginSettings set = ctx.loginSettings();
                                 set.setUserId(user.getOid());
                                 set.setSessionToken(user.getSessionToken());
-                                ctx.popup(false,"Вошли");
-                                //base.getArchitectureData().refreshArchtectureState();
+                                base.getArchitectureData().refreshArchtectureState();
                                 /*---------------------------- Регистрация на сервере не нужна -----------------
                                 String serverSim = user.getSimCardICC();
                                 String regCode = base.createRegistrationCode();
@@ -148,7 +147,6 @@ public class LoginSettingsMenu extends SettingsMenuBase {
                             @Override
                             public void onSuccess(Object val) {
                                 base.sessionOff();
-                                AppData.ctx().popup(false,"Вышли");
                                 ctx.cState(AppData.CStateGray);
                                 }
                             });

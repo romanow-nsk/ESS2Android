@@ -1,4 +1,4 @@
-package romanow.abc.ess2.android;
+package romanow.abc.ess2.android.service;
 
 import java.io.UnsupportedEncodingException;
 

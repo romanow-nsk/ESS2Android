@@ -1,4 +1,4 @@
 package romanow.abc.ess2.android.service;
 
-public class Rendering {
+public class ESS2Rendering {
 }

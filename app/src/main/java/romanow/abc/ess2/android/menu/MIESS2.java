@@ -11,7 +11,7 @@ import romanow.abc.ess2.android.service.AppData;
 public class MIESS2 extends MenuItem {
     public MIESS2(MainActivity main0) {
         super(main0);
-        main.addMenuList(new MenuItemAction("СМУ СНЭЭ") {
+        main.addMenuList(new MenuItemAction("Мониторинг СНЭЭ") {
             @Override
             public void onSelect() {
                 main.getArchitectureData().refreshArchtectureState();

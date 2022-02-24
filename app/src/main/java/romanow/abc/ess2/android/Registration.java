@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
+import romanow.abc.ess2.android.service.Base64Coder;
+
 public class Registration {
     public static long stringToLong(String ss){
         long out=0;

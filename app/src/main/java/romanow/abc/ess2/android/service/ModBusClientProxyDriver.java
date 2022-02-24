@@ -1,4 +1,4 @@
-package romanow.abc.ess2.android;
+package romanow.abc.ess2.android.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,10 +8,10 @@ import romanow.abc.core.API.RestAPIBase;
 import romanow.abc.core.API.RestAPIESS2;
 import romanow.abc.core.UniException;
 import romanow.abc.core.drivers.I_ModbusGroupDriver;
-import romanow.abc.core.entity.baseentityes.JBoolean;
-import romanow.abc.core.entity.baseentityes.JEmpty;
 import romanow.abc.core.entity.baseentityes.JInt;
 import romanow.abc.core.entity.metadata.CallResult;
+import romanow.abc.ess2.android.MainActivity;
+import romanow.abc.ess2.android.service.APICall2;
 import romanow.abc.ess2.android.service.AppData;
 import romanow.abc.ess2.android.service.NetBackDefault;
 import romanow.abc.ess2.android.service.NetCall;

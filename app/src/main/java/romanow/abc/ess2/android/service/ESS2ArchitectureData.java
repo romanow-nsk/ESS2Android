@@ -13,13 +13,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import romanow.abc.core.DBRequest;
+import romanow.abc.core.I_ObjectEvent;
+import romanow.abc.core.UniException;
 import romanow.abc.core.Utils;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.constants.ValuesBase;
@@ -41,11 +42,12 @@ import romanow.abc.core.script.Scaner;
 import romanow.abc.core.script.Syntax;
 import romanow.abc.core.utils.Pair;
 import romanow.abc.ess2.android.I_DownLoadString;
+import romanow.abc.ess2.android.I_Event;
+import romanow.abc.ess2.android.I_EventListener;
 import romanow.abc.ess2.android.MainActivity;
-import romanow.abc.ess2.android.ModBusClientProxyDriver;
 import romanow.abc.ess2.android.R;
 
-public class ArchitectureData {
+public class ESS2ArchitectureData {
     public final static int archStateIcons[]={
             R.drawable.settings_gray,
             R.drawable.settings_red,
@@ -74,7 +76,7 @@ public class ArchitectureData {
     private ESS2Architecture deployed=null;
     private ESS2View currentView=null;                  // Текущий вид
     private String debugToken;
-    public ArchitectureData(MainActivity main0){
+    public ESS2ArchitectureData(MainActivity main0){
         base = main0;
         ctx = AppData.ctx();
         deployState = (ImageView) base.findViewById(R.id.headerDeployState);
@@ -122,66 +124,66 @@ public class ArchitectureData {
                     }
                 */
                 loadDeployedArchitecture(oid, state);
-                deployed.setArchitectureState(state);
                 }
             });
         }
     //-------------------------------------------------------------------------------------------------------------------
     private void loadDeployedArchitecture(long oid, int state) {
-        deployed = loadFullArchitecture(oid);
-        deployed.setArchitectureState(state);
-        deployed.testFullArchitecture();
-        ModBusClientProxyDriver driver = new ModBusClientProxyDriver();
-        Object oo[]={base};
-        try {
-            driver.openConnection(oo,null);
-            for (ESS2Equipment equipment : deployed.getEquipments()) {
-                equipment.createFullEquipmentPath();
+        loadFullArchitecture(oid, new I_Event<ESS2Architecture>() {
+            @Override
+            public void onEvent(ESS2Architecture val) {
+                deployed = val;
+                deployed.setArchitectureState(state);
+                deployed.testFullArchitecture();
+                ModBusClientProxyDriver driver = new ModBusClientProxyDriver();
+                Object oo[]={base};
+                try {
+                    driver.openConnection(oo,null);
+                    for (ESS2Equipment equipment : deployed.getEquipments()) {
+                        equipment.createFullEquipmentPath();
+                    }
+                    for(ESS2Device device : deployed.getDevices()){         // НАстроить прокси
+                        device.setDriver(driver);
+                    }
+                } catch (Exception ee){
+                    base.addToLog("Ошибка драйвера БД: "+ee.toString());
                 }
-            for(ESS2Device device : deployed.getDevices()){         // НАстроить прокси
-                device.setDriver(driver);
+                refreshDeployedMetaData();
+                deployed.createStreamRegisterList();
+                deployed.setArchitectureState(state);
+                //refreshSelectedArchitecture();
                 }
-        } catch (Exception ee){
-            base.addToLog("Ошибка драйвера БД: "+ee.toString());
-            }
-        refreshDeployedMetaData();
-        deployed.createStreamRegisterList();
-        //refreshSelectedArchitecture();
+            });
         }
     //-----------------------------------------------------------------------------------------------------------
-    public ESS2Architecture loadFullArchitecture(long oid){
-        ESS2Architecture arch = new ESS2Architecture();
-        try {
-            Response<DBRequest> res = ctx.service.getEntity(debugToken,"ESS2Architecture",oid,4).execute();
-            if (!res.isSuccessful()){
-                if (res.code()== ValuesBase.HTTPAuthorization)
-                    arch.addErrorData("Сеанс закрыт " + Utils.httpError(res));
-                else
-                    arch.addErrorData("Ошибка " + res.message()+" ("+res.code()+") "+res.errorBody().string());
-                return arch;
-            }
-            DBRequest request = res.body();
-            arch = (ESS2Architecture)  request.get(new Gson());
-            Artifact artifact;
-            for(ESS2Equipment equipment : arch.getEquipments()){
-                ESS2MetaFile metaFile = equipment.getMetaFile().getRef();
-                artifact = metaFile.getFile().getRef();
-                Meta2XML xml = loadXMLArtifact(artifact);
-                arch.addErrorData(xml);
-                equipment.setEquipment((Meta2Equipment) xml);
-            }
-            for(ESS2View view : arch.getViews()){
-                ESS2MetaFile metaFile = view.getMetaFile().getRef();
-                artifact = metaFile.getFile().getRef();
-                Meta2XML xml = loadXMLArtifact(artifact);
-                arch.addErrorData(xml);
-                view.setView((Meta2GUIView)xml);
-            }
-            return arch;
-        } catch (Exception ex) {
-            arch.addErrorData(Utils.createFatalMessage(ex));
-            return arch;
-            }
+    public void loadFullArchitecture(long oid, final I_Event<ESS2Architecture> back){
+            new NetCall<DBRequest>().call(base, ctx.service.getEntity(debugToken, "ESS2Architecture", oid, 4), new NetBackDefault() {
+                @Override
+                public void onSuccess(Object val) {
+                    ESS2Architecture arch = new ESS2Architecture();
+                    try {
+                        arch = (ESS2Architecture)  ((DBRequest)val).get(new Gson());
+                        Artifact artifact;
+                        for(ESS2Equipment equipment : arch.getEquipments()){
+                            ESS2MetaFile metaFile = equipment.getMetaFile().getRef();
+                            artifact = metaFile.getFile().getRef();
+                            Meta2XML xml = loadXMLArtifact(artifact);
+                            arch.addErrorData(xml);
+                            equipment.setEquipment((Meta2Equipment) xml);
+                            }
+                        for(ESS2View view : arch.getViews()){
+                            ESS2MetaFile metaFile = view.getMetaFile().getRef();
+                            artifact = metaFile.getFile().getRef();
+                            Meta2XML xml = loadXMLArtifact(artifact);
+                            arch.addErrorData(xml);
+                            view.setView((Meta2GUIView)xml);
+                            }
+                        } catch (Exception ex) {
+                            arch.addErrorData(Utils.createFatalMessage(ex));
+                            }
+                back.onEvent(arch);
+                }
+            });
         }
     //------------------------------------------------------------------------------------------------------------
     public Meta2XML loadXMLArtifact(Artifact art){
