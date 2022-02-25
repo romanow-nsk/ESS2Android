@@ -617,7 +617,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                     new LoginSettingsMenu(MainActivity.this);
                 }
                 });
-            new MIESS2(this);
+            //new MIESS2(this);
             }
         new MIArchive(this);
         new MIArchiveFull(this);

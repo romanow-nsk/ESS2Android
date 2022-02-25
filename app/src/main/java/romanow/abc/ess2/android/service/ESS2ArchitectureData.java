@@ -71,7 +71,9 @@ public class ESS2ArchitectureData {
     private Button formMenuButton;
     private AppData ctx;
     private ESS2Architecture deployed=null;
-    private ESS2View currentView=null;                  // Текущий вид
+    private ESS2View currentView=null;          // Текущий вид
+    private int loadCount=0;                    // Счетчик загрузок XML-файлов
+    private ESS2Architecture arch=null;         // Используется при загрузке
     public ESS2ArchitectureData(MainActivity main0){
         base = main0;
         ctx = AppData.ctx();
@@ -82,6 +84,7 @@ public class ESS2ArchitectureData {
         connectStateText = (TextView) base.findViewById(R.id.headerConnectStateText);
         renderStateText = (TextView) base.findViewById(R.id.headerRenderStateText);
         formMenuButton = (Button) base.findViewById(R.id.headerRenderMenu);
+        renderState.setVisibility(View.INVISIBLE);
         renderState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,6 +97,7 @@ public class ESS2ArchitectureData {
         if (ctx.cState()!=AppData.CStateGreen){
             deployState.setImageResource(archStateIcons[0]);
             connectState.setImageResource(connStateIcons[0]);
+            renderState.setVisibility(View.INVISIBLE);
             return;
             }
         new NetCall<Pair<Integer,Long>>().call(base,ctx.getService2().getArchitectureState(ctx.loginSettings().getSessionToken()), new NetBackDefault(){
@@ -124,14 +128,15 @@ public class ESS2ArchitectureData {
             });
         }
     //----------------------------------------------------------------------------------------------
-    public void onArchitectureLoaded(ESS2Architecture val) {
-        boolean hasErrors = val.getErrors().getErrCount()!=0;
+    public void onArchitectureLoaded() {
+        boolean hasErrors = arch.getErrors().getErrCount()!=0;
         if (hasErrors){
-            base.errorMes(val.getErrors().toString());
+            base.errorMes(arch.getErrors().toString());
             return;
             }
-        base.addToLog(val.getErrors().toString());
-        deployed = val;
+        renderState.setVisibility(View.VISIBLE);
+        base.addToLog(arch.getErrors().toString());
+        deployed = arch;
         deployed.testFullArchitecture();
         ModBusClientAndroidDriver driver = new ModBusClientAndroidDriver();
         Object oo[]={base};
@@ -151,17 +156,27 @@ public class ESS2ArchitectureData {
         //refreshSelectedArchitecture();
         }
     //-------------------------------------------------------------------------------------------------------------------
-    private int loadCount=0;
+    private void testXMlFileLoading(){
+        if (loadCount<=0){          // Исключение было
+            onArchitectureLoaded();
+            return;
+            }
+        loadCount--;
+        base.addToLog("Осталось загрузить "+loadCount+" XML-файлов");
+        if (loadCount!=0)
+            return;
+        onArchitectureLoaded();
+    }
     private void loadDeployedArchitecture(final long oid, final int state) {
         try {
             new NetCall<DBRequest>().call(base, ctx.getService().getEntity(ctx.loginSettings().getSessionToken(), "ESS2Architecture", oid, 4), new NetBackDefault() {
                 @Override
                 public void onSuccess(Object val){
                     try {
-                        final ESS2Architecture arch = (ESS2Architecture) ((DBRequest) val).get(new Gson());
+                        arch = (ESS2Architecture) ((DBRequest) val).get(new Gson());
                         arch.setArchitectureState(state);
                         Artifact artifact;
-                        loadCount = arch.getEquipments().size()+arch.getViews().size();
+                        loadCount = arch.getEquipments().size()+arch.getViews().size()+getPrecompiledScriptCount();
                         for (ESS2Equipment equipment : arch.getEquipments()) {
                             ESS2MetaFile metaFile = equipment.getMetaFile().getRef();
                             artifact = metaFile.getFile().getRef();
@@ -170,14 +185,12 @@ public class ESS2ArchitectureData {
                                 public void onSuccess(Meta2XML xml) {
                                     arch.addErrorData(xml);
                                     equipment.setEquipment((Meta2Equipment) xml);
-                                    loadCount--;
-                                    if (loadCount==0)
-                                        onArchitectureLoaded(arch);
+                                    testXMlFileLoading();
                                     }
                                 @Override
                                 public void onError(String mes) {
                                     base.errorMes(mes);
-                                    loadCount--;
+                                    testXMlFileLoading();
                                     }
                                 });
                             }
@@ -189,21 +202,20 @@ public class ESS2ArchitectureData {
                                 public void onSuccess(Meta2XML xml) {
                                     arch.addErrorData(xml);
                                     view.setView((Meta2GUIView) xml);
-                                    loadCount--;
-                                    if (loadCount==0)
-                                        onArchitectureLoaded(arch);
+                                    testXMlFileLoading();
                                     }
                                 @Override
                                 public void onError(String mes) {
                                     base.errorMes(mes);
-                                    loadCount--;
+                                    testXMlFileLoading();
                                     }
                                 });
                             }
+                        preCompileLocalScripts();
                     } catch (Exception ex) {
-                        ESS2Architecture arch1 = new ESS2Architecture();
-                        arch1.addErrorData(Utils.createFatalMessage(ex));
-                        onArchitectureLoaded(arch1);
+                        arch.addErrorData(Utils.createFatalMessage(ex));
+                        loadCount=0;
+                        testXMlFileLoading();
                         }
                    }
                 });
@@ -245,6 +257,7 @@ public class ESS2ArchitectureData {
         deployStateText.setText("Архитектура не выбрана");
         deployState.setImageResource(archStateIcons[0]);
         connectState.setImageResource(connStateIcons[0]);
+        renderState.setVisibility(View.INVISIBLE);
         deployed = null;
         //main2.currentView = null;
         }
@@ -268,7 +281,6 @@ public class ESS2ArchitectureData {
             }
         renderState.setImageResource(R.drawable.connect_on);
         //main.sendEvent(EventPLMOn,0);
-        preCompileLocalScripts();
         }
     private void OnOffActionPerformed() {//GEN-FIRST:event_OnOffActionPerformed
         if (currentView!=null){
@@ -281,23 +293,36 @@ public class ESS2ArchitectureData {
             }
         }
     //------------------------------------------------------------------------------------------------------------------------
+    private int getPrecompiledScriptCount(){
+        int cnt=0;
+        for(ESS2ScriptFile scriptFile : arch.getScripts()){
+            if (!scriptFile.isServerScript() && scriptFile.isPreCompiled() && scriptFile.getScriptType()==Values.STCalcClient)
+                cnt++;
+            }
+        return cnt;
+        }
     private void preCompileLocalScripts(){
-        for(ESS2ScriptFile scriptFile : deployed.getScripts()){
+        for(ESS2ScriptFile scriptFile : arch.getScripts()){
             if (!scriptFile.isServerScript() && scriptFile.isPreCompiled() && scriptFile.getScriptType()==Values.STCalcClient){
                 loadFileAsString(scriptFile.getFile().getRef(), new I_DownLoadString() {
                     @Override
                     public void onSuccess(String ss) {
                         Syntax SS = compileScriptLocal(scriptFile, ss);
                         boolean res = SS.getErrorList().size()==0;
-                        if (res)
+                        if (res){
                             scriptFile.setScriptCode(new CallContext(SS, deployed));
+                            base.addToLog("Скрипт " + scriptFile.getShortName() + " " + scriptFile.getTitle() +" скомпилировался");
+                            }
+                        else
+                            base.errorMes("Скрипт " + scriptFile.getShortName() + " " + scriptFile.getTitle() + " не скомпилировался");
                         scriptFile.setValid(res);
-                        base.errorMes("Скрипт " + scriptFile.getShortName() + " " + scriptFile.getTitle() + (res ? "" : " не")+" скомпилировался");
+                        testXMlFileLoading();
                         }
                     @Override
                     public void onError(String mes) {
                         base.errorMes("Скрипт " + scriptFile.getShortName() + " " + scriptFile.getTitle() + " не загрузился");
                         base.errorMes(mes);
+                        testXMlFileLoading();
                         }
                     });
                 }
@@ -426,7 +451,8 @@ public class ESS2ArchitectureData {
         Syntax SS = new Syntax(lex) {
             @Override
             public void createFunctionMap() {
-                createFunctionMap(Values.constMap().getGroupList("ScriptFun"));
+                createFunctionMap(Values.constMap().getGroupList("ScriptFunStd"));
+                createFunctionMap(false,Values.constMap().getGroupList("ScriptFunGUI"));
                 }
             };
         FunctionCode ff = SS.compile();
