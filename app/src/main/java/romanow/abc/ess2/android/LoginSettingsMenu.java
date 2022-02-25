@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import romanow.abc.core.API.RestAPIESS2;
@@ -14,6 +15,8 @@ import romanow.abc.core.DBRequest;
 import romanow.abc.core.UniException;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.entity.baseentityes.JEmpty;
+import romanow.abc.core.entity.subjectarea.AccessManager;
+import romanow.abc.core.entity.subjectarea.WorkSettings;
 import romanow.abc.core.entity.users.Account;
 import romanow.abc.core.entity.users.User;
 import romanow.abc.ess2.android.service.AppData;
@@ -97,7 +100,18 @@ public class LoginSettingsMenu extends SettingsMenuBase {
                                 final LoginSettings set = ctx.loginSettings();
                                 set.setUserId(user.getOid());
                                 set.setSessionToken(user.getSessionToken());
-                                base.getArchitectureData().refreshArchtectureState();
+                                base.getArchitectureData().refreshArchtectureState(new AccessManager(user));
+                                new NetCall<DBRequest>().call(base,ctx.getService().workSettings(ctx.loginSettings().getSessionToken()), new NetBackDefault() {
+                                    @Override
+                                    public void onSuccess(Object val) {
+                                        try {
+                                            ctx.workSettings((WorkSettings)((DBRequest)val).get(new Gson()));
+                                            ctx.setRegisteredOnServer(true);
+                                            } catch (UniException e) {
+                                                base.errorMes("Загрузка параметров сервера:\n"+e.toString());
+                                                }
+                                            }
+                                        });
                                 /*---------------------------- Регистрация на сервере не нужна -----------------
                                 String serverSim = user.getSimCardICC();
                                 String regCode = base.createRegistrationCode();
@@ -137,12 +151,12 @@ public class LoginSettingsMenu extends SettingsMenuBase {
                                         }
                                     }
                                     */
-                               ctx.setRegisteredOnServer(true);
                                }
                             });
                         pp.cancel();
                         }
                     else{
+                        base.getArchitectureData().clearDeployedMetaData();
                         new NetCall<JEmpty>().call(base,ctx.getService().logoff(ctx.loginSettings().getSessionToken()), new NetBackDefault(){
                             @Override
                             public void onSuccess(Object val) {

@@ -45,6 +45,4 @@ dependencies {
     implementation group: 'javax.mail', name: 'javax.mail-api', version: '1.6.1'
     // https://mvnrepository.com/artifact/org.apache.poi/poi
     // implementation group: 'org.apache.poi', name: 'poi', version: '3.17'
-
-
-}
+    }

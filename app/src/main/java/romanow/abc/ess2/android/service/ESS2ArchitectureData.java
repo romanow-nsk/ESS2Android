@@ -32,6 +32,7 @@ import romanow.abc.core.entity.subject2area.ESS2Equipment;
 import romanow.abc.core.entity.subject2area.ESS2MetaFile;
 import romanow.abc.core.entity.subject2area.ESS2ScriptFile;
 import romanow.abc.core.entity.subject2area.ESS2View;
+import romanow.abc.core.entity.subjectarea.AccessManager;
 import romanow.abc.core.script.CallContext;
 import romanow.abc.core.script.CompileError;
 import romanow.abc.core.script.FunctionCode;
@@ -66,22 +67,24 @@ public class ESS2ArchitectureData {
     private ImageView connectState;
     private ImageView renderState;
     private TextView deployStateText;
-    private TextView connectStateText;
     private TextView renderStateText;
     private Button formMenuButton;
     private AppData ctx;
-    private ESS2Architecture deployed=null;
-    private ESS2View currentView=null;          // Текущий вид
-    private int loadCount=0;                    // Счетчик загрузок XML-файлов
-    private ESS2Architecture arch=null;         // Используется при загрузке
+    ESS2Architecture deployed=null;         // Развернутая архитектура
+    ESS2View currentView=null;              // Текущий вид
+    AccessManager manager;
+    private int loadCount=0;                // Счетчик загрузок XML-файлов
+    private ESS2Architecture arch=null;     // Используется при загрузке
+    private ESS2Rendering rendering=null;
+    public MainActivity main(){ return base; }
     public ESS2ArchitectureData(MainActivity main0){
+        rendering = new ESS2Rendering(this);
         base = main0;
         ctx = AppData.ctx();
         deployState = (ImageView) base.findViewById(R.id.headerDeployState);
         connectState = (ImageView) base.findViewById(R.id.headerConnectState);
         renderState = (ImageView) base.findViewById(R.id.headerRenderState);
         deployStateText = (TextView) base.findViewById(R.id.headerDeployStateText);
-        connectStateText = (TextView) base.findViewById(R.id.headerConnectStateText);
         renderStateText = (TextView) base.findViewById(R.id.headerRenderStateText);
         formMenuButton = (Button) base.findViewById(R.id.headerRenderMenu);
         renderState.setVisibility(View.INVISIBLE);
@@ -93,7 +96,8 @@ public class ESS2ArchitectureData {
             });
         }
     //------------------------------------------------------------------------------------------------
-    public void refreshArchtectureState(){
+    public void refreshArchtectureState(AccessManager manager0){
+        manager = manager0;
         if (ctx.cState()!=AppData.CStateGreen){
             deployState.setImageResource(archStateIcons[0]);
             connectState.setImageResource(connStateIcons[0]);
@@ -253,8 +257,9 @@ public class ESS2ArchitectureData {
         setRenderingOff();
         }
     //---------------------------------------------------------------------------------------------------------------------------
-    private void clearDeployedMetaData(){
-        deployStateText.setText("Архитектура не выбрана");
+    public void clearDeployedMetaData(){
+        setRenderingOff();
+        deployStateText.setText("");
         deployState.setImageResource(archStateIcons[0]);
         connectState.setImageResource(connStateIcons[0]);
         renderState.setVisibility(View.INVISIBLE);
