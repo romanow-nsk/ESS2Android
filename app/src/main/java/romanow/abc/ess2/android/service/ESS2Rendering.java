@@ -347,7 +347,7 @@ public class ESS2Rendering {
             int  access = context.getManager().getCurrentAccessLevel();
             String ss = "  "+context.getManager().getUser().getTitle()+" ["+Values.title("AccessLevel",access)+"] ";
             userTitle.setText(ss);
-            View2BaseDesktop.setBounds(userTitle,context.x(50),context.y(610), context.x(400),context.y(25));
+            View2BaseDesktop.setBounds(userTitle,context.x(20),context.y(500), context.x(400),context.y(25));
             userTitle.setClickable(false);
             //userTitle.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
             formPanel.addView(userTitle);
@@ -384,6 +384,7 @@ public class ESS2Rendering {
             main2.main().errorMes(""+errorList.getErrCount()+ " ошибок рендеринга");
             main2.main().errorMes(errorList.toString());
             }
+        formDialog.show();
         wokeUp();
         }
     //------------------------------------------------------------------------------------------------------------------------

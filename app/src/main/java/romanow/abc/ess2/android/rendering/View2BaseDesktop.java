@@ -4,8 +4,11 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import romanow.abc.ess2.android.service.AppData;
+
 public abstract class View2BaseDesktop extends View2Base implements I_View2Desktop {
         public static void setBounds(View view, int xx, int yy, int dx, int dy){
+            //AppData.ctx().popupAndLog(false,""+xx+" "+yy+" "+dx+" "+dy);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(dx,dy);
             params.setMargins(xx, yy, -1, -1);
             params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
@@ -31,12 +34,12 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
                 label.setText("  "+text);
             //else
             //    UtilsDesktop.setLabelText(label,text,size);
-            label.setTextColor(context.getView().getTextColor());
+            label.setTextColor(context.getView().getTextColor() | 0xFF000000);
             if (element.getColor()==0 || element.isCommonColor()){
-                label.setBackgroundColor(context.getView().getLabelBackColor());
+                label.setBackgroundColor(context.getView().getLabelBackColor()  | 0xFF000000);
                 }
             else{
-                label.setBackgroundColor(element.getColor());
+                label.setBackgroundColor(element.getColor() | 0xFF000000);
                 }
             int fontSize = element.getFontSize();
             if (fontSize==0) fontSize=12;

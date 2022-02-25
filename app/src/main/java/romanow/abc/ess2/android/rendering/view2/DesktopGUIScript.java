@@ -42,9 +42,9 @@ public class DesktopGUIScript extends View2BaseDesktop {
         textField.setClickable(false);
         //textField.setHorizontalAlignment(JTextField.CENTER);
         panel.addView(textField);
-        textField.setBackgroundColor(element.getColor());
+        textField.setBackgroundColor(element.getColor() | 0xFF000000);
         //textField.setBorder(BorderFactory.createLineBorder(textColor,1));
-        textField.setTextColor(context.getView().getTextColor());
+        textField.setTextColor(context.getView().getTextColor() | 0xFF000000);
         setInfoClick(textField);
         }
     public void showInfoMessage() {

@@ -41,8 +41,8 @@ public class DesktopGUIData extends View2BaseDesktop {
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
         //textField.setHorizontalAlignment(JTextField.CENTER);
         panel.addView(textField);
-        textField.setBackgroundColor(element.getColor());
-        int textColor = context.getView().getTextColor();
+        textField.setBackgroundColor(element.getColor() | 0xFF000000);
+        int textColor = context.getView().getTextColor() | 0xFF000000;
         textField.setTextColor(textColor);
         setInfoClick(textField);
     }

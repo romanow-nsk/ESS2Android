@@ -56,41 +56,30 @@ public class ModBusClientAndroidDriver implements I_ModbusGroupDriver {
     public boolean isReady() {
         return ready;
     }
-    private Thread thread;
+    private volatile boolean busy;
     @Override
     public int readRegister(final String devName,final int unit, final int regNum) throws UniException {
         final Result result = new Result();
         if (!ready)
             throw UniException.user("Устройство не готово");
-        thread = new Thread(new Runnable() {
+        new NetCall<JInt>().call(base, service2.readESS2RegisterValue(token, devName, unit, regNum), new NetBack() {
             @Override
-            public void run() {
-                new NetCall<JInt>().call(base, AppData.ctx().getService2().readESS2RegisterValue(token, devName, unit, regNum), new NetBack() {
-                    @Override
-                    public void onError(int code, String mes) {
-                        result.mes = mes;
-                        result.value = code;
-                        thread.notify();
-                        }
-                    @Override
-                    public void onError(UniException ee) {
-                        result.ee = ee;
-                        thread.notify();
-                        }
-                    @Override
-                    public void onSuccess(Object val) {
-                        result.value = ((JInt)val).getValue();
-                        thread.notify();
-                        }
-                    });
+            public void onError(int code, String mes) {
+                result.mes = mes;
+                result.value = code;
+                busy=false;
+                }
+            @Override
+                public void onError(UniException ee) {
+                result.ee = ee;
+                busy=false;
+                }
+            @Override
+                public void onSuccess(Object val) {
+                result.value = ((JInt)val).getValue();
+                busy=false;
                 }
             });
-        thread.start();
-        try {
-            synchronized (thread){
-                thread.wait();
-                }
-            } catch (InterruptedException e) {}
         if (result.ee!=null)
             throw result.ee;
         if (result.mes!=null)
@@ -102,34 +91,29 @@ public class ModBusClientAndroidDriver implements I_ModbusGroupDriver {
         final Result result = new Result();
         if (!ready)
             throw UniException.user("Устройство не готово");
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                new NetCall<JEmpty>().call(base, AppData.ctx().getService2().writeESS2RegisterValue(token, devName, unit, regNum,value), new NetBack() {
-                    @Override
-                    public void onError(int code, String mes) {
-                        result.mes = mes;
-                        result.value = code;
-                        thread.notify();
-                        }
-                    @Override
-                    public void onError(UniException ee) {
-                        result.ee = ee;
-                        thread.notify();
-                        }
-                    @Override
-                    public void onSuccess(Object val) {
-                       thread.notify();
-                       }
-                    });
-                }
-            });
-        thread.start();
-        try {
-            synchronized (thread){
-                thread.wait();
-                }
-            } catch (InterruptedException e) {}
+        busy = true;
+        new NetCall<JEmpty>().call(base, AppData.ctx().getService2().writeESS2RegisterValue(token, devName, unit, regNum,value), new NetBack() {
+             @Override
+             public void onError(int code, String mes) {
+                 result.mes = mes;
+                 result.value = code;
+                 busy=false;
+                 }
+             @Override
+             public void onError(UniException ee) {
+                 result.ee = ee;
+                 busy=false;
+                 }
+             @Override
+                 public void onSuccess(Object val) {
+                 busy=false;
+                 }
+             });
+        while (busy) {
+            try {
+                Thread.sleep(10);
+                } catch (InterruptedException e) {}
+            }
         if (result.ee!=null)
             throw result.ee;
         if (result.mes!=null)
