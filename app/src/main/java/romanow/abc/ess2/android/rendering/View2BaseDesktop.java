@@ -19,7 +19,7 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
             //    text += " "+(groupIndex+1);
             int hh = element.getH();
             if (hh==0) hh=25;
-            TextView label = new TextView(null);
+            TextView label = new TextView(context.getMain().main());
             setBounds(
                     label,
                     context.x(element.getX()+dxOffset),

@@ -35,4 +35,5 @@
     <color name="graph_back">#ffa0c0c0</color>
     <color name="form_button">#ff88c6ed</color>
     <color name="form_text">#ff035073</color>
+    <color name="form_back">#fff0f0f0</color>
 </resources>

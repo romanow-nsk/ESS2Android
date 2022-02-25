@@ -619,16 +619,13 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 });
             //new MIESS2(this);
             }
-        new MIArchive(this);
-        new MIArchiveFull(this);
-        new MIFullScreen(this);
-        new MIGroupCreate(this);
-        new MIGroupDestroy(this);
         menuList.add(new MenuItemAction("Очистить ленту") {
             @Override
             public void onSelect() {
                 log.removeAllViews();
-            }
+                String title = "СНЭЭ 2.0";
+                addToLog(false, title, 22, 0);
+                }
             });
         if (!ctx.loginSettings().isTechnicianMode())
             new MIDeleteFromArchive(this);
@@ -637,7 +634,12 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             public void onSelect() {
                 new SettingsMenu(MainActivity.this);
             }
-        });
+            });
+        new MIArchive(this);
+        new MIArchiveFull(this);
+        new MIFullScreen(this);
+        new MIGroupCreate(this);
+        new MIGroupDestroy(this);
         if (ctx.cState()== AppData.CStateGreen && isAllEnabled()){
             new MIUpLoad(MainActivity.this);
             }

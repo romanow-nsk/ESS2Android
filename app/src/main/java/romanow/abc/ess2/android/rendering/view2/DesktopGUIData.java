@@ -26,7 +26,7 @@ public class DesktopGUIData extends View2BaseDesktop {
         setLabel(panel);
         Meta2GUIData element2 = (Meta2GUIData)element;
         Meta2DataRegister register = (Meta2DataRegister)  getRegister();
-        textField = new TextView(null);
+        textField = new TextView(context.getMain().main());
         int dd=element2.getW2();
         if (dd==0) dd=100;
         int hh = element.getH();

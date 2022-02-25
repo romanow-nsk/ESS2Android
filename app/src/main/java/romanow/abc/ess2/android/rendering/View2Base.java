@@ -70,9 +70,7 @@ public abstract class View2Base implements I_View2 {
         textField.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (context.isInfoMode() ){
-                    showInfoMessage();
-                    }
+                showInfoMessage();
                 return true;
                 }
             });
@@ -88,7 +86,7 @@ public abstract class View2Base implements I_View2 {
             errorList.addError("Недопустимое имя класса "+name);
             return null;
         }
-        name = "romanow.abc.ess2.android.rendering.view2.desktop"+name.substring(5);
+        name = "romanow.abc.ess2.android.rendering.view2.Desktop"+name.substring(5);
         try {
             Class  cls = Class.forName(name);
             View2Base element = (View2Base)cls.newInstance();
@@ -132,5 +130,44 @@ public abstract class View2Base implements I_View2 {
     public void writeRegister(Meta2RegLink link,int vv, int regOffset) throws UniException {
         device.getDriver().writeRegister(device.getShortName(),devUnit,link.getRegNum()+regOffset,vv);
         }
-
+    public void setDxOffset(int dxOffset) {
+        this.dxOffset = dxOffset; }
+    public void setDyOffset(int dyOffset) {
+        this.dyOffset = dyOffset; }
+    public void setGroupLevel(int groupLevel) {
+        this.groupLevel = groupLevel; }
+    public void setGroupIndexes(int[] groupIndexes) {
+        this.groupIndexes = groupIndexes; }
+    public void setDevice(ESS2Device device) {
+        this.device = device; }
+    public void setDevUnit(int devUnit) {
+        this.devUnit = devUnit; }
+    public void setUnitIdx(int unitIdx) {
+        this.unitIdx = unitIdx; }
+    public int getUnitIdx() {
+        return unitIdx; }
+    public void setRegOffset(int regOffset) {
+        this.regOffset = regOffset; }
+    public int[] getGroupIndexes() {
+        return groupIndexes; }
+    public Meta2GUI getElement() {
+        return element; }
+    public ESS2Architecture getArchitecture() {
+        return architecture; }
+    public I_GUI2Event getOnEvent() {
+        return onEvent; }
+    public ESS2Device getDevice() {
+        return device; }
+    public int getDevUnit() {
+        return devUnit; }
+    public int getRegOffset() {
+        return regOffset; }
+    public int getDxOffset() {
+        return dxOffset; }
+    public int getDyOffset() {
+        return dyOffset; }
+    public int getGroupLevel() {
+        return groupLevel; }
+    public FormContext2 getContext() {
+        return context; }
 }

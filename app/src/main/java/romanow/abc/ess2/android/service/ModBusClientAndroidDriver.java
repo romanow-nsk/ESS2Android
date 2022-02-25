@@ -8,15 +8,22 @@ import romanow.abc.core.API.RestAPIBase;
 import romanow.abc.core.API.RestAPIESS2;
 import romanow.abc.core.UniException;
 import romanow.abc.core.drivers.I_ModbusGroupDriver;
+import romanow.abc.core.entity.baseentityes.JEmpty;
 import romanow.abc.core.entity.baseentityes.JInt;
 import romanow.abc.core.entity.metadata.CallResult;
 import romanow.abc.ess2.android.MainActivity;
+import romanow.abc.ess2.android.rendering.I_Value;
 import romanow.abc.ess2.android.service.APICall2;
 import romanow.abc.ess2.android.service.AppData;
 import romanow.abc.ess2.android.service.NetBackDefault;
 import romanow.abc.ess2.android.service.NetCall;
 
 public class ModBusClientAndroidDriver implements I_ModbusGroupDriver {
+    class Result{
+        UniException ee=null;
+        String mes = null;
+        int value=0;
+        }
     private RestAPIBase service;
     private RestAPIESS2 service2;
     private boolean ready=false;
@@ -32,33 +39,14 @@ public class ModBusClientAndroidDriver implements I_ModbusGroupDriver {
         service2 = ctx.getService2();
         token = ctx.loginSettings().getSessionToken();
         base = (MainActivity) needed[0];
+        ready = true;
         try {
             } catch (Exception ee){
                 throw UniException.bug("Недопустимый класс драйвера "+needed[ii].getClass().getSimpleName());
                 }
-        /*
-        String id = paramList.get("id");
-        if (id==null){
-            oid=0;          // Нет id - использование текущего состояния соединения сервер-ПЛК
-            new NetCall<JBoolean>().call(base, service2.isPLMReady(token), new NetBackDefault() {
-                @Override
-                public void onSuccess(Object val) {
-                    ready = ((JBoolean)val).value();
-                    }
-                });
-            }
-        ready=true;
-        */
         }
     @Override
-    public void closeConnection() throws UniException{
-        new NetCall<CallResult>().call(base, service2.disconnectFromEquipment(token), new NetBackDefault() {
-            @Override
-            public void onSuccess(Object val) {
-                ready = false;
-                }
-            });
-        }
+    public void closeConnection() throws UniException{}
 
     @Override
     public void reopenConnection() {
@@ -68,28 +56,84 @@ public class ModBusClientAndroidDriver implements I_ModbusGroupDriver {
     public boolean isReady() {
         return ready;
     }
+    private Thread thread;
     @Override
-    public int readRegister(String devName,int unit, int regNum) throws UniException {
+    public int readRegister(final String devName,final int unit, final int regNum) throws UniException {
+        final Result result = new Result();
         if (!ready)
             throw UniException.user("Устройство не готово");
-            JInt xx = new APICall2<JInt>(){
+        thread = new Thread(new Runnable() {
             @Override
-            public Call apiFun() {
-                return service2.readESS2RegisterValue(token,devName,unit,regNum);
+            public void run() {
+                new NetCall<JInt>().call(base, AppData.ctx().getService2().readESS2RegisterValue(token, devName, unit, regNum), new NetBack() {
+                    @Override
+                    public void onError(int code, String mes) {
+                        result.mes = mes;
+                        result.value = code;
+                        thread.notify();
+                        }
+                    @Override
+                    public void onError(UniException ee) {
+                        result.ee = ee;
+                        thread.notify();
+                        }
+                    @Override
+                    public void onSuccess(Object val) {
+                        result.value = ((JInt)val).getValue();
+                        thread.notify();
+                        }
+                    });
                 }
-            }.call(base);
-        return xx.getValue();
+            });
+        thread.start();
+        try {
+            synchronized (thread){
+                thread.wait();
+                }
+            } catch (InterruptedException e) {}
+        if (result.ee!=null)
+            throw result.ee;
+        if (result.mes!=null)
+            throw UniException.io(""+result.value+": "+result.mes);
+        return result.value;
         }
     @Override
-    public void writeRegister(String devName,int unit, int regNum, int value) throws UniException {
+    public void writeRegister(final String devName,final int unit, final int regNum, final int value) throws UniException {
+        final Result result = new Result();
         if (!ready)
             throw UniException.user("Устройство не готово");
-        JInt xx = new APICall2<JInt>(){
+        thread = new Thread(new Runnable() {
             @Override
-            public Call apiFun() {
-                return service2.writeESS2RegisterValue(token, devName, unit, regNum, value);
+            public void run() {
+                new NetCall<JEmpty>().call(base, AppData.ctx().getService2().writeESS2RegisterValue(token, devName, unit, regNum,value), new NetBack() {
+                    @Override
+                    public void onError(int code, String mes) {
+                        result.mes = mes;
+                        result.value = code;
+                        thread.notify();
+                        }
+                    @Override
+                    public void onError(UniException ee) {
+                        result.ee = ee;
+                        thread.notify();
+                        }
+                    @Override
+                    public void onSuccess(Object val) {
+                       thread.notify();
+                       }
+                    });
                 }
-            }.call(base);
+            });
+        thread.start();
+        try {
+            synchronized (thread){
+                thread.wait();
+                }
+            } catch (InterruptedException e) {}
+        if (result.ee!=null)
+            throw result.ee;
+        if (result.mes!=null)
+            throw UniException.io(""+result.value+": "+result.mes);
         }
     @Override
     public ArrayList<Integer> readRegisters(String devName, int unit, int regNum, int size) throws UniException {

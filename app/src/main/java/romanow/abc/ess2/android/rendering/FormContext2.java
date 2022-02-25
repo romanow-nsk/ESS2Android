@@ -14,8 +14,6 @@ public abstract class FormContext2 {
     private String platformName="";
     private boolean valid=false;
     private ScreenMode screen = new ScreenMode();   // Данные экрана (панели)
-    private boolean infoMode = false;               // Индикатор тежима Info
-    private boolean runtimeEditMode = false;        // Индикатор режима редактирования на лету
     private boolean localUser = false;              // Индикатор локального пользователя
     private boolean superUser = false;              // Индикатор суперпользователя
     private Meta2GUIForm form = null;               // Текущая форма
@@ -106,14 +104,6 @@ public abstract class FormContext2 {
         return screen; }
     public void setScreen(ScreenMode screen) {
         this.screen = screen; }
-    public boolean isInfoMode() {
-        return infoMode; }
-    public void setInfoMode(boolean infoMode) {
-        this.infoMode = infoMode; }
-    public boolean isRuntimeEditMode() {
-        return runtimeEditMode; }
-    public void setRuntimeEditMode(boolean runtimeEditMode) {
-        this.runtimeEditMode = runtimeEditMode; }
     public boolean isLocalUser() {
         return localUser; }
     public void setLocalUser(boolean localUser) {
@@ -154,4 +144,5 @@ public abstract class FormContext2 {
         return menuFormStack; }
     public void setMenuFormStack(String[] menuFormStack) {
         this.menuFormStack = menuFormStack; }
+
 }

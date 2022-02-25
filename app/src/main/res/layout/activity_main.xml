@@ -46,13 +46,13 @@
             android:layout_height="50dp"
             android:clickable="true"
             android:longClickable="true"
-            android:text="Меню экранов полное"
+            android:text=""
             android:layout_alignTop="@id/headerDeployState"
             android:layout_toRightOf="@id/headerRenderState"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:textAlignment="center"
-            android:textSize="10dp"
+            android:textSize="15dp"
             />
         <ImageView
             android:id="@+id/headerMenu"

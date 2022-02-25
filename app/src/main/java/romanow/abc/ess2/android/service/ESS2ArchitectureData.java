@@ -77,6 +77,7 @@ public class ESS2ArchitectureData {
     private ESS2Architecture arch=null;     // Используется при загрузке
     private ESS2Rendering rendering=null;
     public MainActivity main(){ return base; }
+    public Button formMenuButton(){ return formMenuButton; }
     public ESS2ArchitectureData(MainActivity main0){
         rendering = new ESS2Rendering(this);
         base = main0;
@@ -88,10 +89,23 @@ public class ESS2ArchitectureData {
         renderStateText = (TextView) base.findViewById(R.id.headerRenderStateText);
         formMenuButton = (Button) base.findViewById(R.id.headerRenderMenu);
         renderState.setVisibility(View.INVISIBLE);
+        formMenuButton.setVisibility(View.INVISIBLE);
         renderState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OnOffActionPerformed();
+                }
+            });
+        formMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rendering.createChildFormList();
+                }
+            });
+        formMenuButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return false;
                 }
             });
         }
@@ -145,7 +159,7 @@ public class ESS2ArchitectureData {
         ModBusClientAndroidDriver driver = new ModBusClientAndroidDriver();
         Object oo[]={base};
         try {
-            //driver.openConnection(oo,null);
+            driver.openConnection(oo,null);
             for (ESS2Equipment equipment : deployed.getEquipments()) {
                 equipment.createFullEquipmentPath();
                 }
@@ -270,8 +284,9 @@ public class ESS2ArchitectureData {
     public void setRenderingOff(){
         currentView=null;
         renderState.setImageResource(R.drawable.connect_off);
-        //main.sendEvent(EventPLMOff,0);
-         }
+        formMenuButton.setVisibility(View.INVISIBLE);
+        rendering.renderOff();
+        }
     public void setRenderingOn() {
         currentView = null;
         for(ESS2View view : deployed.getViews()){
@@ -285,7 +300,8 @@ public class ESS2ArchitectureData {
             return;
             }
         renderState.setImageResource(R.drawable.connect_on);
-        //main.sendEvent(EventPLMOn,0);
+        formMenuButton.setVisibility(View.VISIBLE);
+        rendering.renderOn();
         }
     private void OnOffActionPerformed() {//GEN-FIRST:event_OnOffActionPerformed
         if (currentView!=null){
@@ -315,7 +331,7 @@ public class ESS2ArchitectureData {
                         Syntax SS = compileScriptLocal(scriptFile, ss);
                         boolean res = SS.getErrorList().size()==0;
                         if (res){
-                            scriptFile.setScriptCode(new CallContext(SS, deployed));
+                            scriptFile.setScriptCode(new CallContext(SS, arch));
                             base.addToLog("Скрипт " + scriptFile.getShortName() + " " + scriptFile.getTitle() +" скомпилировался");
                             }
                         else
