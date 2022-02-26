@@ -13,7 +13,7 @@ public class OKDialog {
     private Activity base;
     I_EventListener lsn;
 
-    private LinearLayout createItem(String name, I_EventListener lsn0){
+    private LinearLayout createItem(final String name, I_EventListener lsn0){
         lsn = lsn0;
         LinearLayout xx=(LinearLayout)base.getLayoutInflater().inflate(R.layout.ok_item, null);
         xx.setPadding(5, 5, 5, 5);
@@ -22,7 +22,7 @@ public class OKDialog {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lsn.onEvent("1");
+                lsn.onEvent(name);
                 myDlg.cancel();
                 }
             });
@@ -39,7 +39,7 @@ public class OKDialog {
             myDlg.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
-                    lsn.onEvent("1");
+                    lsn.onEvent(null);
                     myDlg.cancel();
                     }
                 });
