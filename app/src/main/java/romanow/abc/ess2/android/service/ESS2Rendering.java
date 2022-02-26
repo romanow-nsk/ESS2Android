@@ -39,11 +39,14 @@ import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.rendering.I_GUI2Event;
 import romanow.abc.ess2.android.rendering.I_Module;
 import romanow.abc.ess2.android.rendering.Module;
+import romanow.abc.ess2.android.rendering.ScreenMode;
 import romanow.abc.ess2.android.rendering.View2Base;
 import romanow.abc.ess2.android.rendering.View2BaseDesktop;
 import romanow.abc.ess2.android.rendering.view2.I_Button;
 
 public class ESS2Rendering {
+    public final static int FrameH=530;
+    public final static int FrameW=400;
     private ESS2ArchitectureData main2;
     private I_Button logoutCallBack = null;                     // CallBack кнопки выхода
     private OwnDateTime userLoginTime = new OwnDateTime();
@@ -52,28 +55,25 @@ public class ESS2Rendering {
     private final static String mainFormName="Главный";
     private Module module=null;
     private ArrayList<View2Base> guiList = new ArrayList<>();
-    private AlertDialog formDialog = null;
-    RelativeLayout formPanel=null;
+    private RelativeLayout formPanel=null;
+    private LinearLayout formView=null;
     //------------------------------------------------------------------------------------------------------------------
     public void openFormDialog(){
-        if (formDialog!=null){
-            formDialog.cancel();
+        if (formView!=null){
+            main2.main().getLogLayout().removeView(formView);
+            formView = null;
+            formPanel = null;
             }
-        formDialog=new AlertDialog.Builder(main2.main()).create();
-        formDialog.setCancelable(false);
-        formDialog.setTitle(null);
-        LinearLayout lrr=(LinearLayout)main2.main().getLayoutInflater().inflate(R.layout.form_frame, null);
-        formPanel = (RelativeLayout) lrr.findViewById(R.id.form_frame_panel);
+        formView =(LinearLayout)main2.main().getLayoutInflater().inflate(R.layout.form_frame, null);
+        formPanel = (RelativeLayout) formView.findViewById(R.id.form_frame_panel);
         formPanel.setPadding(5, 5, 5, 5);
-        TextView hd=(TextView)lrr.findViewById(R.id.form_frame_header);
-        hd.setText(context.getForm().getTitle());
-        hd.setOnClickListener(new View.OnClickListener(){
-            public void onClick(final View arg0) {
-                formDialog.cancel();
-                createChildFormList();
-                }});
-        formDialog.setView(lrr);
-        formDialog.show();
+        formPanel.setBackgroundColor(main2.currentView.getView().getBackColor()|0xFF000000);
+        LinearLayout layout = main2.main().getLogLayout();
+        layout.addView(formView);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)formPanel.getLayoutParams();
+        context.setScreen(new ScreenMode(params.height,params.width));      // pdMode координат
+        //main2.main().addToLog(""+params.width+" "+params.height);
+        main2.main().scrollDown();
         }
     public void openUpperForm(){
         String parent = context.getBaseForm().getParentName();
@@ -163,14 +163,11 @@ public class ESS2Rendering {
         createLoopThread();
         repaintView();
         }
-    public void renderOff(){
-        main2.formMenuButton().setVisibility(View.INVISIBLE);
+    public void renderOff(){            // Вызывается из ESS2ArchitectureData
         setRenderingOnOff(false);
         context.setForm(null);
-        if (formDialog!=null){
-            formDialog.cancel();
-            formDialog=null;
-            }
+        main2.main().getLogLayout().removeView(formView);
+        main2.main().scrollDown();
         }
     //------------------------------ Цикл рендеринга ------------------------------------------------------
     private Thread guiLoop = null;
@@ -179,7 +176,7 @@ public class ESS2Rendering {
     private boolean renderingOn=false;
     private void setRenderingOnOff(boolean vv){
         renderingOn = vv;
-    }
+        }
     //private boolean repaintValuesOn=false;                           // Обновление данных
     //private boolean repaintBusy=false;                               // Обновление формы
     public synchronized void shutDown() {
@@ -196,11 +193,11 @@ public class ESS2Rendering {
                     long tt =  new OwnDateTime().timeInMS();
                     try {
                         Thread.sleep(((WorkSettings) AppData.ctx().workSettings()).getGUIrefreshPeriod() * 1000);
-                    } catch (InterruptedException e) {
-                        System.out.println("Разбудили: " + (new OwnDateTime().timeInMS()-tt));
-                    }
+                        } catch (InterruptedException e) {
+                            System.out.println("Разбудили: " + (new OwnDateTime().timeInMS()-tt));
+                            }
                     if (shutDown){
-                        renderOff();
+                        main2.setRenderingOff();
                         return;
                         }
                     long sec = (new OwnDateTime().timeInMS() - userLoginTime.timeInMS()) / 1000;
@@ -242,17 +239,21 @@ public class ESS2Rendering {
             childs.add(next);
             names.add(next.getTitle().replace("_",""));
             }
+        names.add("Выход");
         new ListBoxDialog(main2.main(), names, null, new I_ListBoxListener() {
             @Override
             public void onSelect(int index) {
-                context.openForm(names.get(index),true);
+                if (index!=names.size()-1)
+                    context.openForm(names.get(index),true);
+                else
+                    main2.setRenderingOff();
                 }
             @Override
             public void onLongSelect(int index) {
                 }
             @Override
             public void onCancel() {}
-            });
+            }).create();
         }
     //------------------------------------------------------------------------------------------------------------------------
     public synchronized void  repaintView() {
@@ -347,7 +348,7 @@ public class ESS2Rendering {
             int  access = context.getManager().getCurrentAccessLevel();
             String ss = "  "+context.getManager().getUser().getTitle()+" ["+Values.title("AccessLevel",access)+"] ";
             userTitle.setText(ss);
-            View2BaseDesktop.setBounds(userTitle,context.x(20),context.y(500), context.x(400),context.y(25));
+            View2BaseDesktop.setBounds(userTitle,context.x(20),context.y(FrameH-50), context.x(400),context.y(50));
             userTitle.setClickable(false);
             //userTitle.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
             formPanel.addView(userTitle);
@@ -384,7 +385,7 @@ public class ESS2Rendering {
             main2.main().errorMes(""+errorList.getErrCount()+ " ошибок рендеринга");
             main2.main().errorMes(errorList.toString());
             }
-        formDialog.show();
+        //formDialog.show();
         wokeUp();
         }
     //------------------------------------------------------------------------------------------------------------------------
@@ -443,7 +444,11 @@ public class ESS2Rendering {
             View2Base newElem = View2Base.createGUIElement(errorList,context.getPlatformName(),meta);
             if (newElem==null)
                 return;
-            newElem.setParams(context,main2.deployed,meta,retryPaintValues);
+            String ss = newElem.setParams(context,main2.deployed,meta,retryPaintValues);
+            if (ss!=null){
+                errorList.addError(ss);
+                return;
+                }
             newElem.setDxOffset(baseX);
             newElem.setDyOffset(baseY);
             newElem.setGroupLevel(groupLevel);

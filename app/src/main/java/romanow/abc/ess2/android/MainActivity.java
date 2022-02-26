@@ -121,6 +121,8 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     }
     public ESS2ArchitectureData getArchitectureData() {
         return architectureData; }
+    public LinearLayout getLogLayout() {
+        return log; }
     //------------------------------------------------------------------------------------------------------
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -627,14 +629,15 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 addToLog(false, title, 22, 0);
                 }
             });
-        if (!ctx.loginSettings().isTechnicianMode())
-            new MIDeleteFromArchive(this);
         menuList.add(new MenuItemAction("Настройки") {
             @Override
             public void onSelect() {
                 new SettingsMenu(MainActivity.this);
             }
             });
+        /*
+        if (!ctx.loginSettings().isTechnicianMode())
+            new MIDeleteFromArchive(this);
         new MIArchive(this);
         new MIArchiveFull(this);
         new MIFullScreen(this);
@@ -653,6 +656,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             new MIFileProcess(this, true);
             }
         new MIExportAndSendMail(this);
+         */
         new MIAbout(this);
         if (!ctx.loginSettings().isTechnicianMode()) {
             menuList.add(new MenuItemAction("Регистрация") {

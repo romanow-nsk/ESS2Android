@@ -1,5 +1,6 @@
 package romanow.abc.ess2.android.rendering.view2;
 
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,20 +29,22 @@ public class DesktopGUIData extends View2BaseDesktop {
         Meta2DataRegister register = (Meta2DataRegister)  getRegister();
         textField = new TextView(context.getMain().main());
         int dd=element2.getW2();
-        if (dd==0) dd=100;
+        if (dd==0) dd=DefaultW2;
         int hh = element.getH();
-        if (hh==0) hh=25;
+        if (hh==0) hh=DefaultH;
         setBounds(textField,
-                context.x(element.getX()+dxOffset+element.getDx()+5),
+                context.x(element.getX()+dxOffset+element.getDx()+DefaultSpace),
                 context.y(element.getY()+dyOffset),
                 context.x(dd),
                 context.y(hh));
-        textField.setTextSize(context.y(12));
+        int textSize = element2.getFontSize();
+        if (textSize==0) textSize = DefaultTextSize;
+        textField.setTextSize(textSize);
         textField.setClickable(false);
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
-        //textField.setHorizontalAlignment(JTextField.CENTER);
+        textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         panel.addView(textField);
-        textField.setBackgroundColor(element.getColor() | 0xFF000000);
+        textField.setBackgroundColor(getBackColor());
         int textColor = context.getView().getTextColor() | 0xFF000000;
         textField.setTextColor(textColor);
         setInfoClick(textField);

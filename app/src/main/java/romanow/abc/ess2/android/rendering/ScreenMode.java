@@ -1,28 +1,28 @@
 package romanow.abc.ess2.android.rendering;
 
+import romanow.abc.ess2.android.service.ESS2Rendering;
+
 public class ScreenMode {
-    public final static int PanelH=700;     // Базовая высота панели без полноэкранного режима
-    public final boolean fullScreen;        // Режим полного экрана
+    public final boolean pixelMode;
     public final int ScreenW;               // Размер экрана по высоте (720)
     public final int ScreenH;               // Размер экрана по высоте (720)
     public final String mode;
     public ScreenMode(){
-        mode="panel";
-        fullScreen=false;
-        ScreenW=960;
-        ScreenH=720;
+        mode="pixelMode";
+        pixelMode=true;
+        ScreenW=0;
+        ScreenH=0;
         }
-    public ScreenMode(String mode0,int screenH,int screenW){
-        mode=mode0;
-        fullScreen=true;
+    public ScreenMode(int screenH,int screenW){
+        mode="dpMode";
+        pixelMode=false;
         ScreenH=screenH;
         ScreenW=screenW;
         }
     public int y(int y){
-        return !fullScreen ? y : y *ScreenH / PanelH;
+        return pixelMode ? y : y * ScreenH / ESS2Rendering.FrameH;
         }
     public int x(int x){
-        //return !fullScreen ? x : x *ScreenH / PanelH;
-        return !fullScreen ? x : x * ScreenW * 3 / 4 / PanelH;
+        return pixelMode ? x : x * ScreenW / ESS2Rendering.FrameW;
         }
 }

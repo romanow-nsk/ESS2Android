@@ -7,6 +7,10 @@ import android.widget.TextView;
 import romanow.abc.ess2.android.service.AppData;
 
 public abstract class View2BaseDesktop extends View2Base implements I_View2Desktop {
+        public final static int DefaultTextSize=14;
+        public final static int DefaultH=20;
+        public final static int DefaultSpace=5;
+        public final static int DefaultW2=50;
         public static void setBounds(View view, int xx, int yy, int dx, int dy){
             //AppData.ctx().popupAndLog(false,""+xx+" "+yy+" "+dx+" "+dy);
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(dx,dy);
@@ -21,7 +25,7 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
             //if (getType()== Values.GUILabel && inGroup)               // НЕ ООП !!!!!!!!!!!!!!!!!!!
             //    text += " "+(groupIndex+1);
             int hh = element.getH();
-            if (hh==0) hh=25;
+            if (hh==0) hh=DefaultH;
             TextView label = new TextView(context.getMain().main());
             setBounds(
                     label,
@@ -35,17 +39,28 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
             //else
             //    UtilsDesktop.setLabelText(label,text,size);
             label.setTextColor(context.getView().getTextColor() | 0xFF000000);
-            if (element.getColor()==0 || element.isCommonColor()){
-                label.setBackgroundColor(context.getView().getLabelBackColor()  | 0xFF000000);
-                }
-            else{
-                label.setBackgroundColor(element.getColor() | 0xFF000000);
-                }
+            label.setBackgroundColor(getBackColor());
             int fontSize = element.getFontSize();
-            if (fontSize==0) fontSize=12;
-            label.setTextSize(context.y(fontSize));
+            if (fontSize==0) fontSize=DefaultTextSize;
+            label.setTextSize(fontSize);
+            setLongClickInfo(label);
             panel.addView(label);
             return label;
+            }
+        public void setLongClickInfo(View view){
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    showInfoMessage();
+                    return false;
+                    }
+                });
+            }
+        public int getBackColor(){
+            if (element.getColor()==0 || element.isCommonColor())
+                return context.getView().getLabelBackColor()  | 0xFF000000;
+            else
+                return element.getColor() | 0xFF000000;
             }
         }
 

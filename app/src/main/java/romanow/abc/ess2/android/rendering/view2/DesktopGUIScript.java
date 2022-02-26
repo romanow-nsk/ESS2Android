@@ -1,5 +1,6 @@
 package romanow.abc.ess2.android.rendering.view2;
 
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,19 +31,22 @@ public class DesktopGUIScript extends View2BaseDesktop {
         element = (Meta2GUIScript)  getElement();
         textField = new TextView(context.getMain().main());
         int dd=element.getW2();
-        if (dd==0) dd=100;
+        if (dd==0) dd=DefaultW2;
         int hh = element.getH();
-        if (hh==0) hh=25;
+        if (hh==0) hh=DefaultH;
         setBounds(textField,
-                context.x(element.getX()+getDxOffset()+element.getDx()+5),
+                context.x(element.getX()+getDxOffset()+element.getDx()+DefaultSpace),
                 context.y(element.getY()+getDyOffset()),
                 context.x(dd),
                 context.y(hh));
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
+        int textSize = element.getFontSize();
+        if (textSize==0) textSize = DefaultTextSize;
+        textField.setTextSize(textSize);
         textField.setClickable(false);
-        //textField.setHorizontalAlignment(JTextField.CENTER);
+        textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         panel.addView(textField);
-        textField.setBackgroundColor(element.getColor() | 0xFF000000);
+        textField.setBackgroundColor(getBackColor());
         //textField.setBorder(BorderFactory.createLineBorder(textColor,1));
         textField.setTextColor(context.getView().getTextColor() | 0xFF000000);
         setInfoClick(textField);
@@ -64,11 +68,11 @@ public class DesktopGUIScript extends View2BaseDesktop {
             call.call(false);
             TypeFace result = scriptFile.getScriptCode().getVariables().get(Values.ScriptResultVariable);
             if (result==null)
-                context.getMain().main().popupAndLog("Ошибка исполнения скрипта\nОтстутствует результат");
+                context.getMain().main().errorMes("Ошибка исполнения скрипта\nОтстутствует результат");
             else
                 textField.setText(result.valueToString());
         } catch (ScriptException e) {
-            context.getMain().main().popupAndLog("Ошибка исполнения скрипта\n"+e.toString());
+            context.getMain().main().errorMes("Ошибка исполнения скрипта\n"+e.toString());
             }
         }
     @Override

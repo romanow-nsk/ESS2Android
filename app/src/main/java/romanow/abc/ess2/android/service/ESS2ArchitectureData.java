@@ -483,4 +483,7 @@ public class ESS2ArchitectureData {
             base.errorMes(error.toString());
         return SS;
         }
+    //---------------------------------------------------------------------------------------------------------------------------
+    public ImageView getRenderState() {
+        return renderState; }
 }
