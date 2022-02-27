@@ -13,8 +13,7 @@ public class OKDialog {
     private Activity base;
     I_EventListener lsn;
 
-    private LinearLayout createItem(final String name, I_EventListener lsn0){
-        lsn = lsn0;
+    private LinearLayout createItem(final String name){
         LinearLayout xx=(LinearLayout)base.getLayoutInflater().inflate(R.layout.ok_item, null);
         xx.setPadding(5, 5, 5, 5);
         TextView img=(TextView)xx.findViewById(R.id.ok_button);
@@ -31,6 +30,7 @@ public class OKDialog {
         }
 
     public OKDialog(Activity base0, String parName, final I_EventListener listener){
+        lsn = listener;
         base = base0;
         try {
             myDlg=new AlertDialog.Builder(base).create();
@@ -43,12 +43,7 @@ public class OKDialog {
                     myDlg.cancel();
                     }
                 });
-            LinearLayout layout = createItem(parName,new I_EventListener(){
-                @Override
-                public void onEvent(String ss) {
-                    lsn.onEvent(ss);
-                    myDlg.cancel();
-                    }});
+            LinearLayout layout = createItem(parName);
             myDlg.setView(layout);
             myDlg.show();
         } catch(Exception ee){

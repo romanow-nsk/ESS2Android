@@ -29,7 +29,8 @@ public class DesktopGUIScript extends View2BaseDesktop {
         setLabel(panel);
         FormContext2 context= getContext();
         element = (Meta2GUIScript)  getElement();
-        textField = new TextView(context.getMain().main());
+        int textColor = context.getView().getTextColor() | 0xFF000000;
+        textField = new BorderedTextView(context.getMain().main(),textColor);
         int dd=element.getW2();
         if (dd==0) dd=DefaultW2;
         int hh = element.getH();
@@ -48,7 +49,7 @@ public class DesktopGUIScript extends View2BaseDesktop {
         panel.addView(textField);
         textField.setBackgroundColor(getBackColor());
         //textField.setBorder(BorderFactory.createLineBorder(textColor,1));
-        textField.setTextColor(context.getView().getTextColor() | 0xFF000000);
+        textField.setTextColor(textColor);
         setInfoClick(textField);
         }
     public void showInfoMessage() {

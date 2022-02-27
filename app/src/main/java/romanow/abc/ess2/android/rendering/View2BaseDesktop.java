@@ -39,6 +39,7 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
             //else
             //    UtilsDesktop.setLabelText(label,text,size);
             label.setTextColor(context.getView().getTextColor() | 0xFF000000);
+            label.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
             label.setBackgroundColor(getBackColor());
             int fontSize = element.getFontSize();
             if (fontSize==0) fontSize=DefaultTextSize;

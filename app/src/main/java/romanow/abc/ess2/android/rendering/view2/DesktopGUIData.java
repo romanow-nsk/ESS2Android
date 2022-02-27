@@ -27,7 +27,8 @@ public class DesktopGUIData extends View2BaseDesktop {
         setLabel(panel);
         Meta2GUIData element2 = (Meta2GUIData)element;
         Meta2DataRegister register = (Meta2DataRegister)  getRegister();
-        textField = new TextView(context.getMain().main());
+        int textColor = context.getView().getTextColor() | 0xFF000000;
+        textField = new BorderedTextView(context.getMain().main(),textColor);
         int dd=element2.getW2();
         if (dd==0) dd=DefaultW2;
         int hh = element.getH();
@@ -45,7 +46,6 @@ public class DesktopGUIData extends View2BaseDesktop {
         textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         panel.addView(textField);
         textField.setBackgroundColor(getBackColor());
-        int textColor = context.getView().getTextColor() | 0xFF000000;
         textField.setTextColor(textColor);
         setInfoClick(textField);
     }

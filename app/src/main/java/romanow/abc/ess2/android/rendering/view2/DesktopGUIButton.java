@@ -2,6 +2,7 @@ package romanow.abc.ess2.android.rendering.view2;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import romanow.abc.core.entity.metadata.view.Meta2GUIButton;
 import romanow.abc.core.entity.subject2area.ESS2Architecture;
 import romanow.abc.ess2.android.I_EventListener;
 import romanow.abc.ess2.android.OKDialog;
+import romanow.abc.ess2.android.R;
 import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.rendering.I_GUI2Event;
 import romanow.abc.ess2.android.rendering.View2BaseDesktop;
@@ -25,6 +27,8 @@ public class DesktopGUIButton extends View2BaseDesktop {
         }
     @Override
     public void addToPanel(RelativeLayout panel) {
+        //LinearLayout button = (LinearLayout) context.getMain().main().getLayoutInflater().inflate(R.layout.form_button, null);
+        //textField = (Button) button.findViewById(R.id.form_button);
         textField = new Button(context.getMain().main());
         FormContext2 context = getContext();
         Meta2GUIButton element = (Meta2GUIButton) getElement();
@@ -38,11 +42,14 @@ public class DesktopGUIButton extends View2BaseDesktop {
         textField.setText(element.getTitle());
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
         textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        int textSize = element.getFontSize();
+        if (textSize==0) textSize = DefaultTextSize;
+        textField.setTextSize(textSize);
         Meta2CommandRegister register = (Meta2CommandRegister)getRegister();
         final Meta2Command cmd = register.getCommands().getByCode(element.getCmdCode());
         final boolean remoteDisable = !context.isSuperUser() &&  !context.isLocalUser() && !cmd.isRemoteEnable();
         int color = remoteDisable || !context.isActionEnable() ? Values.AccessDisableColor : getBackColor();
-        textField.setBackgroundColor(color);
+        textField.setBackgroundColor(color | 0xFF000000);
         setInfoClick(textField);
         textField.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +65,7 @@ public class DesktopGUIButton extends View2BaseDesktop {
                 new OKDialog(context.getMain().main(), cmd.getTitle(), new I_EventListener() {
                 @Override
                 public void onEvent(String zz) {
+                    if (zz==null) return;
                     try {
                         writeMainRegister(cmd.getCode());
                         } catch (UniException ex) {

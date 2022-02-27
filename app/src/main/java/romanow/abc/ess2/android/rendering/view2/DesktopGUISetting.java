@@ -1,6 +1,8 @@
 package romanow.abc.ess2.android.rendering.view2;
 
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -11,6 +13,7 @@ import romanow.abc.core.entity.metadata.Meta2SettingRegister;
 import romanow.abc.core.entity.metadata.view.Meta2GUI;
 import romanow.abc.core.entity.metadata.view.Meta2GUISetting;
 import romanow.abc.core.entity.subject2area.ESS2Architecture;
+import romanow.abc.ess2.android.R;
 import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.rendering.I_GUI2Event;
 import romanow.abc.ess2.android.rendering.View2BaseDesktop;
@@ -29,7 +32,10 @@ public class DesktopGUISetting extends View2BaseDesktop {
         Meta2SettingRegister register = (Meta2SettingRegister) getRegister();
         int w2=element.getW2();
         if (w2==0) w2=100;
-        textField = new TextView(context.getMain().main());
+        int textColor = context.getView().getTextColor() | 0xFF000000;
+        textField = new BorderedTextView(context.getMain().main(),textColor);
+        //LinearLayout button = (LinearLayout) context.getMain().main().getLayoutInflater().inflate(R.layout.form_button, null);
+        //textField = (Button) button.findViewById(R.id.form_button);
         int hh = element.getH();
         if (hh==0) hh=25;
         setBounds(textField,
@@ -47,9 +53,7 @@ public class DesktopGUISetting extends View2BaseDesktop {
         setInfoClick(textField);
         final boolean remoteDisable = !context.isSuperUser() &&  !context.isLocalUser() && !(register).isRemoteEnable();
         int color=remoteDisable || !context.isActionEnable() ? Values.AccessDisableColor : getBackColor();
-        textField.setBackgroundColor(color);
-        int textColor = context.getView().getTextColor();
-        //textField.setBorder(javax.swing.BorderFactory.createLineBorder(textColor,1));
+        textField.setBackgroundColor(color | 0xFF000000);
         textField.setTextColor(textColor);
         setLongClickInfo(textField);
         textField.setOnClickListener(new View.OnClickListener() {
