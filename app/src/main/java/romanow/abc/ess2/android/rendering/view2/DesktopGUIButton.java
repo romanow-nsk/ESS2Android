@@ -19,6 +19,7 @@ import romanow.abc.ess2.android.R;
 import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.rendering.I_GUI2Event;
 import romanow.abc.ess2.android.rendering.View2BaseDesktop;
+import romanow.abc.ess2.android.service.NetBack;
 
 public class DesktopGUIButton extends View2BaseDesktop {
     private Button textField;
@@ -59,19 +60,14 @@ public class DesktopGUIButton extends View2BaseDesktop {
                 return;
                 }
             if  (!context.isActionEnable()) {
-                context.getMain().main().popupAndLog("Недостаточен уровень доступа");
-                return;
-                }
+                    context.getMain().main().popupAndLog("Недостаточен уровень доступа");
+                    return;
+                    }
                 new OKDialog(context.getMain().main(), cmd.getTitle(), new I_EventListener() {
-                @Override
-                public void onEvent(String zz) {
-                    if (zz==null) return;
-                    try {
+                    @Override
+                    public void onEvent(String zz) {
+                        if (zz==null) return;
                         writeMainRegister(cmd.getCode());
-                        } catch (UniException ex) {
-                            String ss = "Ошибка записи команды: " + ex.toString();
-                            context.getMain().main().popupAndLog(ss);
-                            }
                         }
                     });
                 }

@@ -5,12 +5,16 @@ import android.view.View;
 import romanow.abc.core.ErrorList;
 import romanow.abc.core.UniException;
 import romanow.abc.core.constants.Values;
+import romanow.abc.core.entity.baseentityes.JInt;
 import romanow.abc.core.entity.metadata.Meta2RegLink;
 import romanow.abc.core.entity.metadata.Meta2Register;
 import romanow.abc.core.entity.metadata.view.Meta2GUI;
 import romanow.abc.core.entity.metadata.view.Meta2GUIReg;
 import romanow.abc.core.entity.subject2area.ESS2Architecture;
 import romanow.abc.core.entity.subject2area.ESS2Device;
+import romanow.abc.ess2.android.NetBackProxy;
+import romanow.abc.ess2.android.service.I_ModbusGroupAsyncDriver;
+import romanow.abc.ess2.android.service.NetBack;
 
 public abstract class View2Base implements I_View2 {
     protected int type= Values.GUINull;
@@ -102,33 +106,78 @@ public abstract class View2Base implements I_View2 {
             return null;
         return (Meta2Register) ((Meta2GUIReg) element).getRegLink().getRegister();
     }
-    public int readMainRegister() throws UniException {
+    public void readMainRegister(NetBack back) throws UniException {
         if (!(element instanceof Meta2GUIReg))
             throw UniException.config(element.getFullTitle()+" на является регистром");
         Meta2RegLink link = (Meta2RegLink)((Meta2GUIReg) element).getRegLink();
-        int vv = device.getDriver().readRegister(device.getShortName(),devUnit,link.getRegNum()+regOffset);
-        return vv;
-    }
-    public void writeMainRegister(int vv) throws UniException {
-        if (!(element instanceof Meta2GUIReg))
-            throw UniException.config(element.getFullTitle()+" на является регистром");
-        Meta2RegLink link = (Meta2RegLink)((Meta2GUIReg) element).getRegLink();
-        int regNumFull = link.getRegNum()+regOffset;
-        device.getDriver().writeRegister(device.getShortName(),devUnit,regNumFull,vv & 0x0FFFF);
-        if (link.getRegister().doubleSize())
-            device.getDriver().writeRegister(device.getShortName(),devUnit,regNumFull+1,vv>>16 & 0x0FFFF);
-    }
-    public int readRegister(Meta2RegLink link, int regOffset) throws UniException {
-        int regNumFull = link.getRegNum()+regOffset;
-        int vv = device.getDriver().readRegister(device.getShortName(),devUnit,regNumFull) & 0x0FFFF;
-        if (link.getRegister().doubleSize()){
-            int vv2 = device.getDriver().readRegister(device.getShortName(),devUnit,regNumFull+1) & 0x0FFFF;
-            vv |=vv2<<16;
+        readRegister(link,regOffset,back);
         }
-        return vv;
+    public void readRegister(Meta2RegLink link, int regOffset, final NetBack back) {
+        final int regNumFull = link.getRegNum()+regOffset;
+        final I_ModbusGroupAsyncDriver driver = (I_ModbusGroupAsyncDriver) device.getDriver();
+        if (!link.getRegister().doubleSize())
+            driver.readRegister(device.getShortName(), devUnit, regNumFull, back);
+        else {
+            driver.readRegister(device.getShortName(), devUnit, regNumFull, new NetBackProxy(back) {
+                @Override
+                public void onSuccess(Object val) {
+                    final int vv = ((JInt)val).getValue();
+                    driver.readRegister(device.getShortName(), devUnit, regNumFull, new NetBackProxy(back) {
+                        @Override
+                        public void onSuccess(Object val) {
+                            final int vv2 = ((JInt)val).getValue();
+                            JInt res = new JInt();
+                            back.onSuccess(vv & 0x0FFFF | vv2<<16);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    public void writeMainRegister(int value){
+        writeMainRegister(value,new NetBack(){
+            @Override
+            public void onError(int code, String mes) {
+                String ss = "Ошибка записи  Modbus: " + code + " "+mes;
+                context.getMain().main().popupAndLog(ss);
+            }
+            @Override
+            public void onError(UniException ee) {
+                String ss = "Ошибка записи Modbus: " + ee.toString();
+                context.getMain().main().popupAndLog(ss);
+            }
+            @Override
+            public void onSuccess(Object val) {}
+            });
+        }
+    //----------------------------------------------------------------------------------------------------------------------
+    public void writeMainRegister(int vv, NetBack back){
+        if (!(element instanceof Meta2GUIReg)){
+            back.onError(UniException.config(element.getFullTitle()+" на является регистром"));
+            return;
+        }
+        Meta2RegLink link = (Meta2RegLink)((Meta2GUIReg) element).getRegLink();
+        writeRegister(link,regOffset,vv,back);
     }
-    public void writeRegister(Meta2RegLink link,int vv, int regOffset) throws UniException {
-        device.getDriver().writeRegister(device.getShortName(),devUnit,link.getRegNum()+regOffset,vv);
+    public void writeRegister(Meta2RegLink link, int regOffset, final int value, final NetBack back) {
+        final int regNumFull = link.getRegNum()+regOffset;
+        final I_ModbusGroupAsyncDriver driver = (I_ModbusGroupAsyncDriver) device.getDriver();
+        if (!link.getRegister().doubleSize())
+            driver.writeRegister(device.getShortName(), devUnit, regNumFull, value, back);
+        else{
+            driver.writeRegister(device.getShortName(), devUnit, regNumFull, value, new NetBackProxy(back) {
+                @Override
+                public void onSuccess(Object val) {
+                    final int vv = ((JInt)val).getValue();
+                    driver.writeRegister(device.getShortName(), devUnit, regNumFull, value >> 16, new NetBackProxy(back) {
+                        @Override
+                        public void onSuccess(Object val) {
+                            back.onSuccess(null);
+                            }
+                        });
+                    }
+                });
+            }
         }
     public void setDxOffset(int dxOffset) {
         this.dxOffset = dxOffset; }

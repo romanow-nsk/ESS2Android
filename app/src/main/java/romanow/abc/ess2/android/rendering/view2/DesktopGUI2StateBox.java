@@ -112,14 +112,8 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
                     @Override
                     public void onEvent(String zz) {
                         if (zz==null) return;
-                        try {
-                            int vv = lastValue ^ (1<<bitNum);       // Инвертировать разряд
-                            writeMainRegister(vv);
-                        } catch (UniException ex) {
-                            String ss = "Ошибка изменения разряда: "+ex.toString();
-                            context.getMain().main().popupAndLog(ss);
-                            System.out.println(ss);
-                            }
+                        int vv = lastValue ^ (1<<bitNum);       // Инвертировать разряд
+                        writeMainRegister(vv);
                         }
                     });
                 }
