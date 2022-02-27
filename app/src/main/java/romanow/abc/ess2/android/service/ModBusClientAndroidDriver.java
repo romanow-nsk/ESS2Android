@@ -73,7 +73,15 @@ public class ModBusClientAndroidDriver implements I_ModbusGroupAsyncDriver {
     private volatile boolean busy;
     @Override
     public int readRegister(final String devName,final int unit, final int regNum) throws UniException {
-        throw UniException.bug("Функция readRegister(int unit, int regNum) не поддерживанися в API");
+        if (!ready)
+            throw UniException.user("Устройство не готово");
+        JInt xx = new APICall2<JInt>(){
+            @Override
+            public Call apiFun() {
+                return service2.readESS2RegisterValue(token,devName,unit,regNum);
+                }
+            }.call(base);
+        return xx.getValue();
         /*
         final Result result = new Result();
         if (!ready)
@@ -105,7 +113,14 @@ public class ModBusClientAndroidDriver implements I_ModbusGroupAsyncDriver {
         }
     @Override
     public void writeRegister(final String devName,final int unit, final int regNum, final int value) throws UniException {
-        throw UniException.bug("Функция writeRegister(int unit, int regNum, int value) не поддерживанися в API");
+        if (!ready)
+            throw UniException.user("Устройство не готово");
+        new APICall2<JEmpty>(){
+            @Override
+            public Call apiFun() {
+                return service2.writeESS2RegisterValue(token,devName,unit,regNum,value);
+                }
+            }.call(base);
         /*
         final Result result = new Result();
         if (!ready)

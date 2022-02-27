@@ -58,17 +58,12 @@ public abstract class BaseActivity extends AppCompatActivity implements I_Notify
     public abstract void addToLogHide(String ss);
     public abstract void addToLog(boolean fullInfoMes, final String ss, final int textSize, final int textColor);
     public abstract void popupAndLog(String ss);
+    public abstract void errorMes(String ss);
     public void addToLog(String ss){
         addToLog(ss,0);
         }
     protected ListBoxDialog menuDialog=null;
     private FileDescriptionList defferedList = null;    // Описатели файлов (список) для deffered
-    public void errorMes(int emoCode,String text){
-        addToLog(false,(emoCode==0 ? "" : (new String(Character.toChars(emoCode)))+" ")+text,14,0x00FF0000);
-        }
-    public void errorMes(String text){
-        errorMes(EmoErr,text);
-        }
     //--------------------------------------------------------------------------
     public BufferedReader openReader(String fname) throws IOException {
         FileInputStream fis = new FileInputStream(ctx.androidFileDirectory()+"/"+fname);
@@ -111,7 +106,7 @@ public abstract class BaseActivity extends AppCompatActivity implements I_Notify
             boolean error = intent.getBooleanExtra("error",false);
             if (toLog){
                 if (error)
-                    addToLog(false,mes,14,0x00FF0000);
+                    errorMes(mes);
                 else
                     addToLog(mes);
                 }

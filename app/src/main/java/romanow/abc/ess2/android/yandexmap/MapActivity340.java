@@ -178,6 +178,10 @@ public class MapActivity340 extends BaseActivity {
         }
 
     @Override
+    public void errorMes(String ss) {
+        AppData.ctx().errorMes(ss);
+        }
+    @Override
     public void notify(String s) {
 
     }

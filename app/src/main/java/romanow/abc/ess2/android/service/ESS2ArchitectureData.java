@@ -21,6 +21,7 @@ import retrofit2.Response;
 import romanow.abc.core.DBRequest;
 import romanow.abc.core.Utils;
 import romanow.abc.core.constants.Values;
+import romanow.abc.core.constants.ValuesBase;
 import romanow.abc.core.entity.artifacts.Artifact;
 import romanow.abc.core.entity.metadata.Meta2Equipment;
 import romanow.abc.core.entity.metadata.Meta2GUIView;
@@ -472,8 +473,8 @@ public class ESS2ArchitectureData {
         Syntax SS = new Syntax(lex) {
             @Override
             public void createFunctionMap() {
-                createFunctionMap(Values.constMap().getGroupList("ScriptFunStd"));
-                createFunctionMap(false,Values.constMap().getGroupList("ScriptFunGUI"));
+                createFunctionMap(ValuesBase.StdScriptFunPackage,Values.constMap().getGroupList("ScriptFunStd"));
+                createFunctionMap(false,Values.ESS2ScriptFunAndroid,Values.constMap().getGroupList("ScriptFunGUI"));
                 }
             };
         FunctionCode ff = SS.compile();

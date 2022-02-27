@@ -145,7 +145,6 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         unregisterReceiver(gpsReceiver);
         }
     //----------------------------------------------------------------------------------------------
-    //----------------------------------------------------------------------------------------------
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -346,34 +345,32 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         });
     }
 
-
+    public void errorMes(int emoCode,String text){
+        addToLog(false,(emoCode==0 ? "" : (new String(Character.toChars(emoCode)))+" ")+text,14,0x00FF0000);
+        }
+    public void errorMes(String text){
+        errorMes(EmoErr,text);
+    }
     public void addToLog(String ss) {
         addToLog(false, ss, 0);
-    }
-
+        }
     public void addToLog(boolean fullInfoMes, String ss) {
         addToLog(fullInfoMes, ss, 0);
     }
-
     @Override
     public void addToLog(String ss, int textSize) {
         addToLog(false, ss, textSize);
     }
-
     @Override
     public void addToLogHide(String ss) {
         addToLog(ss);
         }
-
-
     public void addToLog(boolean fullInfoMes, final String ss, final int textSize) {
         addToLog(fullInfoMes, ss, textSize, 0);
-    }
-
+        }
     public void addToLog(boolean fullInfoMes, final String ss, final int textSize, final int textColor) {
         addToLog(fullInfoMes, ss, textSize, textColor, -1);
-    }
-
+        }
     public void addToLog(boolean fullInfoMes, final String ss, final int textSize, final int textColor, final int imgRes) {
         if (fullInfoMes && !ctx.loginSettings().isFullInfo())
             return;

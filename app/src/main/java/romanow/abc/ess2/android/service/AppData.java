@@ -27,6 +27,7 @@ public class AppData extends Application {
     public final static String apkVersion = "2.0.13, 22.02.2022";
     private final static String codeGenPassword="pi31415926";
     public final static String MAPKIT_API_KEY = "fda3e521-bbc6-4c75-9ec7-ccd4fdaa34d3";
+    public final static String ESS2ScriptFunPackage="romanow.abc.ess2.android.script.functions";
     public final static int PopupShortDelay=4;              // Время короткого popup
     public final static int PopupMiddleDelay=7;             // Время длинного popup
     public final static int PopupLongDelay=10;              // Время длинного popup
@@ -256,6 +257,9 @@ public class AppData extends Application {
         }
     public void popup(boolean fatal,String ss){
         sendPopup(fatal ? R.drawable.problem : R.drawable.info,fatal,true,false,ss);
+        }
+    public void errorMes(String ss){
+        sendPopup(R.drawable.problem,true, false,true,ss);
         }
     public void toLog(boolean fatal,String ss){
         sendPopup(fatal ? R.drawable.problem : R.drawable.info,fatal,false,true,ss);

@@ -63,18 +63,28 @@ public class DesktopGUIScript extends View2BaseDesktop {
     public void repaintBefore(){
         if (scriptFile==null || !scriptFile.isValid())
             return;
-        try {
-            CallContext call = scriptFile.getScriptCode();
-            call.reset();
-            call.call(false);
-            TypeFace result = scriptFile.getScriptCode().getVariables().get(Values.ScriptResultVariable);
-            if (result==null)
-                context.getMain().main().errorMes("Ошибка исполнения скрипта\nОтстутствует результат");
-            else
-                textField.setText(result.valueToString());
-        } catch (ScriptException e) {
-            context.getMain().main().errorMes("Ошибка исполнения скрипта\n"+e.toString());
-            }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {         // Выполнить скрипт в потоке !!!!!!!!!!!!!!!!!!!!!
+                try {
+                    CallContext call = scriptFile.getScriptCode();
+                    call.reset();
+                    call.call(false);
+                    final TypeFace result = scriptFile.getScriptCode().getVariables().get(Values.ScriptResultVariable);
+                    context.getMain().main().guiCall(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (result==null)
+                                context.getMain().main().errorMes("Ошибка исполнения скрипта\nОтстутствует результат");
+                            else
+                                textField.setText(result.valueToString());
+                                }
+                            });
+                    } catch (ScriptException e) {
+                        context.getMain().main().errorMes("Ошибка исполнения скрипта\n"+e.toString());
+                        }
+                }
+            }).start();
         }
     @Override
     public String setParams(FormContext2 context0, ESS2Architecture meta0, Meta2GUI element0, I_GUI2Event onEvent0) {

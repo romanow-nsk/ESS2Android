@@ -62,6 +62,11 @@ public class FullScreenGraph extends BaseActivity {
     public void popupAndLog(String ss) {}
 
     @Override
+    public void errorMes(String ss) {
+        AppData.ctx().errorMes(ss);
+        }
+
+    @Override
     public void notify(String s) {
 
     }
