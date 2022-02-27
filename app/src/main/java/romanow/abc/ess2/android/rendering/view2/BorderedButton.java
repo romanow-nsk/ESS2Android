@@ -29,6 +29,6 @@ public class BorderedButton extends Button {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         bordered.onDraw(this,canvas);
-    }
+        }
 
     }
