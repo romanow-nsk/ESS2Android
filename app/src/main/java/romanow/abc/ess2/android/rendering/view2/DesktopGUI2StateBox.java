@@ -99,15 +99,15 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
                 if (remoteDisable){
                     context.getMain().main().popupAndLog("Запрет удаленного управления");
                     return;
-                }
+                    }
                 if (!context.isActionEnable()){
                     context.getMain().main().popupAndLog("Недостаточен уровень доступа");
                     return;
-                }
+                    }
                 if (lastBitValue==-1){
                     context.getMain().main().popupAndLog("Разряд еще не прочитан");
                     return;
-                }
+                    }
                 new OKDialog(context.getMain().main() ,element.getTitle()+" "+(lastBitValue!=0 ? "ОТКЛ" : "ВКЛ"), new I_EventListener() {
                     @Override
                     public void onEvent(String zz) {
