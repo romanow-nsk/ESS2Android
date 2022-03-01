@@ -20,7 +20,7 @@ import java.util.Iterator;
 import romanow.abc.core.utils.GPSPoint;
 import romanow.abc.ess2.android.MainActivity;
 
-public class GPSService {
+public class GPSService implements I_GPSService{
     public final static int GPSInterval = 10;                 // Интервал опроса GPS-координат (сек)
     public final static int GPSDistance = 20;                 // Интервал изменения координат (м)
     public final static int GPSValidDelay = 10;               // Интервал валидности GPS (мин)
@@ -34,11 +34,10 @@ public class GPSService {
     private AppData ctx;
     private Handler event = new Handler();
     private MainActivity main;
-    public GPSService(MainActivity main0) {
+    public GPSService() {}
+    public void startService(MainActivity main0) {
         main = main0;
         context = main;
-        }
-    public void startService() {
         mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         if (mLocationManager == null) {
             AppData.ctx().popupAndLog(true,"Недоступен менеджер местоположения/навигации");
@@ -92,7 +91,7 @@ public class GPSService {
                     //    Activity#requestPermissions
                     AppData.ctx().popupAndLog(true,"Установите разрешения GPS");
                     return;
-                }
+                    }
                 GpsStatus status = mLocationManager.getGpsStatus(null);
                 Iterable<GpsSatellite> satellites = status.getSatellites();
                 Iterator<GpsSatellite> satI = satellites.iterator();
@@ -100,17 +99,6 @@ public class GPSService {
                     GpsSatellite satellite = satI.next();
                     float ff = satellite.getSnr();
                     satCount++;
-                    }
-                if (checkSelfPermission(context,Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(context,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    Activity#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for Activity#requestPermissions for more details.
-                    AppData.ctx().popupAndLog(true,"Установите разрешения GPS");
-                    return;
                     }
                 GPSPoint old = lastGPS();
                 cL = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);

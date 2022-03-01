@@ -606,6 +606,7 @@ public class ESS2Rendering {
                             @Override
                             public void run() {
                                 AppData.ctx().popupAndLog(true,"Ошибка сервера: "+ee.toString());
+                                main2.clearDeployedMetaData();
                                 }
                             });
                         }

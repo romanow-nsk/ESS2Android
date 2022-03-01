@@ -59,13 +59,15 @@ import romanow.abc.ess2.android.service.ESS2ArchitectureData;
 import romanow.abc.ess2.android.service.Base64Coder;
 import romanow.abc.ess2.android.service.BaseActivity;
 import romanow.abc.ess2.android.service.GPSService;
+import romanow.abc.ess2.android.service.GPSService11;
+import romanow.abc.ess2.android.service.I_GPSService;
 import romanow.abc.ess2.android.service.NetBack;
 import romanow.abc.ess2.android.service.NetCall;
 
 public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public MailSender mail = new MailSender(this);
-    private GPSService gpsService;
-    public GPSService getGpsService(){ return gpsService; }
+    private I_GPSService gpsService;
+    public I_GPSService getGpsService(){ return gpsService; }
     private Handler event = new Handler();
     public volatile boolean shutDown = false;
     public boolean voiceRun = false;
@@ -248,15 +250,15 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             ctx.fileService().loadContext();
             ctx.cState(AppData.CStateGray);
             createMenuList();
-            gpsService = new GPSService(this);
-            gpsService.startService();
+            gpsService = new GPSService11();
+            gpsService.startService(this);
             if (!isLocationEnabled()) {
                 errorMes(EmoSet, " Включить \"Местоположение\" в настройках");
                 popupToast(R.drawable.problem, " Включить \"Местоположение\" в настройках");
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                 }
             else
-                gpsService.startService();
+                gpsService.startService(this);
             MenuButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

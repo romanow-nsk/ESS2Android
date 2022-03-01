@@ -94,6 +94,7 @@ public abstract class BaseActivity extends AppCompatActivity implements I_Notify
     @Override
     protected void onStop() {
         super.onStop();
+        ctx.setCanSendPopup(false);
         unregisterReceiver(receiver);
         }
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -118,7 +119,8 @@ public abstract class BaseActivity extends AppCompatActivity implements I_Notify
         super.onStart();
         IntentFilter filter = new IntentFilter(AppData.Event_Popup);
         this.registerReceiver(receiver, filter);
-            }
+        ctx.setCanSendPopup(true);
+        }
     public int getPaintColor(int idx){
         if (idx < paintColors.length)
             return paintColors[idx];
@@ -189,6 +191,8 @@ public abstract class BaseActivity extends AppCompatActivity implements I_Notify
     public void popupToast(int viewId, String ss) {
         Toast toast3 = Toast.makeText(getApplicationContext(), ss, Toast.LENGTH_LONG);
         LinearLayout toastContainer = (LinearLayout) toast3.getView();
+        if (toastContainer==null)
+            return;
         ImageView catImageView = new ImageView(getApplicationContext());
         TextView txt = (TextView)toastContainer.getChildAt(0);
         txt.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
