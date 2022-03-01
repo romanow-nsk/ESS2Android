@@ -191,8 +191,10 @@ public abstract class BaseActivity extends AppCompatActivity implements I_Notify
     public void popupToast(int viewId, String ss) {
         Toast toast3 = Toast.makeText(getApplicationContext(), ss, Toast.LENGTH_LONG);
         LinearLayout toastContainer = (LinearLayout) toast3.getView();
-        if (toastContainer==null)
+        if (toastContainer==null){
+            toast3.show();
             return;
+            }
         ImageView catImageView = new ImageView(getApplicationContext());
         TextView txt = (TextView)toastContainer.getChildAt(0);
         txt.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -203,7 +205,7 @@ public abstract class BaseActivity extends AppCompatActivity implements I_Notify
         toastContainer.setGravity(Gravity.CENTER);
         toastContainer.setVerticalGravity(5);
         //toastContainer.setBackgroundResource(R.color.status_almostFree);
-        toast3.setGravity(Gravity.TOP, 0, 20);
+        toast3.setGravity(Gravity.TOP, 0, 200);
         toast3.show();
         }
     public void popupInfo(final String ss) {
