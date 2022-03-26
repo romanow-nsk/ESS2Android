@@ -127,7 +127,7 @@ public class GPSService11 implements I_GPSService{
             }
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-            main.addToLog(provider+" "+status);
+           //main.addToLog(provider+" "+status);
             }
         @Override
         public void onProviderEnabled(String provider) {

@@ -2,10 +2,14 @@ package romanow.abc.ess2.android.service;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +60,7 @@ public class ESS2Rendering {
     private Module module=null;
     private ArrayList<View2Base> guiList = new ArrayList<>();
     private RelativeLayout formPanel=null;
-    private LinearLayout formView=null;
+    private ConstraintLayout formView=null;
     //------------------------------------------------------------------------------------------------------------------
     public void openFormDialog(){
         if (formView!=null){
@@ -64,14 +68,14 @@ public class ESS2Rendering {
             formView = null;
             formPanel = null;
             }
-        formView =(LinearLayout)main2.main().getLayoutInflater().inflate(R.layout.form_frame, null);
+        formView =(ConstraintLayout)main2.main().getLayoutInflater().inflate(R.layout.form_frame, null);
         formPanel = (RelativeLayout) formView.findViewById(R.id.form_frame_panel);
         formPanel.setPadding(5, 5, 5, 5);
         formPanel.setBackgroundColor(main2.currentView.getView().getBackColor()|0xFF000000);
         LinearLayout layout = main2.main().getLogLayout();
         layout.addView(formView);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)formPanel.getLayoutParams();
-        context.setScreen(new ScreenMode(params.height,params.width));      // pdMode координат
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)formPanel.getLayoutParams();
+        context.setScreen(new ScreenMode(params.height,params.height*3/4));      // pdMode координат
         //main2.main().addToLog(""+params.width+" "+params.height);
         main2.main().scrollDown();
         }
