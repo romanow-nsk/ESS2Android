@@ -28,7 +28,7 @@ public class NetCall<T> {
                             try {
                                 if (!res.isSuccessful()) {
                                     AppData.ctx().cState(AppData.CStateRed);
-                                    back.onError(res.code(), res.message());
+                                    back.onError(res.code(), res.errorBody().string());
                                 } else{
                                     try {
                                         AppData.ctx().cState(AppData.CStateGreen);
