@@ -119,17 +119,17 @@ public class ESS2ArchitectureData {
             renderState.setVisibility(View.INVISIBLE);
             return;
             }
-        new NetCall<Pair<Integer,Long>>().call(base,ctx.getService2().getArchitectureState(ctx.loginSettings().getSessionToken()), new NetBackDefault(){
+        new NetCall<ArrayList<Long>>().call(base,ctx.getService2().getArchitectureState(ctx.loginSettings().getSessionToken()), new NetBackDefault(){
             @Override
             public void onSuccess(Object vv) {
-                Pair<Integer,Long> val = (Pair<Integer,Long>)vv;
-                int state = val.o1;
+                ArrayList<Long> val = (ArrayList<Long>)vv;
+                int state = val.get(0).intValue();
                 deployState.setImageResource(archStateIcons[state]);
                 connectState.setImageResource(connStateIcons[state]);
                 base.addToLog("Состояние архитектуры: "+ Values.constMap().getGroupMapByValue("ArchState").get(state).title());
                 if (state==Values.ASNotDeployed)
                     return;
-                long oid = val.o2;
+                long oid = val.get(1);
                 /*
                 int idx=-1;
                 for(int i=0;i<architectures.size();i++)
