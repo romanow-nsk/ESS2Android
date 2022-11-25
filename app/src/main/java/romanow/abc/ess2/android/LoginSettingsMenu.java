@@ -100,13 +100,13 @@ public class LoginSettingsMenu extends SettingsMenuBase {
                                 final LoginSettings set = ctx.loginSettings();
                                 set.setUserId(user.getOid());
                                 set.setSessionToken(user.getSessionToken());
-                                base.getArchitectureData().refreshArchtectureState(new AccessManager(user));
                                 new NetCall<DBRequest>().call(base,ctx.getService().workSettings(ctx.loginSettings().getSessionToken()), new NetBackDefault() {
                                     @Override
                                     public void onSuccess(Object val) {
                                         try {
                                             ctx.workSettings((WorkSettings)((DBRequest)val).get(new Gson()));
                                             ctx.setRegisteredOnServer(true);
+                                            base.getArchitectureData().refreshArchtectureState(new AccessManager(user));
                                             } catch (UniException e) {
                                                 base.errorMes("Загрузка параметров сервера:\n"+e.toString());
                                                 }
