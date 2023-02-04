@@ -56,12 +56,16 @@ public class DesktopGUILevelIndicator extends View2BaseDesktop {
         }
     @Override
     public void putValue(Meta2Register register, int xx, int idx) {
-        limits[idx] = register.doubleWithPower(xx);
+        limits[idx] = register.regValueToFloat(getUnitIdx(),(int)xx);
         }
     @Override
     public void putValue(int xx) throws UniException {
         Meta2DataRegister register = (Meta2DataRegister) getRegister();
-        value = register.doubleWithPower(xx);
+        if (((Meta2GUILevelIndicator)getElement()).isByteSize()){
+            value = (byte)xx;
+            }
+        else
+            value = register.regValueToFloat(getUnitIdx(),(int)xx);
         }
     @Override
     public void repaintValues(){

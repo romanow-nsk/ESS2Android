@@ -108,7 +108,10 @@ public class DesktopGUISetting extends View2BaseDesktop {
     @Override
     public void putValue(int vv) throws UniException {
         Meta2SettingRegister register = (Meta2SettingRegister) getRegister();
-        textField.setText(register.valueWithPower(vv));
+        if (((Meta2GUISetting) getElement()).isIntValue())
+            textField.setText(register.regValueToIntString(getUnitIdx(),(int)vv));
+        else
+            textField.setText(register.regValueToString(getUnitIdx(),(int)vv));
         }
     @Override
     public String setParams(FormContext2 context0, ESS2Architecture meta0, Meta2GUI element0, I_GUI2Event onEvent0) {

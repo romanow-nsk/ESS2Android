@@ -68,6 +68,7 @@ public class ESS2Rendering {
             formView = null;
             formPanel = null;
             }
+        main2.main().clearLog();
         formView =(ConstraintLayout)main2.main().getLayoutInflater().inflate(R.layout.form_frame, null);
         formPanel = (RelativeLayout) formView.findViewById(R.id.form_frame_panel);
         formPanel.setPadding(5, 5, 5, 5);
@@ -478,7 +479,7 @@ public class ESS2Rendering {
                 int treeLevel = register.getArrayLevel()-1;         // Кол-во массивов в дереве Meta-элементов (+device+units) -1
                 int grlevel = groupLevel-1;                         // Кол-во массивов в форме
                 int stacklevel = context.getForm().getLevel()-1;    // Вершина стека индексов форм для тек. уровня
-                if (treeLevel > stacklevel){
+                if (!link.isOwnUnit() && treeLevel > stacklevel){
                     errorList.addError("Уровень массива мета-данных > уровня формы "+
                             equipName+" для "+regGUI.getFullTitle()+"="+(treeLevel+1)+" "+
                             context.getForm().getTitle()+"="+(stacklevel+1));
@@ -486,34 +487,33 @@ public class ESS2Rendering {
                 }
                 int regOffset=0;
                 stacklevel = treeLevel;
-                //-------------------------------------------------------------------------------
-                //System.out.println(register.getFullTitle());
-                //for(int i=0;i<groupIndexes.length;i++)
-                //    System.out.print(groupIndexes[i]+" ");
-                //System.out.println("->"+groupLevel);
-                //context.show();
-                //--------------------------------------------------------------------------------
-                for(Meta2Entity cc = register.getHigh(); cc!=null; cc = cc.getHigh()) {
-                    if (!(cc instanceof Meta2Array))
-                        continue;
-                    Meta2Array array = (Meta2Array) cc;
-                    int elemIdx = context.getIndex(stacklevel+1);
-                    elemIdx += grlevel<0 ? 0 : groupIndexes[grlevel];
-                    if (elemIdx >=array.getSize())          // Выход за пределы массива
-                        return;
-                    switch(array.getArrayType()){
-                        case Values.ArrayTypeModbus:
-                            regOffset += array.getStep()*elemIdx;
-                            break;
-                        case Values.ArrayTypeUnit:
-                            if (!regGUI.getRegLink().isOwnUnit())
-                                newElem.setUnitIdx(elemIdx);
-                            break;
-                    }
-                    grlevel--;
-                    stacklevel--;
+                if (link.isOwnUnit()){      // Unit задан явно - не групповые = явно перечисленные
+                    newElem.setRegOffset(0);
+                    newElem.setUnitIdx(link.getUnitIdx());
                 }
-                newElem.setRegOffset(regOffset);
+                else{                       // Иначе генерация по массивам
+                    for (Meta2Entity cc = register.getHigh(); cc != null; cc = cc.getHigh()) {
+                        if (!(cc instanceof Meta2Array))
+                            continue;
+                        Meta2Array array = (Meta2Array) cc;
+                        int elemIdx = context.getIndex(stacklevel + 1);
+                        elemIdx += grlevel < 0 ? 0 : groupIndexes[grlevel];
+                        if (elemIdx >= array.getSize())          // Выход за пределы массива
+                            return;
+                        switch (array.getArrayType()) {
+                            case Values.ArrayTypeModbus:
+                                regOffset += array.getStep() * elemIdx;
+                                break;
+                            case Values.ArrayTypeUnit:
+                                if (!regGUI.getRegLink().isOwnUnit())
+                                    newElem.setUnitIdx(elemIdx);
+                                break;
+                        }
+                        grlevel--;
+                        stacklevel--;
+                    }
+                    newElem.setRegOffset(regOffset);
+                }
                 if (newElem.getUnitIdx() >= connectorsSize){
                     errorList.addError("Индекс Unit "+newElem.getUnitIdx()+" превышен  "+equipName+" для "+regGUI.getFullTitle());
                     return;

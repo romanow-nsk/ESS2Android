@@ -43,6 +43,7 @@ public abstract class View2Base implements I_View2 {
     public void repaintBefore(){}                               // Для исключительных действий (скрипты)
     public void repaintValues(){}                               // После прочтения всех данных
     public void putValue(Meta2Register register, int value, int idx){}
+    public void putValue(int data[]) throws UniException{}
     public abstract void showInfoMessage();
     @Override
     public String getTypeName() {
@@ -140,15 +141,15 @@ public abstract class View2Base implements I_View2 {
             public void onError(int code, String mes) {
                 String ss = "Ошибка записи  Modbus: " + code + " "+mes;
                 context.getMain().main().popupAndLog(ss);
-            }
+                }
             @Override
             public void onError(UniException ee) {
                 String ss = "Ошибка записи Modbus: " + ee.toString();
                 context.getMain().main().popupAndLog(ss);
-            }
+                }
             @Override
             public void onSuccess(Object val) {}
-            });
+                });
         }
     //----------------------------------------------------------------------------------------------------------------------
     public void writeMainRegister(int vv, NetBack back){

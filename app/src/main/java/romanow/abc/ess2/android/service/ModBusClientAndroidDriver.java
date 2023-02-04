@@ -24,6 +24,11 @@ public class ModBusClientAndroidDriver implements I_ModbusGroupAsyncDriver {
         String mes = null;
         int value=0;
         }
+    public final static int StateOff=0;
+    public final static int StateOn=1;
+    public final static int StateBusy=2;
+    public final static int StateError=3;
+    public final static String[] states = {"Выключено","Готово","Занято","Ошибка"};
     private RestAPIBase service;
     private RestAPIESS2 service2;
     private boolean ready=false;
@@ -50,6 +55,12 @@ public class ModBusClientAndroidDriver implements I_ModbusGroupAsyncDriver {
 
     @Override
     public void reopenConnection() {}
+
+    @Override
+    public int getState() {
+        return ready ? StateOn : StateOff;
+        }
+
     @Override
     public void readRegister(String devName, int unit, int regNum, NetBack back) {
         if (!ready) {

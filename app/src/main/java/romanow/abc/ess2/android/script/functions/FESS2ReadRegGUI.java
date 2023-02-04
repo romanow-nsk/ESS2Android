@@ -52,7 +52,7 @@ public class FESS2ReadRegGUI extends ESS2LocalFunction {
             }
         if (!device.getErrors().valid()){
             throw new ScriptException(ValuesBase.SEConfiguration, "Ошибки оборудования "+devName.formatTo()+
-                    ": "+device.getErrors().getInfo());
+                    ": "+device.getErrors().toString());
             }
         try {
             int vv = device.getDriver().readRegister(device.getShortName(),(int)unit.toLong(),(int)regNum.toLong());

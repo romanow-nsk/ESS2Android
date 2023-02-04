@@ -293,7 +293,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 ctx.loginSettings().setFatalMessage("");
                 saveContext();
                 }
-            String title = "СНЭЭ 2.0";
+            String title = "СНЭЭ 3.0";
             addToLog(false, title, 22, 0);
             //addToLogButton("Рег.код: "+createRegistrationCode(),true,null,null);
             //addToLogButton("ID: "+getSoftwareId64(),true,null,null);
@@ -624,7 +624,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             @Override
             public void onSelect() {
                 log.removeAllViews();
-                String title = "СНЭЭ 2.0";
+                String title = "СНЭЭ 3.0";
                 addToLog(false, title, 22, 0);
                 }
             });

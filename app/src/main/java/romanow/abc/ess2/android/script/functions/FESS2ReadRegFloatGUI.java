@@ -50,7 +50,7 @@ public class FESS2ReadRegFloatGUI extends ESS2LocalFunction {
             }
         if (!device.getErrors().valid()){
             throw new ScriptException(ValuesBase.SEConfiguration, "Ошибки оборудования "+devName.formatTo()+
-                    ": "+device.getErrors().getInfo());
+                    ": "+device.getErrors().toString());
             }
         try {
             int regNum2 = (int)regNum.toLong();
