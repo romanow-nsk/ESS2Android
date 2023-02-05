@@ -18,7 +18,7 @@ public class MIAbout extends MenuItem {
         main.addMenuList(new MenuItemAction("О программе") {
             @Override
             public void onSelect() {
-                String title ="Мобильный клиент \"СМУ СНЭЭ\", версия "+ AppData.apkVersion+"\n";
+                String title ="Мобильный клиент \"СНЭЭ 3.0\", версия "+ AppData.apkVersion+"\n";
                 title+="Разработчик: НГТУ\n";
                 title+="Контакты: romanov@corp.nstu.ru\n";
                 title+=calcOwnMD5();

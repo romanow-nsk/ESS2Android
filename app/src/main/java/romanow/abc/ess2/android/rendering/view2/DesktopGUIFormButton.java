@@ -32,7 +32,7 @@ public class DesktopGUIFormButton extends View2BaseDesktop {
                 context.y(hh));
         int textSize = element.getFontSize();
         if (textSize==0) textSize = DefaultTextSize;
-        textField.setTextSize(textSize);
+        setTextSize(textField,textSize);
         textField.setClickable(true);
         textField.setText(element.getTitle());
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));

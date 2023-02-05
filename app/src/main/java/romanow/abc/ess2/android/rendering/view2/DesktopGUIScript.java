@@ -43,7 +43,7 @@ public class DesktopGUIScript extends View2BaseDesktop {
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
         int textSize = element.getFontSize();
         if (textSize==0) textSize = DefaultTextSize;
-        textField.setTextSize(textSize);
+        setTextSize(textField,textSize);
         textField.setClickable(false);
         textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         panel.addView(textField);

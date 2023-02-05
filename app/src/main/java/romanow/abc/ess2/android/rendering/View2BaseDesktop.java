@@ -43,10 +43,13 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
             label.setBackgroundColor(getBackColor());
             int fontSize = element.getFontSize();
             if (fontSize==0) fontSize=DefaultTextSize;
-            label.setTextSize(fontSize);
+            setTextSize(label,fontSize);
             setLongClickInfo(label);
             panel.addView(label);
             return label;
+            }
+        public void setTextSize(TextView textView, int size){
+            textView.setTextSize((float) (size*AppData.ScreenMas+3));
             }
         public void setLongClickInfo(View view){
             view.setOnLongClickListener(new View.OnLongClickListener() {

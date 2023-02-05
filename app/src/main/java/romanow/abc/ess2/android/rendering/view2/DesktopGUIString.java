@@ -41,7 +41,7 @@ public class DesktopGUIString extends View2BaseDesktop {
                 context.y(hh));
         int textSize = element.getFontSize();
         if (textSize==0) textSize = DefaultTextSize;
-        textField.setTextSize(textSize);
+        setTextSize(textField,textSize);
         textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         panel.addView(textField);
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));

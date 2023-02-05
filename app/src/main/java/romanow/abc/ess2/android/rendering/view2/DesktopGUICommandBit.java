@@ -41,7 +41,7 @@ public class DesktopGUICommandBit extends View2BaseDesktop {
                 context.y(hh));
         int textSize = element.getFontSize();
         if (textSize==0) textSize = DefaultTextSize;
-        textField.setTextSize(textSize);
+        setTextSize(textField,textSize);
         textField.setClickable(false);
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
         textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);

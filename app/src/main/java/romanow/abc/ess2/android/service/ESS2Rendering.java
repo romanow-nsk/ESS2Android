@@ -73,12 +73,12 @@ public class ESS2Rendering {
         main2.main().clearLog();
         formView =(ConstraintLayout)main2.main().getLayoutInflater().inflate(R.layout.form_frame, null);
         formPanel = (RelativeLayout) formView.findViewById(R.id.form_frame_panel);
-        formPanel.setPadding(5, 5, 5, 5);
+        formPanel.setPadding(0, 5, 5, 5);
         formPanel.setBackgroundColor(main2.currentView.getView().getBackColor()|0xFF000000);
         LinearLayout layout = main2.main().getLogLayout();
         layout.addView(formView);
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)formPanel.getLayoutParams();
-        context.setScreen(new ScreenMode(params.height,params.height*3/4));      // pdMode координат
+        context.setScreen(new ScreenMode(params.height,params.height*3/4,AppData.ScreenMas));      // pdMode координат
         //main2.main().addToLog(""+params.width+" "+params.height);
         main2.main().scrollDown();
         }

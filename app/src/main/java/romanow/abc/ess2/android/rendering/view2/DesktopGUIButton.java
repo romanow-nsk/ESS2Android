@@ -45,7 +45,7 @@ public class DesktopGUIButton extends View2BaseDesktop {
         textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         int textSize = element.getFontSize();
         if (textSize==0) textSize = DefaultTextSize;
-        textField.setTextSize(textSize);
+        setTextSize(textField,textSize);
         Meta2CommandRegister register = (Meta2CommandRegister)getRegister();
         final Meta2Command cmd = register.getCommands().getByCode(element.getCmdCode());
         final boolean remoteDisable = !context.isSuperUser() &&  !context.isLocalUser() && !cmd.isRemoteEnable();

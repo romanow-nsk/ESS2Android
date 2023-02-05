@@ -46,7 +46,7 @@ public class DesktopGUISetting extends View2BaseDesktop {
         //textField.setEditable(false);
         int textSize = element.getFontSize();
         if (textSize==0) textSize = DefaultTextSize;
-        textField.setTextSize(textSize);
+        setTextSize(textField,textSize);
         textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         panel.addView(textField);
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
