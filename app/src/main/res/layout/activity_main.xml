@@ -40,20 +40,22 @@
             android:layout_alignTop="@id/headerDeployState"
             android:longClickable="true"
             android:src="@drawable/connect_off" />
-        <Button style="@style/FormButton"
+
+        <Button
             android:id="@+id/headerRenderMenu"
-            android:layout_width="90dp"
+            style="@style/FormButton"
+            android:layout_width="100dp"
             android:layout_height="50dp"
-            android:clickable="true"
-            android:longClickable="true"
-            android:text=""
             android:layout_alignTop="@id/headerDeployState"
-            android:layout_toRightOf="@id/headerRenderState"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/headerRenderState"
+            android:clickable="true"
+            android:longClickable="true"
+            android:visibility="invisible"
+            android:text=""
             android:textAlignment="center"
-            android:textSize="15dp"
-            />
+            android:textSize="15dp" />
         <ImageView
             android:id="@+id/headerMenu"
             android:layout_width="50dp"

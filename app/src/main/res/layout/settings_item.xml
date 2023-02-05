@@ -5,13 +5,14 @@
     android:layout_height="40dp"
     android:background="#FF202020"
     >
-    <TextView style="@style/BlackButton"
+    <TextView style="@style/ListButton"
         android:layout_width="200dp"
         android:layout_height="35dp"
         android:textSize="20dp"
+        android:textColor="@color/White"
         android:id="@+id/dialog_settings_name"
         android:clickable="true" />
-    <EditText style="@style/BlackButton"
+    <EditText style="@style/ListButton"
         android:id="@+id/dialog_settings_value"
         android:layout_width="match_parent"
         android:layout_height="35dp"

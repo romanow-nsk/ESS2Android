@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -61,6 +62,7 @@ public class ESS2Rendering {
     private ArrayList<View2Base> guiList = new ArrayList<>();
     private RelativeLayout formPanel=null;
     private ConstraintLayout formView=null;
+    private Button formMenuButton=null;
     //------------------------------------------------------------------------------------------------------------------
     public void openFormDialog(){
         if (formView!=null){
@@ -106,9 +108,9 @@ public class ESS2Rendering {
             if (form==null){
                 popup("Не найдена форма "+formName);
                 return;
-            }
+                }
             openForm(form,clearIdx);
-        }
+            }
         @Override
         public void openForm(Meta2GUIForm form, boolean clearIdx) {
             //---------------- Поиск для групповых кнопок -------------------------------------------------
@@ -163,13 +165,14 @@ public class ESS2Rendering {
         context.setPlatformName("Android");
         context.setMain(main2);
         userLoginTime = new OwnDateTime();
-        main2.formMenuButton().setText(mainFormName);
         setMainForm();
         createLoopThread();
         repaintView();
         }
     public void renderOff(){            // Вызывается из ESS2ArchitectureData
         setRenderingOnOff(false);
+        if (formMenuButton!=null)
+            formMenuButton.setVisibility(View.INVISIBLE);
         context.setForm(null);
         main2.main().getLogLayout().removeView(formView);
         main2.main().scrollDown();
@@ -360,7 +363,24 @@ public class ESS2Rendering {
             }
         //-----------------------------------------------------------------------------------
         level = baseForm.getLevel();
-        main2.formMenuButton().setText(baseForm.getTitle());
+        LinearLayout layout =   (LinearLayout)main2.main().getLayoutInflater().inflate(R.layout.render_menu_button,null);
+        formPanel.addView(layout);
+        formMenuButton = layout.findViewById(R.id.renderMenu);
+        //formMenuButton = main2.main().findViewById(R.id.headerRenderMenu);
+        formMenuButton.setText(baseForm.getTitle());
+        formMenuButton.setVisibility(View.VISIBLE);
+        formMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createChildFormList();
+                }
+            });
+        formMenuButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return false;
+                }
+            });
         //----------------------------------- Рисование элементов управления
         guiList.clear();
         int idx[] = new int[Values.FormStackSize];

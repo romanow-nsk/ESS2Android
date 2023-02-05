@@ -69,7 +69,7 @@ public class ESS2ArchitectureData {
     private ImageView renderState;
     private TextView deployStateText;
     private TextView renderStateText;
-    private Button formMenuButton;
+    //private Button formMenuButton;
     private AppData ctx;
     ESS2Architecture deployed=null;         // Развернутая архитектура
     ESS2View currentView=null;              // Текущий вид
@@ -78,7 +78,6 @@ public class ESS2ArchitectureData {
     private ESS2Architecture arch=null;     // Используется при загрузке
     private ESS2Rendering rendering=null;
     public MainActivity main(){ return base; }
-    public Button formMenuButton(){ return formMenuButton; }
     public ESS2ArchitectureData(MainActivity main0){
         rendering = new ESS2Rendering(this);
         base = main0;
@@ -88,15 +87,16 @@ public class ESS2ArchitectureData {
         renderState = (ImageView) base.findViewById(R.id.headerRenderState);
         deployStateText = (TextView) base.findViewById(R.id.headerDeployStateText);
         renderStateText = (TextView) base.findViewById(R.id.headerRenderStateText);
-        formMenuButton = (Button) base.findViewById(R.id.headerRenderMenu);
         renderState.setVisibility(View.INVISIBLE);
-        formMenuButton.setVisibility(View.INVISIBLE);
         renderState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OnOffActionPerformed();
                 }
             });
+        /*
+        formMenuButton = (Button) base.findViewById(R.id.headerRenderMenu);
+        formMenuButton.setVisibility(View.INVISIBLE);
         formMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,7 +109,9 @@ public class ESS2ArchitectureData {
                 return false;
                 }
             });
+         */
         }
+
     //------------------------------------------------------------------------------------------------
     public void refreshArchtectureState(AccessManager manager0){
         manager = manager0;
@@ -285,7 +287,6 @@ public class ESS2ArchitectureData {
     public void setRenderingOff(){
         currentView=null;
         renderState.setImageResource(R.drawable.connect_off);
-        formMenuButton.setVisibility(View.INVISIBLE);
         rendering.renderOff();
         }
     public void setRenderingOn() {
@@ -301,7 +302,6 @@ public class ESS2ArchitectureData {
             return;
             }
         renderState.setImageResource(R.drawable.connect_on);
-        formMenuButton.setVisibility(View.VISIBLE);
         rendering.renderOn();
         }
     private void OnOffActionPerformed() {//GEN-FIRST:event_OnOffActionPerformed

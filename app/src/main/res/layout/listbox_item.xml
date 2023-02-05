@@ -5,7 +5,7 @@
     android:layout_height="40dp"
     android:background="#FF202020"
     >
-    <Button style="@style/BlackButton"
+    <Button style="@style/ListButton"
         android:id="@+id/dialog_listbox_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
