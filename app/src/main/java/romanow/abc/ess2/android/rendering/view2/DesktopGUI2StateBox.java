@@ -131,10 +131,10 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
         context.getMain().main().popupAndLog(ss);
         }
     @Override
-    public void putValue(int vv) throws UniException {
+    public void putValue(long vv) throws UniException {
         Meta2GUI2StateBox element = (Meta2GUI2StateBox) getElement();
-        lastValue = vv;
-        lastBitValue = (vv>>bitNum) & 01;
+        lastValue = (int) vv;
+        lastBitValue = (lastValue>>bitNum) & 01;
         if (cmdButton!=null)
             cmdButton.setText(lastBitValue!=0 ? "ОТКЛ" : "ВКЛ");
         int cc = (lastBitValue!=0 ? element.getColorYes() : element.getColorNo()) & 0x00FFFFFF;

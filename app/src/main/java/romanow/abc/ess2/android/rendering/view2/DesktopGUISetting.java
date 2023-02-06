@@ -106,7 +106,7 @@ public class DesktopGUISetting extends View2BaseDesktop {
         context.getMain().main().popupAndLog(ss);
         }
     @Override
-    public void putValue(int vv) throws UniException {
+    public void putValue(long vv) throws UniException {
         Meta2SettingRegister register = (Meta2SettingRegister) getRegister();
         if (((Meta2GUISetting) getElement()).isIntValue())
             textField.setText(register.regValueToIntString(getUnitIdx(),(int)vv));

@@ -1,6 +1,7 @@
 package romanow.abc.ess2.android.service;
 
 import static romanow.abc.core.Utils.httpError;
+import static romanow.abc.core.entity.metadata.Meta2Entity.toHex;
 
 import android.view.View;
 import android.widget.Button;
@@ -18,17 +19,22 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import romanow.abc.core.API.RestAPIProxy;
 import romanow.abc.core.DBRequest;
 import romanow.abc.core.Utils;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.constants.ValuesBase;
+import romanow.abc.core.entity.EntityRefList;
 import romanow.abc.core.entity.artifacts.Artifact;
 import romanow.abc.core.entity.metadata.Meta2Equipment;
 import romanow.abc.core.entity.metadata.Meta2GUIView;
+import romanow.abc.core.entity.metadata.Meta2Register;
 import romanow.abc.core.entity.metadata.Meta2XML;
 import romanow.abc.core.entity.metadata.Meta2XStream;
 import romanow.abc.core.entity.subject2area.ESS2Architecture;
 import romanow.abc.core.entity.subject2area.ESS2Device;
+import romanow.abc.core.entity.subject2area.ESS2EnvValue;
+import romanow.abc.core.entity.subject2area.ESS2EnvValuesList;
 import romanow.abc.core.entity.subject2area.ESS2Equipment;
 import romanow.abc.core.entity.subject2area.ESS2MetaFile;
 import romanow.abc.core.entity.subject2area.ESS2ScriptFile;
@@ -301,8 +307,15 @@ public class ESS2ArchitectureData {
             base.errorMes("Не найден ЧМИ для Android");
             return;
             }
-        renderState.setImageResource(R.drawable.connect_on);
-        rendering.renderOn();
+        preCompileLocalScripts();
+        new NetCall<ESS2EnvValuesList>().call(base,ctx.getService2().getEnvValues(ctx.loginSettings().getSessionToken()), new NetBackDefault(){
+            @Override
+            public void onSuccess(Object val) {
+                setLocalEnvValues((ESS2EnvValuesList)val);
+                renderState.setImageResource(R.drawable.connect_on);
+                rendering.renderOn();
+                }
+            });
         }
     private void OnOffActionPerformed() {//GEN-FIRST:event_OnOffActionPerformed
         if (currentView!=null){
@@ -312,6 +325,42 @@ public class ESS2ArchitectureData {
             if (!deployed.isConnected())
                 return;
             setRenderingOn();
+            }
+        }
+    //------------------------------------------------------------------------------------------------------
+    private void setLocalEnvValues(ESS2EnvValuesList oo){
+        EntityRefList<ESS2EnvValue> list = deployed.getEnvValues();
+        for(ESS2EnvValue value : list)
+            value.setValid(false);
+        for(Pair<String,ArrayList<Double>> vv : oo.getList()){
+            ESS2EnvValue value = list.getByName(vv.o1);
+            if (value==null) {
+                System.out.println("Не найдена локальная переменная окружения "+vv.o1);
+                continue;
+                }
+            value.setEnvValues(vv.o2);
+            value.setValid(true);
+            }
+        for(ESS2EnvValue value : list){
+            if (!value.isValid())
+                System.out.println("Не инициализирована локальная переменная окружения "+ value.getShortName());
+            else
+                System.out.println("Локальная переменная окружения "+ value.toString());
+            }
+        for(ESS2Equipment equipment : deployed.getEquipments())
+            for(Meta2Register reg : equipment.getEquipment().getRegList().getList()){
+                String envVarName = reg.getEnvVar();
+                if (envVarName==null || envVarName.length()==0)
+                    continue;
+                ArrayList<Double> values = new ArrayList<>();
+                for(int logUnit=0;logUnit<equipment.getLogUnits().size();logUnit++) {
+                    ESS2EnvValue value = deployed.getEnvValues().getByName(envVarName + logUnit);
+                    if (value == null || !value.isValid())
+                        System.out.println("Не найдена переменная окружения " + (envVarName + logUnit) + " для регистра " + equipment.getShortName() + "." + toHex(reg.getRegNum()));
+                    else
+                        values.add(value.getEnvValues().get(0));
+                }
+                reg.setEnvVarValue(values);
             }
         }
     //------------------------------------------------------------------------------------------------------------------------

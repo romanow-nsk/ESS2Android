@@ -61,7 +61,7 @@ public class DesktopGUITimeSetting extends View2BaseDesktop {
         }
 
     @Override
-    public void putValue(int zz) throws UniException {
+    public void putValue(long zz) throws UniException {
         textField.setText(String.format("%2d:%2d:%2d",zz/3600,zz%3600/60,zz%60));
         }
     @Override

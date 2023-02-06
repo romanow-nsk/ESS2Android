@@ -44,7 +44,7 @@ public class DesktopGUIMultiBitState extends View2BaseDesktop {
         textField.setBackgroundColor(element.getColor() | 0xFF000000);
         setInfoClick(textField);
         }
-    public ArrayList<String> createStateText(int regNum, int bitMask, int regVal){
+    public ArrayList<String> createStateText(int regNum, int bitMask, long regVal){
         ArrayList<String> out = new ArrayList<>();
         if (regNum==0)
             return out;
@@ -85,7 +85,7 @@ public class DesktopGUIMultiBitState extends View2BaseDesktop {
         context.getMain().main().popupAndLog(ss);
         }
     @Override
-    public void putValue(int vv) throws UniException {
+    public void putValue(long vv) throws UniException {
         Meta2GUIMultiBitState element = (Meta2GUIMultiBitState) getElement();
         ArrayList<String> out = createStateText(element.getRegNum(),element.getBitMask(),vv);
         String ss = "";

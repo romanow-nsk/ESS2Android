@@ -28,5 +28,5 @@ public class DesktopGUILabel extends View2BaseDesktop {
             return null;
             }
         @Override
-        public void putValue(int vv) throws UniException {}
+        public void putValue(long vv) throws UniException {}
 }

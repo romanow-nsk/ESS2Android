@@ -99,7 +99,7 @@ public class DesktopGUIESSSettingBoolean extends View2BaseDesktop {
                  });
         }
     @Override
-    public void putValue(int vv) throws UniException {}
+    public void putValue(long vv) throws UniException {}
     @Override
     public String setParams(FormContext2 context0, ESS2Architecture meta0, Meta2GUI element0, I_GUI2Event onEvent0) {
         super.setParams(context0,meta0, element0,onEvent0);

@@ -67,7 +67,7 @@ public class DesktopGUIString extends View2BaseDesktop {
         textField.setText(" "+ss);
         }
     @Override
-    public void putValue(int vv) throws UniException {
+    public void putValue(long vv) throws UniException {
         }
     @Override
     public String setParams(FormContext2 context0, ESS2Architecture meta0, Meta2GUI element0, I_GUI2Event onEvent0) {

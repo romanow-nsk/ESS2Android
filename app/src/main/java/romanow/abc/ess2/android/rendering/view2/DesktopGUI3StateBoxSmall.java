@@ -22,9 +22,9 @@ public class DesktopGUI3StateBoxSmall extends DesktopGUI3StateBox {
         bb.setText("");
         }
     @Override
-    public void putValue(int vv) {
+    public void putValue(long vv) {
         BorderedTextView bb = (BorderedTextView)  textField;
-        int pair = (vv>>bitNum) & 03;
+        int pair = (int)((vv>>bitNum) & 03);
         int color = getContext().getForm().getFormLevel()==0 ? iconsWarning[pair] : iconsWorking[pair];
         bb.setBackgroundColor(color);
         }

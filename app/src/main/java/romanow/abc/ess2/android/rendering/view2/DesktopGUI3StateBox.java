@@ -73,8 +73,8 @@ public class DesktopGUI3StateBox extends View2BaseDesktop {
         context.getMain().main().popupAndLog(ss);
     }
     @Override
-    public void putValue(int vv) throws UniException {
-        int pair = (vv>>bitNum) & 03;
+    public void putValue(long vv) throws UniException {
+        int pair = (int)((vv>>bitNum) & 03);
         ImageView bb = (ImageView) textField;
         Meta2GUI3StateBox element = (Meta2GUI3StateBox) getElement();
         int ss = getContext().getForm().getFormLevel()==0 ? iconsWarning[pair] : iconsWorking[pair];

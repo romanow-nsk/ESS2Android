@@ -544,19 +544,19 @@ public class ESS2Rendering {
             guiList.add(newElem);
         }
     }
-    //---------------------------------------------------------------------------------------------------------------------------
-    public synchronized void repaintValues(){
-        //if (repaintBusy)
-        //    return;
-        //-------------- Смена формы ??????????????????????????
-        //if (context.getForm()!=prevForm){
-        //    prevForm = context.getForm();
-        //    return;
-        //    }
+    //-----------------------------------------------------------------------------------------------------------------------
+    public void putOneLinkRegister(View2Base element,Meta2RegLink link,int offset){
+        int regNumFull = link.getRegNum()+offset;
+        int regSize = link.getRegister().size16Bit();
+        for(int i=0;i<regSize;i++)
+            element.getDevice().putValue(element.getDevUnit(),regNumFull+i,0);     // Регистр со смещением
+        }
+    public synchronized void repaintValues(){       // По физическим устройствам
+        if (!renderingOn)
+            return;
         testESSOnOffState();
         if (module!=null)
             module.repaintValues();
-        HashMap<Integer,Integer> map = new HashMap<>();
         for (View2Base element : guiList){
             element.repaintBefore();
         }
@@ -564,25 +564,28 @@ public class ESS2Rendering {
             Meta2RegLink link = element.getRegLink();
             if (link==null)
                 continue;
-            ESS2Device device = element.getDevice();
-            int regNumFull = link.getRegNum()+element.getRegOffset();                   // Двойные регистры
-            device.putValue(element.getDevUnit(),regNumFull,0);                   // Регистр со смещением
-            if (link.getRegister().doubleSize())
-                device.putValue(element.getDevUnit(),regNumFull+1,0);     // Регистр со смещением
+            putOneLinkRegister(element,link,element.getRegOffset());
+            //ESS2Device device = element.getDevice();
+            //int regNumFull = link.getRegNum()+element.getRegOffset();                   // Двойные регистры
+            //int regSize = link.getRegister().size16Bit();
+            //for(int i=0;i<regSize;i++)
+            //    device.putValue(element.getDevUnit(),regNumFull+i,0);     // Регистр со смещением
             Meta2RegLink vv[] = element.getSettingsLinks();
             //---------- Вспомогательные регистры с того же девайса и юнита, что и основной, без смещения
             for(Meta2RegLink link2 : vv){
-                regNumFull = link2.getRegNum();
-                device.putValue(element.getDevUnit(),regNumFull,0);               // Регистр БЕЗ СМЕЩЕНИЯ
-                if (link2.getRegister().doubleSize())
-                    device.putValue(element.getDevUnit(),regNumFull+1,0);                        // Регистр БЕЗ СМЕЩЕНИЯ
+                putOneLinkRegister(element,link2,0);
+                //regNumFull = link2.getRegNum();
+                //regSize = link.getRegister().size16Bit();
+                //for(int i=0;i<regSize;i++)
+                //    device.putValue(element.getDevUnit(),regNumFull+i,0); // Регистр БЕЗ СМЕЩЕНИЯ
             }
             vv = element.getDataLinks();
             for(Meta2RegLink link2 : vv){
-                regNumFull = link2.getRegNum();
-                device.putValue(element.getDevUnit(),regNumFull,0);               // Регистр БЕЗ СМЕЩЕНИЯ
-                if (link2.getRegister().doubleSize())
-                    device.putValue(element.getDevUnit(),regNumFull+1,0);                        // Регистр БЕЗ СМЕЩЕНИЯ
+                putOneLinkRegister(element,link2,element.getRegOffset());
+                //regNumFull = link2.getRegNum();
+                //regSize = link.getRegister().size16Bit();
+                //for(int i=0;i<regSize;i++)
+                //    device.putValue(element.getDevUnit(),regNumFull+i,0); // Регистр БЕЗ СМЕЩЕНИЯ
             }
         }
         renderSeqNum++;             // Установить след. номер запроса
@@ -590,10 +593,10 @@ public class ESS2Rendering {
             ArrayList<UnitRegisterList> list2 = device.createList(false);
             for(UnitRegisterList list : list2){
                 System.out.println(device.getShortName()+"["+list.getUnitIdx()+"]="+list.size());
-                readPLMRegistersAsync(device,list,context.getForm());                    // Асинхронная версия
-                }
+                readPLMRegistersAsync(device,list,context.getForm());               // Асинхронная версия
             }
         }
+    }
     //--------------------------------------------------------------------------------------------------------------
     private synchronized void readPLMRegistersAsync(final ESS2Device device,final UnitRegisterList list, final Meta2GUIForm currentForm){
         final int currentRenderSeqNum = renderSeqNum;
@@ -637,79 +640,68 @@ public class ESS2Rendering {
                     }
                 }).start();
             }
-        //-----------------------------------------------------------------------------------------------------------------------
-        public void repaintValuesOnAnswer(ESS2Device device, int unitIdx,IntegerList values,Meta2GUIForm currentForm) throws UniException {
-            if (currentForm!=context.getForm())
-                return;
-            device.clearCash(unitIdx);
-            for(int i=0;i<values.size();i+=2)
-                device.putValue(unitIdx,values.get(i),values.get(i+1));
-            for (View2Base element : guiList){
-                Meta2RegLink link = element.getRegLink();
-                if (link==null)
-                    continue;
-                if (!element.getDevice().getShortName().equals(device.getShortName()))        // Пропустить из чужого мапа
-                    continue;
-                if (element.getDevUnit()!=unitIdx)      // Пропустить чужой физический Unit
-                    continue;
-                int regNumFull = link.getRegNum()+element.getRegOffset();
-                Integer vv = device.getValue(unitIdx,regNumFull);
-                if (vv==null){
-                    popup("Не найден регистр в ответе сервера "+regNumFull);
-                    continue;
+    //---------------------------------------------------------------------------------------------
+    public int []getRegisterData(ESS2Device device,Meta2RegLink link, int unitIdx,int offset){
+        int regNumFull = link.getRegNum()+offset;
+        int regSize = link.getRegister().size16Bit();
+        int data[] = new int[regSize];
+        boolean good=true;
+        for(int i=0;i<regSize;i++){
+            Integer vv = device.getValue(unitIdx,regNumFull+i);
+            if (vv==null){
+                popup("Не найден регистр в ответе сервера "+(regNumFull+i));
+                good=false;
+                break;
                 }
-                int sum = vv.intValue() & 0x0FFFF;
-                if (link.getRegister().doubleSize()){       // Сдвоенные регистры (передается словом)
-                    vv = device.getValue(unitIdx,regNumFull+1);
-                    if (vv==null){
-                        popup("Не найден регистр в ответе сервера "+regNumFull+1);
-                        continue;
-                    }
-                    sum |= vv.intValue() << 16;
-                }
-                element.putValue(sum);
-                Meta2RegLink links[] = element.getSettingsLinks();
-                for(int i=0;i<links.length;i++){
-                    regNumFull = links[i].getRegNum();
-                    vv = device.getValue(unitIdx,regNumFull);
-                    if (vv==null){
-                        popup("Не найден регистр в ответе сервера "+regNumFull);
-                        continue;
-                    }
-                    sum = vv.intValue() & 0x0FFFF;
-                    if (links[i].getRegister().doubleSize()){       // Сдвоенные регистры (передается словом)
-                        vv = device.getValue(unitIdx,regNumFull+1);
-                        if (vv==null){
-                            popup("Не найден регистр в ответе сервера "+regNumFull+1);
-                            continue;
-                        }
-                        sum |= vv.intValue() << 16;
-                    }
-                    element.putValue(links[i].getRegister(),sum,i);
-                }
-                links = element.getDataLinks();
-                for(int i=0;i<links.length;i++){
-                    regNumFull = links[i].getRegNum();
-                    vv = device.getValue(unitIdx,regNumFull);
-                    if (vv==null){
-                        popup("Не найден регистр в ответе сервера "+regNumFull);
-                        continue;
-                    }
-                    sum = vv.intValue() & 0x0FFFF;
-                    if (links[i].getRegister().doubleSize()){       // Сдвоенные регистры (передается словом)
-                        vv = device.getValue(unitIdx,regNumFull+1);
-                        if (vv==null){
-                            popup("Не найден регистр в ответе сервера "+regNumFull+1);
-                            continue;
-                        }
-                        sum |= vv.intValue() << 16;
-                    }
-                    element.putValue(links[i].getRegister(),sum,i);
-                }
-                element.repaintValues();
+            data[i]=vv;
             }
-            if (module!=null)
-                module.repaintValues();
+            return good ? data : null;
+        }
+    //---------------------------------------------------------------------------------------------------------------------------------
+    public void repaintValuesOnAnswer(ESS2Device device, int unitIdx,IntegerList values,Meta2GUIForm currentForm) throws UniException {
+        if (currentForm!=context.getForm())
+            return;
+        device.clearCash(unitIdx);
+        for(int i=0;i<values.size();i+=2)
+            device.putValue(unitIdx,values.get(i),values.get(i+1));
+        for (View2Base element : guiList){
+            Meta2RegLink link = element.getRegLink();
+            if (link==null)
+                continue;
+            if (!element.getDevice().getShortName().equals(device.getShortName()))        // Пропустить из чужого мапа
+                continue;
+            if (element.getDevUnit()!=unitIdx)      // Пропустить чужой физический Unit
+                continue;
+            int data[] = getRegisterData(device,link,unitIdx,element.getRegOffset());
+            if (data==null)
+                continue;
+            element.putValue(data);
+            Meta2RegLink links[] = element.getSettingsLinks();
+            for(int i=0;i<links.length;i++){
+                data = getRegisterData(device,links[i],unitIdx,0);
+                if (data==null)
+                    continue;
+                if (data.length>4){
+                    popup("Ошибка размерности доп. регистра "+links[i].getRegNum());
+                    continue;
+                    }
+                element.putValue(links[i].getRegister(),View2Base.toOneWord(data),i);
+                }
+            links = element.getDataLinks();
+            for(int i=0;i<links.length;i++){
+                data = getRegisterData(device,links[i],unitIdx,element.getRegOffset());
+                if (data==null)
+                    continue;
+                if (data.length>4){
+                    popup("Ошибка размерности доп. регистра "+links[i].getRegNum());
+                    continue;
+                    }
+                element.putValue(links[i].getRegister(),View2Base.toOneWord(data),i);
+                }
+            element.repaintValues();
+            }
+        if (module!=null)
+            module.repaintValues();
         }
     //---------------- TODO --------------- главная кнопка ---------------------------------------------
     public void testESSOnOffState() {

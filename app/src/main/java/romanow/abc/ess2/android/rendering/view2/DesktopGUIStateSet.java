@@ -48,9 +48,9 @@ public class DesktopGUIStateSet extends View2BaseDesktop {
         }
 
     @Override
-    public void putValue(int vv) throws UniException {
+    public void putValue(long vv) throws UniException {
         Meta2StateRegister reg = (Meta2StateRegister)  getRegister();
-        Meta2State state = reg.getStates().getByCode(vv);
+        Meta2State state = reg.getStates().getByCode((int)vv);
         if (state==null)
             textField.setText("Недопустимое состояние");
         else

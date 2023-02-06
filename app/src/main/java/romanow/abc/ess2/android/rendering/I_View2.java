@@ -11,8 +11,8 @@ public interface I_View2 {
     public String getTypeName();
     public String getTitle();
     public String setParams(FormContext2 context0, ESS2Architecture meta0, Meta2GUI element0, I_GUI2Event onEvent0);
-    public void putValue(int vv) throws UniException;
-    public void putValue(Meta2Register register, int vv, int idx) throws UniException;
+    public void putValue(long vv) throws UniException;
+    public void putValue(Meta2Register register, long vv, int idx) throws UniException;
     public Meta2RegLink[] getDataLinks();
     public Meta2RegLink[] getSettingsLinks();
     public void repaintBefore();

@@ -87,7 +87,7 @@ public class DesktopGUICommandBit extends View2BaseDesktop {
         context.getMain().main().popupAndLog(ss);
         }
     @Override
-    public void putValue(int vv) throws UniException {}
+    public void putValue(long vv) throws UniException {}
     @Override
     public String setParams(FormContext2 context, ESS2Architecture meta, Meta2GUI element0, I_GUI2Event onEvent0) {
         super.setParams(context,meta, element0,onEvent0);

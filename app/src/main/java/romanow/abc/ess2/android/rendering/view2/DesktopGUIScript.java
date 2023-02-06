@@ -57,7 +57,7 @@ public class DesktopGUIScript extends View2BaseDesktop {
         context.getMain().main().popupAndLog(ss);
         }
     @Override
-    public void putValue(int vv) throws UniException {
+    public void putValue(long vv) throws UniException {
     }
     @Override
     public void repaintBefore(){

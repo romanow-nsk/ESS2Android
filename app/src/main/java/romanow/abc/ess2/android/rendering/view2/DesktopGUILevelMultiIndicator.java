@@ -91,7 +91,7 @@ public class DesktopGUILevelMultiIndicator extends View2BaseDesktop {
         panel.addView(textField3);
         }
     @Override
-    public void putValue(Meta2Register register, int xx, int idx) {
+    public void putValue(Meta2Register register, long xx, int idx) {
         if (register instanceof Meta2SettingRegister)
             limits[idx] = register.regValueToFloat(getUnitIdx(),(int)xx);
         else{
@@ -102,7 +102,7 @@ public class DesktopGUILevelMultiIndicator extends View2BaseDesktop {
             }
         }
     @Override
-    public void putValue(int xx) throws UniException {
+    public void putValue(long xx) throws UniException {
         Meta2DataRegister register = (Meta2DataRegister) getRegister();
         vv[0] = register.regValueToFloat(getUnitIdx(),(int)xx);
         }
