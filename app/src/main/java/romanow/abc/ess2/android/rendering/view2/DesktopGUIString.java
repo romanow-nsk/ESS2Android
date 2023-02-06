@@ -56,7 +56,7 @@ public class DesktopGUIString extends View2BaseDesktop {
         Meta2Register set =  getRegister();
         String ss = "Строка "+toHex(set.getRegNum()+getRegOffset())
                 +" ["+toHex(set.getRegNum())+"] "+set.getShortName()+"$"+set.getTitle()+"$";
-        context.getMain().main().popupAndLog(ss);
+        context.getMain().main().popupInfo(ss);
         }
     @Override
     public void putValue(int data[]) throws UniException {

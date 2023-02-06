@@ -56,11 +56,11 @@ public class DesktopGUIButton extends View2BaseDesktop {
             @Override
             public void onClick(View v) {
             if (remoteDisable) {
-                context.getMain().main().popupAndLog("Запрет удаленного управления");
+                context.getMain().main().popupInfo("Запрет удаленного управления");
                 return;
                 }
             if  (!context.isActionEnable()) {
-                    context.getMain().main().popupAndLog("Недостаточен уровень доступа");
+                    context.getMain().main().popupInfo("Недостаточен уровень доступа");
                     return;
                     }
                 new OKDialog(context.getMain().main(), cmd.getTitle(), new I_EventListener() {
@@ -79,7 +79,7 @@ public class DesktopGUIButton extends View2BaseDesktop {
         int cmdCode = ((Meta2GUIButton)getElement()).getCode();
         Meta2CommandRegister register = (Meta2CommandRegister)  getRegister();
         String ss = register.getCommands().getByCode(cmdCode).getTitle();
-        context.getMain().main().popupAndLog("Команда "+register.getRegNum()+":="+cmdCode+"\n"+ ss);
+        context.getMain().main().popupInfo("Команда "+register.getRegNum()+":="+cmdCode+"\n"+ ss);
         }
     @Override
     public void putValue(long vv) throws UniException {}

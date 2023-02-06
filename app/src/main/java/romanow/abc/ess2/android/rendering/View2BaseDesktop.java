@@ -1,5 +1,6 @@
 package romanow.abc.ess2.android.rendering;
 
+import android.graphics.Typeface;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,10 +47,12 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
             setTextSize(label,fontSize);
             setLongClickInfo(label);
             panel.addView(label);
+            if (element.isBold())
+                label.setTypeface(null, Typeface.BOLD);
             return label;
             }
         public void setTextSize(TextView textView, int size){
-            textView.setTextSize((float) (size*AppData.ScreenMas+3));
+            textView.setTextSize((float) (size*AppData.ScreenMas+5));
             }
         public void setLongClickInfo(View view){
             view.setOnLongClickListener(new View.OnLongClickListener() {

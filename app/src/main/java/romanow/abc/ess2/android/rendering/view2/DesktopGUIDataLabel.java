@@ -31,7 +31,7 @@ public class DesktopGUIDataLabel extends View2BaseDesktop {
         String ss = "Регистр данных "+(set.getRegNum()+getRegOffset()+" ["+set.getRegNum()+"] "+set.getShortName()+"$"+set.getTitle()+"$");
         ss+="Потоковый  - "+(set.getStreamType()!=Values.DataStreamNone ? "да":"нет")+",";
         ss+=" Ед.изм. "+ set.getUnit();
-        context.getMain().main().popupAndLog(ss);
+        context.getMain().main().popupInfo(ss);
         }
     @Override
     public void putValue(long vv) throws UniException {

@@ -70,7 +70,7 @@ public class DesktopGUI3StateBox extends View2BaseDesktop {
         Meta2Bit bit = set.getBits().getByCode(bitNumElem);
         String ss = "Разряды регистра "+(set.getRegNum()+getRegOffset()+" ["+set.getRegNum()+"]("+bitNum+"/"+(bitNum+1)+") "+set.getShortName()+"$"+set.getTitle()+"$");
         ss+=bit.getTitle();
-        context.getMain().main().popupAndLog(ss);
+        context.getMain().main().popupInfo(ss);
     }
     @Override
     public void putValue(long vv) throws UniException {

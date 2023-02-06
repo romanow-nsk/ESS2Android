@@ -5,10 +5,11 @@
     android:layout_height="70dp"
     android:background="#FFFFFFFF"
     >
-    <Button style="@style/BlackButton"
+    <Button style="@style/FormButton"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="120dp"
         android:textSize="25dp"
+        android:textColor="@color/White"
         android:id="@+id/ok_button"
         android:layout_margin="5dp"
         android:clickable="true" />

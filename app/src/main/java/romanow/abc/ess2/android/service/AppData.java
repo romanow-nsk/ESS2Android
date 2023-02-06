@@ -32,7 +32,7 @@ public class AppData extends Application {
     public final static int PopupMiddleDelay=7;    // Время длинного popup
     public final static int PopupLongDelay=10;     // Время длинного popup
     public final static int CKeepALiveTime=10;     // Интервал времени проверки соединения
-    public final static double ScreenMas=1.0;
+    public final static double ScreenMas=0.9;
     //---------------------------------------------------------------------------------------------
     public final static int CStateGray=0;          // Состояние соединения не определено
     public final static int CStateRed=1;           // Нет соединения

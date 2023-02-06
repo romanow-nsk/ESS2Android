@@ -149,12 +149,12 @@ public abstract class View2Base implements I_View2 {
             @Override
             public void onError(int code, String mes) {
                 String ss = "Ошибка записи  Modbus: " + code + " "+mes;
-                context.getMain().main().popupAndLog(ss);
+                context.getMain().main().popupInfo(ss);
                 }
             @Override
             public void onError(UniException ee) {
                 String ss = "Ошибка записи Modbus: " + ee.toString();
-                context.getMain().main().popupAndLog(ss);
+                context.getMain().main().popupInfo(ss);
                 }
             @Override
             public void onSuccess(Object val) {}

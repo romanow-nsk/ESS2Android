@@ -196,6 +196,6 @@ public class DesktopGUILevelMultiIndicator extends View2BaseDesktop {
         ss+="Доп.регистры: ";
         for(Meta2RegLink link2 : getElement().getDataLinks())
             ss+=link2.getRegister().getRegNum()+" ";
-        context.getMain().main().popupAndLog(ss);
+        context.getMain().main().popupInfo(ss);
     }
 }

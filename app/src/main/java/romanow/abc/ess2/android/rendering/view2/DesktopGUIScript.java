@@ -54,7 +54,7 @@ public class DesktopGUIScript extends View2BaseDesktop {
         }
     public void showInfoMessage() {
         String ss = "Данные скрипта "+element.getScripName();
-        context.getMain().main().popupAndLog(ss);
+        context.getMain().main().popupInfo(ss);
         }
     @Override
     public void putValue(long vv) throws UniException {

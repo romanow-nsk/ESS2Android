@@ -22,6 +22,7 @@ import romanow.abc.ess2.android.rendering.I_GUI2Event;
 import romanow.abc.ess2.android.rendering.View2BaseDesktop;
 
 public class DesktopGUI2StateBox extends View2BaseDesktop {
+    private Meta2Bit bit;
     protected View textField;
     private int bitNum=0;
     private Button cmdButton=null;     // Кнопка
@@ -84,8 +85,10 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
             return;
         final boolean remoteDisable = !context.isSuperUser() &&  !context.isLocalUser() && !element.isRemoteEnable();
         //LinearLayout button = (LinearLayout) context.getMain().main().getLayoutInflater().inflate(R.layout.form_button, null);
-        //Button cmdButton = (Button) button.findViewById(R.id.form_button);
+        //cmdButton = (Button) button.findViewById(R.id.form_button);
         cmdButton = new Button(context.getMain().main());
+        cmdButton.setBackgroundResource(R.color.colorESS2Light);
+        cmdButton.setTextColor(0xFFFFFFFF);
         setBounds(cmdButton,
                 context.x(xx+sz+5),
                 context.y(yy),
@@ -93,23 +96,29 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
                 context.y(sz+5));
         //cmdButton.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
         textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        Meta2BitRegister register = (Meta2BitRegister) getRegister();
+        bit = register.getBits().getByCode(element.getBitNum());
+        if (bit==null){
+            context.getMain().main().popupInfo("Не найден бит "+element.getBitNum()+" регистра "+register.getTitle());
+            return;
+            }
         cmdButton.setText("");
         cmdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (remoteDisable){
-                    context.getMain().main().popupAndLog("Запрет удаленного управления");
+                    context.getMain().main().popupInfo("Запрет удаленного управления");
                     return;
                     }
                 if (!context.isActionEnable()){
-                    context.getMain().main().popupAndLog("Недостаточен уровень доступа");
+                    context.getMain().main().popupInfo("Недостаточен уровень доступа");
                     return;
                     }
                 if (lastBitValue==-1){
-                    context.getMain().main().popupAndLog("Разряд еще не прочитан");
+                    context.getMain().main().popupInfo("Разряд еще не прочитан");
                     return;
                     }
-                new OKDialog(context.getMain().main() ,element.getTitle()+" "+(lastBitValue!=0 ? "ОТКЛ" : "ВКЛ"), new I_EventListener() {
+                new OKDialog(context.getMain().main() ,bit.getTitle()+" "+(lastBitValue!=0 ? "ОТКЛ" : "ВКЛ"), new I_EventListener() {
                     @Override
                     public void onEvent(String zz) {
                         if (zz==null) return;
@@ -128,7 +137,7 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
         Meta2Bit bit = set.getBits().getByCode(bitNumElem);
         String ss = "Разряд регистра "+(set.getRegNum()+getRegOffset()+" ["+set.getRegNum()+"]("+bitNum+") "+set.getShortName()+"$"+set.getTitle()+"$");
         ss+=bit==null ? " не найден " : bit.getTitle();
-        context.getMain().main().popupAndLog(ss);
+        context.getMain().main().popupInfo(ss);
         }
     @Override
     public void putValue(long vv) throws UniException {

@@ -109,7 +109,7 @@ public class DesktopGUILevelIndicator extends View2BaseDesktop {
         for(Meta2RegLink link : getElement().getSettingsLinks()){
             ss+=link.getRegister().getRegNum()+" ";
             }
-        context.getMain().main().popupAndLog(ss);
+        context.getMain().main().popupInfo(ss);
     }
 }
 

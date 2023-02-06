@@ -77,7 +77,7 @@ public class ESS2ArchitectureData {
     private TextView renderStateText;
     //private Button formMenuButton;
     private AppData ctx;
-    ESS2Architecture deployed=null;         // Развернутая архитектура
+    public ESS2Architecture deployed=null;         // Развернутая архитектура
     ESS2View currentView=null;              // Текущий вид
     AccessManager manager;
     private int loadCount=0;                // Счетчик загрузок XML-файлов

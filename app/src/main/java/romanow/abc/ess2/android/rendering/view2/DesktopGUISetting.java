@@ -60,11 +60,11 @@ public class DesktopGUISetting extends View2BaseDesktop {
             @Override
             public void onClick(View v) {
                 if (remoteDisable){
-                    context.getMain().main().popupAndLog("Запрет удаленного управления");
+                    context.getMain().main().popupInfo("Запрет удаленного управления");
                     return;
                     }
                 if (!context.isActionEnable()){
-                    context.getMain().main().popupAndLog("Недостаточен уровень доступа");
+                    context.getMain().main().popupInfo("Недостаточен уровень доступа");
                     return;
                     }
                 /* ---------------------- TODO ---------------------------------------------
@@ -103,7 +103,7 @@ public class DesktopGUISetting extends View2BaseDesktop {
         ss+="Удаленное управление - "+(set.isRemoteEnable() ? "да":"нет")+",";
         ss+=" Ед.изм. "+ set.getUnit()+"$";
         ss+="Формулы: "+set.getDefValueFormula()+" / "+set.getMinValueFormula()+" / "+set.getMaxValueFormula();
-        context.getMain().main().popupAndLog(ss);
+        context.getMain().main().popupInfo(ss);
         }
     @Override
     public void putValue(long vv) throws UniException {

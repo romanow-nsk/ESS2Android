@@ -50,11 +50,11 @@ public class DesktopGUIMultiBitState extends View2BaseDesktop {
             return out;
         Meta2BitRegister register = (Meta2BitRegister) getRegister();
         if (register==null){
-            context.getMain().main().popupAndLog("Группа состояний: не найден регистр "+regNum);
+            context.getMain().main().popupInfo("Группа состояний: не найден регистр "+regNum);
             return out;
             }
         if (register.getType()!=Values.RegBitSet){
-            context.getMain().main().popupAndLog("Группа состояний: тип регистра "+regNum);
+            context.getMain().main().popupInfo("Группа состояний: тип регистра "+regNum);
             return out;
             }
         for(int i=0,vv=1;i<16;i++,vv<<=1){
@@ -63,7 +63,7 @@ public class DesktopGUIMultiBitState extends View2BaseDesktop {
                 if (bit!=null)
                     out.add(bit.getTitle());
                 else
-                    context.getMain().main().popupAndLog("Не найден "+i+"-ый разряд в "+getElement().getFullTitle());
+                    context.getMain().main().popupInfo("Не найден "+i+"-ый разряд в "+getElement().getFullTitle());
                     }
                 }
         for(Meta2Bit bit : register.getBits().getList()){
@@ -82,7 +82,7 @@ public class DesktopGUIMultiBitState extends View2BaseDesktop {
         Meta2GUIMultiBitState element = (Meta2GUIMultiBitState)   getElement();
         Meta2DataRegister register = (Meta2DataRegister)  getRegister();
         String ss = "Группа состояний "+register.getFullTitle()+String.format("[%x] ",element.getBitMask());
-        context.getMain().main().popupAndLog(ss);
+        context.getMain().main().popupInfo(ss);
         }
     @Override
     public void putValue(long vv) throws UniException {

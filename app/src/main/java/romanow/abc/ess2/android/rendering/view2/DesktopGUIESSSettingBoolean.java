@@ -53,15 +53,15 @@ public class DesktopGUIESSSettingBoolean extends View2BaseDesktop {
             @Override
             public void onClick(View v) {
                 if (((Meta2GUIESSSettingBoolean) element).isEditDisable()) {
-                    context.getMain().main().popupAndLog("Настройка не редактируется");
+                    context.getMain().main().popupInfo("Настройка не редактируется");
                     return;
                 }
                 if (remoteDisable) {
-                    context.getMain().main().popupAndLog("Запрет удаленного управления");
+                    context.getMain().main().popupInfo("Запрет удаленного управления");
                     return;
                 }
                 if (!context.isActionEnable()) {
-                    context.getMain().main().popupAndLog("Недостаточен уровень доступа");
+                    context.getMain().main().popupInfo("Недостаточен уровень доступа");
                     return;
                 }
                 new OKDialog(context.getMain().main(), element.getTitle() + (setValue ? ": выключить" : ": включить"), new I_EventListener() {
@@ -84,7 +84,7 @@ public class DesktopGUIESSSettingBoolean extends View2BaseDesktop {
     public void showInfoMessage() {
         Meta2GUIESSSettingBoolean element = (Meta2GUIESSSettingBoolean) getElement();
         String ss = "Параметр сервера (boolean) "+element.getFieldName();
-        context.getMain().main().popupAndLog(ss);
+        context.getMain().main().popupInfo(ss);
         }
     private void getSettings(){
         final FormContext2 context= getContext();

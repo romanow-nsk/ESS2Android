@@ -51,11 +51,11 @@ public class DesktopGUIESSSettingString extends View2BaseDesktop {
             @Override
             public void onClick(View v) {
                 if (element.isEditDisable()){
-                    context.getMain().main().popupAndLog("Настройка не редактируется");
+                    context.getMain().main().popupInfo("Настройка не редактируется");
                     return;
                 }
                 if (!context.isActionEnable()){
-                    context.getMain().main().popupAndLog("Недостаточен уровень доступа");
+                    context.getMain().main().popupInfo("Недостаточен уровень доступа");
                     return;
                 }
                 getSettings();
@@ -79,7 +79,7 @@ public class DesktopGUIESSSettingString extends View2BaseDesktop {
     public void showInfoMessage() {
         Meta2GUIESSSettingString element = (Meta2GUIESSSettingString) getElement();
         String ss = "Параметр сервера (int) "+element.getFieldName();
-        context.getMain().main().popupAndLog(ss);
+        context.getMain().main().popupInfo(ss);
         }
     private void getSettings() {
         final FormContext2 context = getContext();
