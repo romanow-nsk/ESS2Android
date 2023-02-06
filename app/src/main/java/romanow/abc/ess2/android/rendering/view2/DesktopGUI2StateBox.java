@@ -10,6 +10,7 @@ import romanow.abc.core.UniException;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.entity.metadata.Meta2Bit;
 import romanow.abc.core.entity.metadata.Meta2BitRegister;
+import romanow.abc.core.entity.metadata.Meta2DataRegister;
 import romanow.abc.core.entity.metadata.Meta2Register;
 import romanow.abc.core.entity.metadata.view.Meta2GUI;
 import romanow.abc.core.entity.metadata.view.Meta2GUI2StateBox;
@@ -154,7 +155,7 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
     public String setParams(FormContext2 context0, ESS2Architecture meta0, Meta2GUI element0, I_GUI2Event onEvent0) {
         super.setParams(context0,meta0, element0,onEvent0);
         Meta2Register register = (Meta2Register) getRegister();
-        if (!(register instanceof Meta2BitRegister))
+        if (!(register instanceof Meta2BitRegister || ((Meta2GUI2StateBox) getElement()).isMixedRegister() && register instanceof Meta2DataRegister))
             return "Недопустимый "+register.getTypeName()+" для "+getTypeName();
         return null;
         }
