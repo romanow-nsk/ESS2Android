@@ -1,10 +1,11 @@
-package romanow.abc.ess2.android.rendering;
+package romanow.abc.ess2.android.rendering.module;
 
 import android.widget.RelativeLayout;
 
 import romanow.abc.core.API.RestAPIBase;
 import romanow.abc.core.API.RestAPIESS2;
 import romanow.abc.core.entity.metadata.Meta2GUIForm;
+import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.service.ESS2ArchitectureData;
 
 public class Module implements I_Module{
@@ -26,8 +27,9 @@ public class Module implements I_Module{
         this.token = token;
         context = formContext;
         //System.out.println("Модуль формы "+form.getModuleName());
-    }
-
+        }
+    @Override
+    public String getTitle(){ return ""; }
     @Override
     public void repaintView() {
     }

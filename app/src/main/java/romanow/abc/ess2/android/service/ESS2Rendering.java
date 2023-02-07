@@ -1,8 +1,5 @@
 package romanow.abc.ess2.android.service;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -13,7 +10,6 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import retrofit2.Call;
 import romanow.abc.core.ErrorList;
@@ -42,8 +38,8 @@ import romanow.abc.ess2.android.ListBoxDialog;
 import romanow.abc.ess2.android.R;
 import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.rendering.I_GUI2Event;
-import romanow.abc.ess2.android.rendering.I_Module;
-import romanow.abc.ess2.android.rendering.Module;
+import romanow.abc.ess2.android.rendering.module.I_Module;
+import romanow.abc.ess2.android.rendering.module.Module;
 import romanow.abc.ess2.android.rendering.ScreenMode;
 import romanow.abc.ess2.android.rendering.View2Base;
 import romanow.abc.ess2.android.rendering.View2BaseDesktop;
@@ -389,21 +385,21 @@ public class ESS2Rendering {
             ((View2BaseDesktop)view).addToPanel(formPanel);                      // Добавить на панель
         //----------------------------------------------------------------------------------
         module=null;
-        if (!context.getForm().noModule()){
-            Pair<String,Object> res = context.getForm().createModule();
-            if (res.o1!=null){
-                popup(res.o1);
-            }
-            else{
-                if (!(res.o2 instanceof I_Module)){
-                    popup(context.getForm().getModuleName() +" не модуль ЧМИ");
-                }
+        Meta2GUIForm ff = context.getForm();
+        if (!ff.noModule()){
+            try {
+                Class clazz = Class.forName(AppData.ESS2ModulePackage+"."+ff.getModuleName());
+                if (clazz==null){
+                    errorList.addError("Не найден класс модуля "+ ff.getModuleName());
+                    }
                 else{
-                    module = (Module)res.o2;
+                    module = (Module)clazz.newInstance();
                     module.init(main2,formPanel,ctx.getService(),ctx.getService2(),ctx.loginSettings().getSessionToken(), context.getForm(),context);
-                }
+                    }
+                } catch (Exception ee){
+                    errorList.addError("Ошибка создания объекта для модуля "+ ff.getModuleName());
+                    }
             }
-        }
         //------------------------------------------------------------------------------------
         //repaintBusy=false;
         if (!errorList.valid()){

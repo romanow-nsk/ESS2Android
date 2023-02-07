@@ -297,6 +297,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             addToLog(false, title, 22, 0);
             //addToLogButton("Рег.код: "+createRegistrationCode(),true,null,null);
             //addToLogButton("ID: "+getSoftwareId64(),true,null,null);
+            /*
             if (!createRegistrationCode().equals(ctx.loginSettings().getRegistrationCode())) {
                 addToLog(false,"Приложение не зарегистрировано\nПолучить регистрационный код для",
                         18,0x00A00000);
@@ -306,6 +307,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 addToLog(false,"Приложение зарегистрировано\nПолная функциональность",
                         18,0);
                 }
+            */
             } catch (Exception ee) {
                 errorMes(createFatalMessage(ee, 10));
                 }
@@ -611,7 +613,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
 
     public void createMenuList() {
         menuList.clear();
-        if (isAllEnabled()){
+        //if (isAllEnabled()){
             menuList.add(new MenuItemAction("Связь с сервером") {
                 @Override
                 public void onSelect() {
@@ -619,7 +621,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 }
                 });
             //new MIESS2(this);
-            }
+        //    }
         menuList.add(new MenuItemAction("Очистить ленту") {
             @Override
             public void onSelect() {
