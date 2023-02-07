@@ -9,4 +9,6 @@ public class ModuleEventState extends ModuleEventAll {
     public boolean typeFilter(int type) {
         return type== Values.EventState || type==Values.EventDEStateReg || type==Values.EventDEBitReg;
         }
+    private int[] eTypes = {Values.EventState, Values.EventDEStateReg, Values.EventDEBitReg};
+    public int[] eventTypes(){ return eTypes; }
 }

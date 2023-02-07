@@ -9,4 +9,6 @@ public class ModuleEventExternal extends ModuleEventAll {
     public boolean typeFilter(int type) {
         return type== Values.EventExternal;
     }
+    private int[] eTypes = {Values.EventExternal};
+    public int[] eventTypes(){ return eTypes; }
 }

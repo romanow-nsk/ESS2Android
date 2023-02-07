@@ -196,7 +196,8 @@ public class ESS2Rendering {
                 while(!shutDown){
                     long tt =  new OwnDateTime().timeInMS();
                     try {
-                        Thread.sleep(((WorkSettings) AppData.ctx().workSettings()).getGUIrefreshPeriod() * 1000);
+                        int delay  = ((WorkSettings) AppData.ctx().workSettings()).getGUIrefreshPeriod() * 1000;
+                        Thread.sleep(delay);
                         } catch (InterruptedException e) {
                             System.out.println("Разбудили: " + (new OwnDateTime().timeInMS()-tt));
                             }
@@ -209,7 +210,7 @@ public class ESS2Rendering {
                         shutDown();
                         logoutCallBack.onPush();
                         return;
-                    }
+                        }
                     if (!renderingOn)
                         continue;
                     main2.main().guiCall(new Runnable() {
@@ -551,8 +552,6 @@ public class ESS2Rendering {
         if (!renderingOn)
             return;
         testESSOnOffState();
-        if (module!=null)
-            module.repaintValues();
         for (View2Base element : guiList){
             element.repaintBefore();
         }

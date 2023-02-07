@@ -9,4 +9,6 @@ public class ModuleEventSystem extends ModuleEventAll {
     public boolean typeFilter(int type) {
         return type== Values.EventSystem || type == Values.EventFile;
         }
+    private int[] eTypes = {Values.EventSystem, Values.EventFile};
+    public int[] eventTypes(){ return eTypes; }
 }

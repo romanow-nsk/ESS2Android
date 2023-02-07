@@ -19,4 +19,6 @@ public class ModuleEventCommand extends ModuleEventAll {
     public boolean typeFilter(int type) {
         return type== Values.EventCommand;
         }
+    private int[] eTypes = {Values.EventCommand};
+    public int[] eventTypes(){ return eTypes; }
 }
