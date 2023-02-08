@@ -22,14 +22,14 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:icon="@drawable/battery3"
-        android:label="СНЭЭ 3.0"
+        android:label="СНЭЭ-3"
         android:roundIcon="@drawable/battery3"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
-            android:label="СНЭЭ 3.0"
+            android:label="СНЭЭ-3"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

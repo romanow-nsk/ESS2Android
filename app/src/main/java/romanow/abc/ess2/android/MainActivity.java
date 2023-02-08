@@ -40,6 +40,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -72,6 +73,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     public volatile boolean shutDown = false;
     public boolean voiceRun = false;
     private AppData ctx;
+    public TextView headerInfo;
     //-------------- Постоянные параметры snn-core ---------------------------------------
     private final int MiddleColor = 0x0000FF00;
     private final int DispColor = 0x000000FF;
@@ -244,6 +246,14 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 errorMes(createFatalMessage(ee, 10));
                 }
         }
+    public void putHeaderInfo(String text){
+        StringTokenizer ss = new StringTokenizer(text,"\n");
+        int cnt = ss.countTokens();
+        headerInfo.setLines(cnt);
+        headerInfo.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+        headerInfo.setText(text);
+        headerInfo.setTextSize(cnt==1 ? 25 : 15);
+        }
     private void onAllPermissionsEnabled(){
         try{
             architectureData = new ESS2ArchitectureData(this);
@@ -293,8 +303,10 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 ctx.loginSettings().setFatalMessage("");
                 saveContext();
                 }
-            String title = "СНЭЭ 3.0";
-            addToLog(false, title, 22, 0);
+            headerInfo = (TextView) findViewById(R.id.headerInfo);
+            String title = "СНЭЭ-3";
+            putHeaderInfo(title);
+            //addToLog(false, title, 22, 0);
             //addToLogButton("Рег.код: "+createRegistrationCode(),true,null,null);
             //addToLogButton("ID: "+getSoftwareId64(),true,null,null);
             /*
@@ -626,7 +638,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             @Override
             public void onSelect() {
                 log.removeAllViews();
-                String title = "СНЭЭ 3.0";
+                String title = "СНЭЭ-3";
                 addToLog(false, title, 22, 0);
                 }
             });
@@ -895,10 +907,12 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         ctx.service2(retrofit.create(RestAPIESS2.class));
         }
     public void  sessionOn(){
+        LoginSettings log = ctx.loginSettings();
         httpKeepAlive.run();                // Сразу и потом по часам
         ctx.cState(AppData.CStateGreen);
         }
     public void sessionOff() {
+        putHeaderInfo("");
         cancelDelay(httpKeepAlive);
         ctx.cState(AppData.CStateGray);
         }

@@ -31,31 +31,28 @@
             android:layout_alignTop="@id/headerDeployState"
             android:longClickable="true"
             android:src="@drawable/status_gray" />
+
         <ImageView
             android:id="@+id/headerRenderState"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_alignTop="@id/headerDeployState"
             android:layout_toRightOf="@id/headerConnectState"
             android:clickable="true"
-            android:layout_alignTop="@id/headerDeployState"
             android:longClickable="true"
             android:src="@drawable/connect_off" />
 
-        <Button
-            android:id="@+id/headerRenderMenu"
-            style="@style/FormButton"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
+        <TextView
+            android:id="@+id/headerInfo"
+            android:layout_width="140dp"
+            android:layout_height="60dp"
             android:layout_alignTop="@id/headerDeployState"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
             android:layout_toRightOf="@id/headerRenderState"
             android:clickable="true"
             android:longClickable="true"
-            android:visibility="invisible"
-            android:text=""
-            android:textAlignment="center"
-            android:textSize="15dp" />
+            android:textColor="@color/White"
+            android:textSize="30dp" />
         <ImageView
             android:id="@+id/headerMenu"
             android:layout_width="50dp"

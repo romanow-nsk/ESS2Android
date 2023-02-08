@@ -8,6 +8,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.MessageDigest;
 
+import romanow.abc.core.constants.Values;
+import romanow.abc.core.constants.ValuesBase;
 import romanow.abc.core.utils.Base64Coder;
 import romanow.abc.ess2.android.MainActivity;
 import romanow.abc.ess2.android.service.AppData;
@@ -18,7 +20,8 @@ public class MIAbout extends MenuItem {
         main.addMenuList(new MenuItemAction("О программе") {
             @Override
             public void onSelect() {
-                String title ="Мобильный клиент \"СНЭЭ 3.0\", версия "+ AppData.apkVersion+"\n";
+                String title ="Клиент СНЭЭ-3, версия "+ AppData.apkVersion+"\n";
+                title+="Версия ядра "+ Values.env().applicationName(ValuesBase.AppNameTitle)+"\n";
                 title+="Разработчик: НГТУ\n";
                 title+="Контакты: romanov@corp.nstu.ru\n";
                 title+=calcOwnMD5();

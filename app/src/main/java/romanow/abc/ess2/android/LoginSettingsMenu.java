@@ -100,6 +100,7 @@ public class LoginSettingsMenu extends SettingsMenuBase {
                                 final LoginSettings set = ctx.loginSettings();
                                 set.setUserId(user.getOid());
                                 set.setSessionToken(user.getSessionToken());
+                                base.putHeaderInfo(set.getDataSetverIP()+"\n"+user.shortUserName()+"\n"+user.typeName());
                                 new NetCall<DBRequest>().call(base,ctx.getService().workSettings(ctx.loginSettings().getSessionToken()), new NetBackDefault() {
                                     @Override
                                     public void onSuccess(Object val) {
