@@ -20,11 +20,12 @@ public class MIAbout extends MenuItem {
         main.addMenuList(new MenuItemAction("О программе") {
             @Override
             public void onSelect() {
-                String title ="Клиент СНЭЭ-3, версия "+ AppData.apkVersion+"\n";
+                String title ="Клиент СМУ СНЭЭ-3\n";
                 title+="Версия ядра "+ Values.env().applicationName(ValuesBase.AppNameTitle)+"\n";
                 title+="Разработчик: НГТУ\n";
                 title+="Контакты: romanov@corp.nstu.ru\n";
-                title+=calcOwnMD5();
+                title+=calcOwnMD5()+"\n";
+                title+="Версия "+ AppData.apkVersion+":\n";
                 main.addToLog(title,16);
             }
         });
