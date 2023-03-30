@@ -17,7 +17,7 @@ import romanow.abc.ess2.android.service.I_ModbusGroupAsyncDriver;
 import romanow.abc.ess2.android.service.NetBack;
 
 public abstract class View2Base implements I_View2 {
-    protected int type= Values.GUINull;
+    protected int type= Values.GUI;
     protected Meta2GUI element=null;          // Элемент мета-данных
     protected ESS2Architecture architecture;
     protected I_GUI2Event onEvent=null;
