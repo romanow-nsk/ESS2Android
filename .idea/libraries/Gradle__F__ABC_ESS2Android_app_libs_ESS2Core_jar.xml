@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: F./ABC/ESS2Android/app/libs/ESS2Core.jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/ESS2Core.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
