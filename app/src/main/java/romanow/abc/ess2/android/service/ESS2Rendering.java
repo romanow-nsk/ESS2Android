@@ -559,6 +559,8 @@ public class ESS2Rendering {
             Meta2RegLink link = element.getRegLink();
             if (link==null)
                 continue;
+            if (!link.getRegister().isReadEnable())
+                continue;
             putOneLinkRegister(element,link,element.getRegOffset());
             //ESS2Device device = element.getDevice();
             //int regNumFull = link.getRegNum()+element.getRegOffset();                   // Двойные регистры
@@ -666,6 +668,8 @@ public class ESS2Rendering {
             if (!element.getDevice().getShortName().equals(device.getShortName()))        // Пропустить из чужого мапа
                 continue;
             if (element.getDevUnit()!=unitIdx)      // Пропустить чужой физический Unit
+                continue;
+            if (!link.getRegister().isReadEnable())
                 continue;
             int data[] = getRegisterData(device,link,unitIdx,element.getRegOffset());
             if (data==null)
