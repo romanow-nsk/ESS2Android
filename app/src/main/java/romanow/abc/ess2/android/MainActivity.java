@@ -304,7 +304,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 saveContext();
                 }
             headerInfo = (TextView) findViewById(R.id.headerInfo);
-            String title = "СНЭЭ-3";
+            String title = "СНЭЭ-4";
             putHeaderInfo(title);
             //addToLog(false, title, 22, 0);
             //addToLogButton("Рег.код: "+createRegistrationCode(),true,null,null);

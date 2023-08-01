@@ -27,6 +27,9 @@ public abstract class SettingsMenuBase {
         return createItem(name,value,false,false,lsn);
         }
     protected LinearLayout createItem(String name, String value, boolean shortSize, boolean textType, final I_EventListener lsn){
+        return createItem(name,value,shortSize,textType,null,lsn);
+        }
+    protected LinearLayout createItem(String name, String value, boolean shortSize, boolean textType, final String prevValues[],final I_EventListener lsn){
         LinearLayout xx=(LinearLayout)base.getLayoutInflater().inflate(
                 shortSize ? R.layout.settings_item_short : R.layout.settings_item, null);
         xx.setPadding(5, 5, 5, 5);
@@ -40,6 +43,26 @@ public abstract class SettingsMenuBase {
             @Override
             public void onClick(View v) {
                 lsn.onEvent(tt.getText().toString());
+                }
+            });
+        img.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (prevValues==null)
+                    return false;
+                new ListBoxDialog(base, prevValues, name, new I_ListBoxListener() {
+                    @Override
+                    public void onSelect(int index) {
+                        tt.setText(prevValues[index]);
+                        }
+                    @Override
+                    public void onLongSelect(int index) {
+                        tt.setText(prevValues[index]);
+                        }
+                    @Override
+                    public void onCancel() {}
+                    }).create();
+                return true;
                 }
             });
         img.setClickable(true);

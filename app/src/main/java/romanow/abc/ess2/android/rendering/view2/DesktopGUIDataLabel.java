@@ -35,11 +35,18 @@ public class DesktopGUIDataLabel extends View2BaseDesktop {
         }
     @Override
     public void putValue(long vv) throws UniException {
+        Meta2Register register = (Meta2Register) getRegister();
+        int type = register.getFormat();
+        if (type == Values.FloatValue)
+            label.setText(" " + getElement().getTitle() + " = " + Double.longBitsToDouble(vv) + " " + register.getUnit());
+        else
+            label.setText(" " + getElement().getTitle() + " = " + register.regValueToFloat(getUnitIdx(),(int)vv) + " " + register.getUnit());
+        /* ------------ Старая версия
         Meta2Register register = getRegister();
         if (((Meta2GUIData)getElement()).isByteSize()){
             label.setText(""+(byte)vv);
             return;
-        }
+            }
         if (type==Values.FloatValue)
             label.setText(""+Float.intBitsToFloat((int)vv));
         else{
@@ -56,6 +63,7 @@ public class DesktopGUIDataLabel extends View2BaseDesktop {
                     label.setText(((Meta2SettingRegister)register).regValueToString(getUnitIdx(),(int)vv));
             }
         }
+         */
     }
     @Override
     public String setParams(FormContext2 context0, ESS2Architecture meta0, Meta2GUI element0, I_GUI2Event onEvent0) {

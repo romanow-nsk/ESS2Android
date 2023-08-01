@@ -39,7 +39,7 @@ public class ListBoxDialog {
         for(String ss:list0)
             list.add(ss);
         ls = ls0;
-    }
+        }
     public ListBoxDialog setAutoClose(boolean autoClose) {
         this.autoClose = autoClose;
         return this;

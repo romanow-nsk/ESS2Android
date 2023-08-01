@@ -3,6 +3,7 @@ package romanow.abc.ess2.android.service;
 import static romanow.abc.core.Utils.httpError;
 import static romanow.abc.core.entity.metadata.Meta2Entity.toHex;
 
+import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import romanow.abc.core.API.RestAPIProxy;
 import romanow.abc.core.DBRequest;
+import romanow.abc.core.ErrorList;
 import romanow.abc.core.Utils;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.constants.ValuesBase;
@@ -168,7 +170,11 @@ public class ESS2ArchitectureData {
         ModBusClientAndroidDriver driver = new ModBusClientAndroidDriver();
         Object oo[]={base};
         try {
-            driver.openConnection(oo,null);
+            ErrorList ss= driver.openConnection(oo,null);
+            if (!ss.valid()){
+                arch.getErrors().addError(ss);
+                return;
+                }
             for (ESS2Equipment equipment : deployed.getEquipments()) {
                 equipment.createFullEquipmentPath();
                 }
@@ -294,6 +300,7 @@ public class ESS2ArchitectureData {
         currentView=null;
         renderState.setImageResource(R.drawable.connect_off);
         rendering.renderOff();
+        //main().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
     public void setRenderingOn() {
         currentView = null;
@@ -311,6 +318,7 @@ public class ESS2ArchitectureData {
         new NetCall<ESS2EnvValuesList>().call(base,ctx.getService2().getEnvValues(ctx.loginSettings().getSessionToken()), new NetBackDefault(){
             @Override
             public void onSuccess(Object val) {
+                //main().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
                 setLocalEnvValues((ESS2EnvValuesList)val);
                 renderState.setImageResource(R.drawable.connect_on);
                 rendering.renderOn();

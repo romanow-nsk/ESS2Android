@@ -39,14 +39,16 @@ public class LoginSettingsMenu extends SettingsMenuBase {
         ctx = AppData.ctx();
         try {
             final LoginSettings set = AppData.ctx().loginSettings();
-            LinearLayout layout = createItem("IP", set.getDataSetverIP(), true,true,new I_EventListener(){
+            String ipList[]={"217.71.138.9","217.71.138.13","192.168.0.225","10.32.0.2","10.30.0.2"};
+            LinearLayout layout = createItem("IP", set.getDataSetverIP(), true,true,ipList,new I_EventListener(){
                 @Override
                 public void onEvent(String ss) {
                     set.setDataSetverIP(ss);
                     settingsChanged();
                 }});
             trmain.addView(layout);
-            layout = createItem("Порт", ""+set.getDataServerPort(), new I_EventListener(){
+            String portList[]={"4567","4569","5001"};
+            layout = createItem("Порт", ""+set.getDataServerPort(), false,false,portList,new I_EventListener(){
                 @Override
                 public void onEvent(String ss) {
                     try {

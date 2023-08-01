@@ -11,6 +11,7 @@ import romanow.abc.core.entity.metadata.Meta2Register;
 import romanow.abc.core.entity.metadata.Meta2SettingRegister;
 import romanow.abc.core.entity.metadata.view.Meta2GUI;
 import romanow.abc.core.entity.metadata.view.Meta2GUIData;
+import romanow.abc.core.entity.metadata.view.Meta2GUIRegW2;
 import romanow.abc.core.entity.subject2area.ESS2Architecture;
 import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.rendering.I_GUI2Event;
@@ -64,22 +65,26 @@ public class DesktopGUIData extends View2BaseDesktop {
             return;
             }
         int type = register.getFormat();
+        Meta2GUIRegW2 metaGUI = (Meta2GUIRegW2)getElement();
+        textField.setText(register.regValueToString(getUnitIdx(),(int)vv,metaGUI));
+        /* ------------ старая версия ------------------------------------------------------------
         if (type==Values.FloatValue)
             textField.setText(""+Float.intBitsToFloat((int)vv));
         else{
             if (register instanceof Meta2DataRegister){
                 if (((Meta2GUIData) getElement()).isIntValue())
-                    textField.setText(((Meta2DataRegister)register).regValueToIntString(getUnitIdx(),(int)vv));
+                    textField.setText(((Meta2DataRegister)register).regValueToString(getUnitIdx(),(int)vv,metaGUI));
                 else
                     textField.setText(((Meta2DataRegister)register).regValueToString(getUnitIdx(),(int)vv));
-            }
+                }
             else{
                 if (((Meta2GUIData) getElement()).isIntValue())
-                    textField.setText(((Meta2SettingRegister)register).regValueToIntString(getUnitIdx(),(int)vv));
+                    textField.setText(((Meta2SettingRegister)register).regValueToString(getUnitIdx(),(int)vv));
                 else
                     textField.setText(((Meta2SettingRegister)register).regValueToString(getUnitIdx(),(int)vv));
                 }
             }
+         */
         }
     @Override
     public String setParams(FormContext2 context0, ESS2Architecture meta0, Meta2GUI element0, I_GUI2Event onEvent0) {

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import retrofit2.Call;
 import romanow.abc.core.API.RestAPIBase;
 import romanow.abc.core.API.RestAPIESS2;
+import romanow.abc.core.ErrorList;
 import romanow.abc.core.UniException;
 import romanow.abc.core.drivers.I_ModbusGroupDriver;
 import romanow.abc.core.entity.baseentityes.JEmpty;
@@ -36,7 +37,8 @@ public class ModBusClientAndroidDriver implements I_ModbusGroupAsyncDriver {
     private String token;
     private MainActivity base;
     @Override
-    public void openConnection(Object needed[], HashMap<String, String> paramList) throws UniException {
+    public ErrorList openConnection(Object needed[], HashMap<String, String> paramList) {
+        ErrorList out = new ErrorList();
         ready=false;
         int ii=0;
         AppData ctx = AppData.ctx();
@@ -47,14 +49,15 @@ public class ModBusClientAndroidDriver implements I_ModbusGroupAsyncDriver {
         ready = true;
         try {
             } catch (Exception ee){
-                throw UniException.bug("Недопустимый класс драйвера "+needed[ii].getClass().getSimpleName());
+                out.addError("Недопустимый класс драйвера "+needed[ii].getClass().getSimpleName());
                 }
+        return out;
         }
     @Override
-    public void closeConnection() throws UniException{}
+    public void closeConnection(){}
 
     @Override
-    public void reopenConnection() {}
+    public String reopenConnection() { return null; }
 
     @Override
     public int getState() {
