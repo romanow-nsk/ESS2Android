@@ -59,6 +59,7 @@ public class ESS2Rendering {
     private RelativeLayout formPanel=null;
     private ConstraintLayout formView=null;
     private Button formMenuButton=null;
+    private volatile int asyncCount=0;                          // Счетчик асинхронных вызовов
     //------------------------------------------------------------------------------------------------------------------
     public void openFormDialog(){
         if (formView!=null){
@@ -216,7 +217,8 @@ public class ESS2Rendering {
                     main2.main().guiCall(new Runnable() {
                         @Override
                         public void run() {
-                            repaintValues();
+                            if (asyncCount==0)
+                                repaintValues();
                             }
                         });
                     }
@@ -586,6 +588,7 @@ public class ESS2Rendering {
             }
         }
         renderSeqNum++;             // Установить след. номер запроса
+        asyncCount=0;
         for(ESS2Device device : main2.deployed.getDevices()){
             ArrayList<UnitRegisterList> list2 = device.createList(false);
             for(UnitRegisterList list : list2){
@@ -598,6 +601,7 @@ public class ESS2Rendering {
     private synchronized void readPLMRegistersAsync(final ESS2Device device,final UnitRegisterList list, final Meta2GUIForm currentForm){
         final int currentRenderSeqNum = renderSeqNum;
         final long tt =  new OwnDateTime().timeInMS();
+        asyncCount++;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -612,6 +616,7 @@ public class ESS2Rendering {
                         @Override
                         public void run() {
                             synchronized (ESS2Rendering.this){
+                                asyncCount--;
                                 if (renderSeqNum!=currentRenderSeqNum){      // Совпадение посл.номера запроса
                                     System.out.println("Несовпадение номеров запроса (трассировка) "+renderSeqNum+" "+currentRenderSeqNum);
                                     return;
@@ -629,6 +634,7 @@ public class ESS2Rendering {
                         main2.main().guiCall(new Runnable() {
                             @Override
                             public void run() {
+                                asyncCount--;
                                 AppData.ctx().popupAndLog(true,"Ошибка сервера: "+ee.toString());
                                 main2.clearDeployedMetaData();
                                 }
