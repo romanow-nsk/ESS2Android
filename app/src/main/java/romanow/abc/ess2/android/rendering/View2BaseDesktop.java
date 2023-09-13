@@ -1,10 +1,14 @@
 package romanow.abc.ess2.android.rendering;
 
 import android.graphics.Typeface;
+import android.graphics.fonts.Font;
+import android.text.Html;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import romanow.abc.core.types.TypeFace;
 import romanow.abc.ess2.android.service.AppData;
 
 public abstract class View2BaseDesktop extends View2Base implements I_View2Desktop {
@@ -32,15 +36,12 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
                     label,
                     context.x(element.getX()+dxOffset),
                     context.y(element.getY()+dyOffset),
-                    context.x(element.getDx()),
-                    context.y(hh));
+                    context.dx(element.getDx()),
+                    context.dy(hh));
             int size = element.getStringSize();
-            //if (size==0)
-                label.setText("  "+text);
-            //else
-            //    UtilsDesktop.setLabelText(label,text,size);
+            label.setText(element.isLabelBold() ? Html.fromHtml("<b>" + text + "</b>") : text);
             label.setTextColor(context.getView().getTextColor() | 0xFF000000);
-            label.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+            label.setTextAlignment(element.isLabelOnCenter() ? View.TEXT_ALIGNMENT_CENTER : View.TEXT_ALIGNMENT_TEXT_START);
             label.setBackgroundColor(getBackColor());
             int fontSize = element.getFontSize();
             if (fontSize==0) fontSize=DefaultTextSize;
@@ -65,9 +66,55 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
             }
         public int getBackColor(){
             if (element.getColor()==0 || element.isCommonColor())
-                return context.getView().getLabelBackColor()  | 0xFF000000;
+                return context.getView().getCommonBackColor()  | 0xFF000000;
             else
                 return element.getColor() | 0xFF000000;
             }
+    public void setTextFieldParams(TextView textField) {
+        textField.setBackgroundColor(getElemBackColor());
+        // border = true
+        textField.setText(element.isBold() ? Html.fromHtml("<b>" + element.getTitle() + "</b>") : element.getTitle());
+        textField.setTextAlignment(element.isOnCenter() ? View.TEXT_ALIGNMENT_CENTER : View.TEXT_ALIGNMENT_VIEW_START);
+        textField.setTextColor(context.getView().getTextColor() | 0xFF000000);
+        int fontSize = element.getFontSize();
+        if (fontSize == 0) fontSize = 12;
+        textField.setTextSize(fontSize);
         }
+    public void setButtonParams(Button textField) {
+        setButtonParams(textField, false);
+        }
+    public void setButtonParams(Button textField, boolean noOneString) {
+        textField.setBackgroundColor(getElemBackColor());
+        String ss = element.getTitle();
+        textField.setText(!noOneString ? ss : "<html>"+(element.isOnCenter() ? "<center>" : "") + ss.replaceAll(" ", "<br>") + "</html>");
+        textField.setTextAlignment(element.isOnCenter() ? View.TEXT_ALIGNMENT_CENTER : View.TEXT_ALIGNMENT_VIEW_START);
+        textField.setTextColor(context.getView().getTextColor() | 0xFF000000);
+        }
+    public int getElemBackColor(){
+        if (element.isBackColor()){
+            return  context.getView().getBackColor();
+        }
+        else{
+            if (element.getColor()==0 || element.isCommonColor()){
+                return context.getView().getCommonBackColor();
+            }
+            else{
+                return element.getColor();
+                }
+            }
+        }
+    public int getLabelColor(){
+        if (element.isLabelBackColor()){
+            return  context.getView().getBackColor();
+        }
+        else{
+            if (element.getLabelColor()==0 || element.isLabelCommonColor()){
+                return context.getView().getCommonBackColor();
+            }
+            else{
+                return element.getLabelColor();
+                }
+            }
+        }
+    }
 

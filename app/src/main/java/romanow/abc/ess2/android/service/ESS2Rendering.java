@@ -1,8 +1,10 @@
 package romanow.abc.ess2.android.service;
 
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +26,8 @@ import romanow.abc.core.entity.metadata.Meta2GUIForm;
 import romanow.abc.core.entity.metadata.Meta2GUIView;
 import romanow.abc.core.entity.metadata.Meta2RegLink;
 import romanow.abc.core.entity.metadata.Meta2Register;
+import romanow.abc.core.entity.metadata.render.I_ContextBack;
+import romanow.abc.core.entity.metadata.render.ScreenMode;
 import romanow.abc.core.entity.metadata.view.Meta2GUI;
 import romanow.abc.core.entity.metadata.view.Meta2GUIArray;
 import romanow.abc.core.entity.metadata.view.Meta2GUICollection;
@@ -32,15 +36,13 @@ import romanow.abc.core.entity.subject2area.ESS2Device;
 import romanow.abc.core.entity.subject2area.ESS2Equipment;
 import romanow.abc.core.entity.subjectarea.WorkSettings;
 import romanow.abc.core.utils.OwnDateTime;
-import romanow.abc.core.utils.Pair;
 import romanow.abc.ess2.android.I_ListBoxListener;
 import romanow.abc.ess2.android.ListBoxDialog;
+import romanow.abc.ess2.android.MainActivity;
 import romanow.abc.ess2.android.R;
 import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.rendering.I_GUI2Event;
-import romanow.abc.ess2.android.rendering.module.I_Module;
 import romanow.abc.ess2.android.rendering.module.Module;
-import romanow.abc.ess2.android.rendering.ScreenMode;
 import romanow.abc.ess2.android.rendering.View2Base;
 import romanow.abc.ess2.android.rendering.View2BaseDesktop;
 import romanow.abc.ess2.android.rendering.view2.I_Button;
@@ -57,9 +59,16 @@ public class ESS2Rendering {
     private Module module=null;
     private ArrayList<View2Base> guiList = new ArrayList<>();
     private RelativeLayout formPanel=null;
-    private ConstraintLayout formView=null;
+    //private ConstraintLayout formView=null;
+    private RelativeLayout formView=null;
+    private LinearLayout formMenu;
     private Button formMenuButton=null;
-    private volatile int asyncCount=0;                          // Счетчик асинхронных вызовов
+    private volatile int asyncCount=0;  // Счетчик асинхронных вызовов
+    private float dpHeight;             // Размерности экрана dp
+    private float dpWidth;
+    private int formPixHeight;
+    public final static int HeaderHeight = 75;
+    public final static int MenuLayoutHeight = 60;
     //------------------------------------------------------------------------------------------------------------------
     public void openFormDialog(){
         if (formView!=null){
@@ -68,15 +77,23 @@ public class ESS2Rendering {
             formPanel = null;
             }
         main2.main().clearLog();
-        formView =(ConstraintLayout)main2.main().getLayoutInflater().inflate(R.layout.form_frame, null);
+        formView =(RelativeLayout) main2.main().getLayoutInflater().inflate(R.layout.form_frame, null);
         formPanel = (RelativeLayout) formView.findViewById(R.id.form_frame_panel);
-        formPanel.setPadding(0, 5, 5, 5);
+        formPanel.setPadding(0, 0, 0, 0);
         formPanel.setBackgroundColor(main2.currentView.getView().getBackColor()|0xFF000000);
+        //--------------- Вручную вычислить размер окна формы и перенести вниз поле меню
+        DisplayMetrics displayMetrics = main2.main().getBaseContext().getResources().getDisplayMetrics();
+        dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+        dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        formPixHeight = displayMetrics.heightPixels-(int)(displayMetrics.density*(HeaderHeight+MenuLayoutHeight));
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1,(int)(MenuLayoutHeight*displayMetrics.density));
+        params.setMargins(0, formPixHeight, 0, 0);
+        formMenu = (LinearLayout)formView.findViewById(R.id.form_frame_menu);
+        formMenu.setLayoutParams(params);
         LinearLayout layout = main2.main().getLogLayout();
+        layout.removeAllViews();
         layout.addView(formView);
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams)formPanel.getLayoutParams();
-        context.setScreen(new ScreenMode(params.height,params.height*3/4,AppData.ScreenMas));      // pdMode координат
-        //main2.main().addToLog(""+params.width+" "+params.height);
+        context.setScreen(new ScreenMode(displayMetrics.widthPixels, formPixHeight));      // pdMode координат
         main2.main().scrollDown();
         }
     public void openUpperForm(){
@@ -85,7 +102,7 @@ public class ESS2Rendering {
             context.openForm(mainFormName,true);
         else
             context.openForm(parent,true);
-        }
+            }
     public void closeFormDialog(){
 
         }
@@ -95,7 +112,28 @@ public class ESS2Rendering {
     private void popup(String ss){
         main2.main().popupAndLog(ss);
         }
-    private FormContext2 context = new FormContext2(){
+    private I_ContextBack contextBack = new I_ContextBack() {
+        @Override
+        public void popup(String s) {
+            }
+        @Override
+        public void repaintView() {
+            ESS2Rendering.this.repaintView();
+            }
+        @Override
+        public void repaintValues() {
+            ESS2Rendering.this.repaintValues();
+            }
+        @Override
+        public int getAcccessLevel() {
+            return 0;
+            }
+        @Override
+        public void forceRepaint() {
+            ESS2Rendering.this.repaintView();
+            }
+        };
+    private FormContext2 context = new FormContext2(contextBack){
         @Override
         public void reOpenForm() {
             repaintView();
@@ -143,7 +181,7 @@ public class ESS2Rendering {
                 };
             int vv[] = getIdx();
             System.out.println("Стек индексов: "+vv[0]+" "+vv[1]+" "+vv[2]+" "+vv[3]);
-            String ss[] = getMenuFormStack();
+            String ss[] = context.getMenuFormStack();
             System.out.println("Стек форм: "+ss[0]+" "+ss[1]+" "+ss[2]+" "+ss[3]);
             repaintView();
             }
@@ -228,39 +266,59 @@ public class ESS2Rendering {
         }
     //------------------------------------------------------------------------------------------------------------------------
     public void createChildFormList(){
-        Meta2GUIForm baseForm = context.getBaseForm();
-        String currentName = baseForm.getTitle();
-        final ArrayList<Meta2GUIForm> childs = new ArrayList<>();
-        final ArrayList<String> names = new ArrayList<>();
-        if (!currentName.equals(mainFormName)){
-            names.add(baseForm.getParentName());
-            }
-        names.add(currentName);
         Meta2GUIView currentView = main2.currentView.getView();
         Meta2EntityList<Meta2GUIForm> formList = currentView.getForms();
+        Meta2GUIForm baseForm = context.getBaseForm();
+        String currentName = baseForm.getTitle();
+        final String backFormName = !currentName.equals(mainFormName) ? baseForm.getParentName() : null;
+        formMenu.removeAllViews();
+        MainActivity main = main2.main();
+        LinearLayout ll = (LinearLayout)main.getLayoutInflater().inflate(R.layout.menu_button,null);
+        ll.setBackgroundColor(main.getResources().getColor(R.color.colorESS2Back));
+        ImageButton button = (ImageButton) ll.findViewById(R.id.menu_button_press);
+        button.setImageResource(R.drawable.refresh);
+        //button.setBackgroundColor(currentView.getMenuButtonOnColor() | 0xFF000000);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.openForm(mainFormName,true);
+                }
+            });
+        formMenu.addView(ll);
+        ll = (LinearLayout)main.getLayoutInflater().inflate(R.layout.menu_button,null);
+        ll.setBackgroundColor(main.getResources().getColor(R.color.colorESS2Back));
+        button = (ImageButton) ll.findViewById(R.id.menu_button_press);
+        //button.setBackgroundColor(currentView.getBackColor());
+        button.setImageResource(R.drawable.up);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (backFormName==null)
+                    main2.setRenderingOff();
+                else
+                    context.openForm(mainFormName,true);
+                }
+            });
+        formMenu.addView(ll);
         for (Meta2GUIForm next : formList.getList()) {
             if (!next.getParentName().equals(currentName))
                 continue;
             if (next.isBaseForm())
                 continue;
-            childs.add(next);
-            names.add(next.getTitle().replace("_",""));
+            ll = (LinearLayout)main.getLayoutInflater().inflate(R.layout.menu_button,null);
+            ll.setBackgroundColor(main.getResources().getColor(R.color.colorESS2Back));
+            button = (ImageButton) ll.findViewById(R.id.menu_button_press);
+            //button.setBackgroundColor(currentView.getBackColor());
+            button.setImageResource(R.drawable.no_problem);
+            final String formName =  next.getTitle().replace("_","");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.openForm(formName,true);
+                    }
+                });
+            formMenu.addView(ll);
             }
-        names.add("Выход");
-        new ListBoxDialog(main2.main(), names, null, new I_ListBoxListener() {
-            @Override
-            public void onSelect(int index) {
-                if (index!=names.size()-1)
-                    context.openForm(names.get(index),true);
-                else
-                    main2.setRenderingOff();
-                }
-            @Override
-            public void onLongSelect(int index) {
-                }
-            @Override
-            public void onCancel() {}
-            }).create();
         }
     //------------------------------------------------------------------------------------------------------------------------
     public synchronized void  repaintView() {
@@ -362,6 +420,8 @@ public class ESS2Rendering {
             }
         //-----------------------------------------------------------------------------------
         level = baseForm.getLevel();
+        createChildFormList();
+        /* Старая кнопка с выпадающим меню --------------------------
         LinearLayout layout =   (LinearLayout)main2.main().getLayoutInflater().inflate(R.layout.render_menu_button,null);
         formPanel.addView(layout);
         formMenuButton = layout.findViewById(R.id.renderMenu);
@@ -380,6 +440,7 @@ public class ESS2Rendering {
                 return false;
                 }
             });
+         */
         //----------------------------------- Рисование элементов управления
         guiList.clear();
         int idx[] = new int[Values.FormStackSize];

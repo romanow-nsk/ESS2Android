@@ -41,6 +41,11 @@
         <item name="android:textColor">@color/White</item>
         <item name="android:background">@drawable/button_background</item>
     </style>
+    <style name="MenuButton" parent="android:style/Widget.Button">
+        <item name="android:textSize">@dimen/txt_normal</item>
+        <item name="android:textColor">@color/White</item>
+        <item name="android:background">@drawable/button_background</item>
+    </style>
     <style name="FormButton" parent="android:style/Widget.Button">
         <item name="android:textSize">@dimen/txt_small</item>
         <item name="android:textColor">@color/form_text</item>

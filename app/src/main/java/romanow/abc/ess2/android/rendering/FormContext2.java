@@ -5,10 +5,33 @@ import romanow.abc.core.API.RestAPIESS2;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.entity.metadata.Meta2GUIForm;
 import romanow.abc.core.entity.metadata.Meta2GUIView;
+import romanow.abc.core.entity.metadata.render.FormContextBase;
+import romanow.abc.core.entity.metadata.render.I_ContextBack;
 import romanow.abc.core.entity.subjectarea.AccessManager;
 import romanow.abc.ess2.android.service.ESS2ArchitectureData;
 
-public abstract class FormContext2 {
+public abstract class FormContext2 extends FormContextBase {
+    private ESS2ArchitectureData main;
+    public ESS2ArchitectureData getMain() {
+        return main;
+        }
+    public void setMain(ESS2ArchitectureData main2) {
+        this.main = main2;
+        }
+    public FormContext2(I_ContextBack back0, int idx1, int idx2, int idx3) {
+        super(back0, idx1, idx2, idx3);
+        }
+    public FormContext2(I_ContextBack back0) {
+        super(back0);
+        }
+    public abstract void openForm(String formName,boolean clearIdx);
+    public abstract void openForm(Meta2GUIForm form,boolean clearIdx);
+    private String menuFormStack[] = new String[Values.MenuStackSize];
+    public String[] getMenuFormStack() {
+        return menuFormStack; }
+    public void setMenuFormStack(String[] menuFormStack) {
+        this.menuFormStack = menuFormStack; }
+    /*
     private ESS2ArchitectureData main;
     private Meta2GUIView view;              // Общие данные ЧМИ
     private String platformName="";
@@ -70,10 +93,14 @@ public abstract class FormContext2 {
     public void setService(RestAPIBase service) {
         this.service = service; }
     public int x(int x){
-        return screen.x(x);
-        }
+        return screen.x(x); }
     public int y(int y){
         return screen.y(y);
+        }
+    public int dx(int dx){
+        return screen.dx(dx); }
+    public int dy(int dy){
+        return screen.dy(dy);
         }
     public abstract void reOpenForm();
     public void openForm(String formName){
@@ -144,5 +171,5 @@ public abstract class FormContext2 {
         return menuFormStack; }
     public void setMenuFormStack(String[] menuFormStack) {
         this.menuFormStack = menuFormStack; }
-
+     */
 }
