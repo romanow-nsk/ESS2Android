@@ -108,7 +108,7 @@ public class ESS2Rendering {
         layout.removeAllViews();
         layout.addView(formView);
         Meta2GUIView meta2GUIView = main2.currentView.getView();
-        ScreenMode screenMode = new ScreenMode(true,meta2GUIView.getWidth(), meta2GUIView.getHeight(),displayMetrics.widthPixels, formPixHeight);
+        ScreenMode screenMode = new ScreenMode(false,meta2GUIView.getWidth(), meta2GUIView.getHeight(),displayMetrics.widthPixels, formPixHeight);
         context.setScreen(screenMode);      // pdMode координат
         main2.main().scrollDown();
         }
@@ -404,7 +404,7 @@ public class ESS2Rendering {
         Meta2GUIView currentView = main2.currentView.getView();
         Meta2EntityList<Meta2GUIForm> formList = currentView.getForms();
         openFormDialog();
-        formPanel.setBackgroundColor(currentView.getBackColor());
+        formPanel.setBackgroundColor(currentView.getBackColor() | 0xFF000000);
         errorList.clear();
         if (main2.currentView == null) {
             return;
@@ -490,7 +490,7 @@ public class ESS2Rendering {
             int  access = context.getManager().getCurrentAccessLevel();
             String ss = "  "+context.getManager().getUser().getTitle()+" ["+Values.title("AccessLevel",access)+"] ";
             userTitle.setText(ss);
-            View2BaseDesktop.setBounds(userTitle,context.x(20),context.y(FrameH-50), context.dx(400),context.dy(50));
+            View2BaseDesktop.setBounds(userTitle,context.x(20),formPixHeight-60, context.dx(400),context.dy(50));
             userTitle.setClickable(false);
             //userTitle.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
             formPanel.addView(userTitle);

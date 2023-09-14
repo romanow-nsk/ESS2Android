@@ -1,15 +1,26 @@
 package romanow.abc.ess2.android.rendering;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.fonts.Font;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import romanow.abc.core.entity.artifacts.Artifact;
 import romanow.abc.core.types.TypeFace;
+import romanow.abc.ess2.android.MainActivity;
+import romanow.abc.ess2.android.R;
 import romanow.abc.ess2.android.service.AppData;
 
 public abstract class View2BaseDesktop extends View2Base implements I_View2Desktop {
@@ -120,5 +131,46 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
                 }
             }
         }
+        //------------------------------------------------------------------------------------------------------------------------
+        public static void loadImage(MainActivity main, Artifact art, I_Value<Bitmap> back){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Call<ResponseBody> call2 = AppData.ctx().getService().downLoad(AppData.ctx().loginSettings().getSessionToken(),art.getOid());
+                        Response<ResponseBody> response = call2.execute();
+                        if (response.isSuccessful()) {
+                            ResponseBody body = response.body();
+                            final Bitmap bitmap0 = BitmapFactory.decodeStream(body.byteStream());
+                            main.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    back.onEnter(bitmap0);
+                                    }
+                                });
+                            }
+                        else{
+                            main.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        main.popupAndLog(response.message()+response.errorBody().string());
+                                        back.onEnter(null);
+                                    } catch (IOException e) {}
+                                }
+                            });
+                        }
+                    } catch (Exception ee){
+                        main.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                main.popupAndLog("Ошибка загрузки: "+art.getTitle()+"\n"+ee.toString());
+                                back.onEnter(null);
+                                }
+                            });
+                        }
+                    }
+                }).start();
+            }
     }
 
