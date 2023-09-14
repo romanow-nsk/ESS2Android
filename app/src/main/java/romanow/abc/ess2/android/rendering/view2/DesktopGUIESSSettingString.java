@@ -34,15 +34,16 @@ public class DesktopGUIESSSettingString extends View2BaseDesktop {
         setBounds(textField,
                 context.x(element.getX()+element.getDx()+5),
                 context.y(element.getY()),
-                context.x(w2),
-                context.y(25));
-        textField.setEnabled(false);
-        textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        panel.addView(textField);
+                context.dx(w2),
+                context.dy(25));
+        textField.setEnabled(context.isActionEnable());
+        setTextFieldParams(textField);
+        //textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
+        panel.addView(textField);
         setInfoClick(textField);
-        int color =!context.isActionEnable() ? Values.AccessDisableColor : element.getColor();
-        textField.setBackgroundColor(color | 0xFF000000);
+        if (!context.isActionEnable())
+            textField.setBackgroundColor(Values.AccessDisableColor | 0xFF000000);
         getSettings();
         textField.setText(setValue);
         boolean enabled= element.isEditDisable();

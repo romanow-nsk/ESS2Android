@@ -56,8 +56,8 @@ public class DesktopGUI3StateBox extends View2BaseDesktop {
         setBounds(textField,
                 context.x(element.getX()+element.getDx()+getDxOffset()+dd-5+offset),
                 context.y(element.getY()+getDyOffset()+(hh-15)/2-5+offset),
-                context.x(sz),
-                context.y(sz));
+                context.dx(sz),
+                context.dy(sz));
         viewComponent();
         setInfoClick(textField);
         panel.addView(textField);

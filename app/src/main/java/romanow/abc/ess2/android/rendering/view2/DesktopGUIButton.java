@@ -38,19 +38,22 @@ public class DesktopGUIButton extends View2BaseDesktop {
         setBounds(textField,
                 context.x(element.getX()),
                 context.y(element.getY()),
-                context.x(element.getDx()),
-                context.y(hh));
-        textField.setText(element.getTitle());
+                context.dx(element.getDx()),
+                context.dy(hh));
+        setTextFieldParams(textField);
+        //textField.setText(element.getTitle());
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
-        textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        int textSize = element.getFontSize();
-        if (textSize==0) textSize = DefaultTextSize;
-        setTextSize(textField,textSize);
+        //textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        //int textSize = element.getFontSize();
+        //if (textSize==0) textSize = DefaultTextSize;
+        //setTextSize(textField,textSize);
         Meta2CommandRegister register = (Meta2CommandRegister)getRegister();
         final Meta2Command cmd = register.getCommands().getByCode(element.getCmdCode());
         final boolean remoteDisable = !context.isSuperUser() &&  !context.isLocalUser() && !cmd.isRemoteEnable();
-        int color = remoteDisable || !context.isActionEnable() ? Values.AccessDisableColor : getBackColor();
-        textField.setBackgroundColor(color | 0xFF000000);
+        boolean disable = remoteDisable || !context.isActionEnable();
+        if (disable)
+            textField.setBackgroundColor(Values.AccessDisableColor | 0xFF000000);
+        textField.setEnabled(!disable);
         setInfoClick(textField);
         textField.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -75,8 +75,8 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
         setBounds(textField,
                 context.x(xx),
                 context.y(yy),
-                context.x(sz),
-                context.y(sz));
+                context.dx(sz),
+                context.dy(sz));
         viewComponent();
         setInfoClick(textField);
         panel.addView(textField);
@@ -95,6 +95,7 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
                 context.y(yy),
                 context.x(bSize),
                 context.y(sz+5));
+        setButtonParams(cmdButton,false);
         //cmdButton.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
         textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         Meta2BitRegister register = (Meta2BitRegister) getRegister();

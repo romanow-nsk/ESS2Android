@@ -35,17 +35,18 @@ public class DesktopGUICommandBit extends View2BaseDesktop {
         setBounds(textField,
                 context.x(element.getX()),
                 context.y(element.getY()),
-                context.x(element.getDx()),
-                context.y(25));
-        int textSize = element.getFontSize();
-        if (textSize==0) textSize = DefaultTextSize;
-        setTextSize(textField,textSize);
-        textField.setClickable(false);
+                context.dx(element.getDx()),
+                context.dy(25));
+        setTextFieldParams(textField);
+        //int textSize = element.getFontSize();
+        //if (textSize==0) textSize = DefaultTextSize;
+        //setTextSize(textField,textSize);
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
-        textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        //textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        //textField.setBackgroundColor(getBackColor());
+        //textField.setTextColor(textColor);
+        textField.setClickable(false);
         panel.addView(textField);
-        textField.setBackgroundColor(getBackColor());
-        textField.setTextColor(textColor);
         setInfoClick(textField);
         Meta2BitRegister register = (Meta2BitRegister) getRegister();
         bit = register.getBits().getByCode(element.getBitNum());

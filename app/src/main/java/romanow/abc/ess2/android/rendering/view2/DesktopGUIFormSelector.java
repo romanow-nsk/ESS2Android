@@ -35,8 +35,8 @@ public class DesktopGUIFormSelector extends View2BaseDesktop {
         setBounds(prev,
                 context.x(element.getX()+element.getDx()+10),
                 context.y(element.getY()),
-                context.x(40),
-                context.y(40));
+                context.dx(40),
+                context.dy(40));
         prev.setImageResource(R.drawable.left); // NOI18N
         //textField.setBorderPainted(false);
         //textField.setContentAreaFilled(false);
@@ -56,9 +56,10 @@ public class DesktopGUIFormSelector extends View2BaseDesktop {
         maxValue = context.getSize(context.getForm().getFormLevel());
         idx= context.getIndex(element.getFormLevel());            //?????????????????????????
         list.setText(""+(idx+1));
-        int textSize = element.getFontSize();
-        if (textSize==0) textSize = DefaultTextSize;
-        list.setTextSize(textSize);
+        setTextFieldParams(list);
+        //int textSize = element.getFontSize();
+        //if (textSize==0) textSize = DefaultTextSize;
+        //list.setTextSize(textSize);
         list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,16 +79,16 @@ public class DesktopGUIFormSelector extends View2BaseDesktop {
         setBounds(list,
                 context.x(element.getX()+element.getDx()+50),
                 context.y(element.getY()),
-                context.x(45),
-                context.y(40));
+                context.dx(45),
+                context.dy(40));
         //list.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
         panel.addView(list);
         next = new ImageView(context.getMain().main());
         setBounds(next,
                 context.x(element.getX()+element.getDx()+95),
                 context.y(element.getY()),
-                context.x(40),
-                context.y(40));
+                context.dx(40),
+                context.dy(40));
         next.setImageResource(R.drawable.right); // NOI18N
         //textField.setBorderPainted(false);
         //textField.setContentAreaFilled(false);
@@ -107,8 +108,8 @@ public class DesktopGUIFormSelector extends View2BaseDesktop {
         setBounds(down,
                 context.x(element.getX()+element.getDx()+135),
                 context.y(element.getY()),
-                context.x(40),
-                context.y(40));
+                context.dx(40),
+                context.dy(40));
         down.setImageResource(R.drawable.down); // NOI18N
         //textField.setBorderPainted(false);
         //textField.setContentAreaFilled(false);
@@ -124,8 +125,8 @@ public class DesktopGUIFormSelector extends View2BaseDesktop {
         setBounds(up,
                 context.x(element.getX()+element.getDx()+175),
                 context.y(element.getY()),
-                context.x(40),
-                context.y(40));
+                context.dx(40),
+                context.dy(40));
         up.setImageResource(R.drawable.up); // NOI18N
         //textField.setBorderPainted(false);
         //textField.setContentAreaFilled(false);

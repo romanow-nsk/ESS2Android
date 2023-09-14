@@ -37,13 +37,14 @@ public class DesktopGUITimeSetting extends View2BaseDesktop {
         setBounds(textField,
                 context.x(element.getX()+element.getDx()+5),
                 context.y(element.getY()),
-                context.x(w2),
-                context.y(hh));
+                context.dx(w2),
+                context.dy(hh));
         textField.setEnabled(false);
+        setTextFieldParams(textField);
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
-        textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        //textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        //textField.setBackgroundColor(element.getColor() | 0xFF000000);
         panel.addView(textField);
-        textField.setBackgroundColor(element.getColor() | 0xFF000000);
         textField.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

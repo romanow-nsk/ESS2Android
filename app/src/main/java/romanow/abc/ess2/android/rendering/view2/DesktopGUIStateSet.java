@@ -32,18 +32,19 @@ public class DesktopGUIStateSet extends View2BaseDesktop {
         setBounds(textField,
                 context.x(element.getX()+element.getDx()+DefaultSpace),
                 context.y(element.getY()),
-                context.x(element.getW2()),
-                context.y(hh));
+                context.dx(element.getW2()),
+                context.dy(hh));
+        setTextFieldParams(textField);
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
-        int textSize = element.getFontSize();
-        if (textSize==0) textSize = DefaultTextSize;
-        setTextSize(textField,textSize);
+        //int textSize = element.getFontSize();
+        //if (textSize==0) textSize = DefaultTextSize;
+        //setTextSize(textField,textSize);
+        //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
+        //textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        //textField.setBackgroundColor(getBackColor());
+        //textField.setTextColor(textColor);
         textField.setClickable(false);
-        //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
-        textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         panel.addView(textField);
-        textField.setBackgroundColor(getBackColor());
-        textField.setTextColor(textColor);
         setInfoClick(textField);
         }
 

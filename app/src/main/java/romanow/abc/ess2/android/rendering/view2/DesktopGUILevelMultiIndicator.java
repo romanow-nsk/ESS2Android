@@ -57,8 +57,8 @@ public class DesktopGUILevelMultiIndicator extends View2BaseDesktop {
         setBounds(high,
                 context.x(element.getX()+dxOffset+5),
                 context.y(element.getY()+dyOffset),
-                context.x(w2),
-                context.x(h));
+                context.dx(w2),
+                context.dx(h));
         backColor = element.getColor() | 0xFF000000;
         textField.setBackgroundColor(backColor);
         textField2.setBackgroundColor(backColor);
@@ -69,23 +69,23 @@ public class DesktopGUILevelMultiIndicator extends View2BaseDesktop {
         setBounds(high,
                 context.x(element.getX()+dxOffset+5),
                 context.y(element.getY()+dyOffset),
-                context.x(w2),
-                context.y(h));
+                context.dx(w2),
+                context.dy(h));
         setBounds(textField,
                 context.x(element.getX()+dxOffset+5),
                 context.y(element.getY()+dyOffset+h),
-                context.x(w2),
-                context.y(0));
+                context.dx(w2),
+                context.dy(0));
         setBounds(textField2,
                 context.x(element.getX()+dxOffset+5),
                 context.y(element.getY()+dyOffset+h),
-                context.x(w2),
-                context.y(0));
+                context.dx(w2),
+                context.dy(0));
         setBounds(textField3,
                 context.x(element.getX()+dxOffset+5),
                 context.y(element.getY()+dyOffset+h),
-                context.x(w2),
-                context.y(0));
+                context.dx(w2),
+                context.dy(0));
         panel.addView(textField);
         panel.addView(textField2);
         panel.addView(textField3);
@@ -148,20 +148,20 @@ public class DesktopGUILevelMultiIndicator extends View2BaseDesktop {
         setBounds(textField,
                 context.x(xx),
                 context.y(yy-hh[0]),
-                context.x(w2),
-                context.y(hh[0]-hh[1]));
+                context.dx(w2),
+                context.dy(hh[0]-hh[1]));
         textField.setBackgroundColor(getValueColor(vv[0]));
         setBounds(textField3,
                 context.x(xx),
                 context.y(yy-hh[1]),
-                context.x(w2),
-                context.y(5));
+                context.dx(w2),
+                context.dy(5));
         textField3.setBackgroundColor(getValueColor(vv[1]));
         setBounds(textField2,
                 context.x(xx),
                 context.y(yy-hh[1]+5),
-                context.x(w2),
-                context.y(hh[1]-hh[2]));
+                context.dx(w2),
+                context.dy(hh[1]-hh[2]));
         textField2.setBackgroundColor(getValueColor(vv[2]));
     }
 

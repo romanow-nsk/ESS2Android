@@ -28,15 +28,16 @@ public class DesktopGUIFormButton extends View2BaseDesktop {
         setBounds(textField,
                 context.x(element.getX()),
                 context.y(element.getY()),
-                context.x(element.getDx()),
-                context.y(hh));
-        int textSize = element.getFontSize();
-        if (textSize==0) textSize = DefaultTextSize;
-        setTextSize(textField,textSize);
+                context.dx(element.getDx()),
+                context.dy(hh));
         textField.setClickable(true);
-        textField.setText(element.getTitle());
+        setButtonParams(textField,false);
+        //int textSize = element.getFontSize();
+        //if (textSize==0) textSize = DefaultTextSize;
+        //setTextSize(textField,textSize);
+        //textField.setText(element.getTitle());
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
-        textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        //textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         textField.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

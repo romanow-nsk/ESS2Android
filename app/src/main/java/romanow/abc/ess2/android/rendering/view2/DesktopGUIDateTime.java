@@ -36,17 +36,18 @@ public class DesktopGUIDateTime  extends View2BaseDesktop {
         setBounds(textField,
                 context.x(element.getX()+dxOffset+element.getDx()+DefaultSpace),
                 context.y(element.getY()+dyOffset),
-                context.x(dd),
-                context.y(hh));
-        int textSize = element2.getFontSize();
-        if (textSize==0) textSize = DefaultTextSize;
-        setTextSize(textField,textSize);
-        textField.setClickable(false);
+                context.dx(dd),
+                context.dy(hh));
+        setTextFieldParams(textField);
+        //int textSize = element2.getFontSize();
+        //if (textSize==0) textSize = DefaultTextSize;
+        //setTextSize(textField,textSize);
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
-        textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        //textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        //textField.setBackgroundColor(getBackColor());
+        //textField.setTextColor(textColor);
+        textField.setClickable(false);
         panel.addView(textField);
-        textField.setBackgroundColor(getBackColor());
-        textField.setTextColor(textColor);
         setInfoClick(textField);
         }
     public void showInfoMessage() {

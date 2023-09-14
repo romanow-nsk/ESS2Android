@@ -37,11 +37,12 @@ public class DesktopGUIMultiBitState extends View2BaseDesktop {
         setBounds(textField,
                 context.x(element.getX()+getDxOffset()+element.getDx()+DefaultSpace),
                 context.y(element.getY()+getDyOffset()),
-                context.x(dd),
-                context.y(hh));
+                context.dx(dd),
+                context.dy(hh));
+        setTextFieldParams(textField);
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
+        //textField.setBackgroundColor(element.getColor() | 0xFF000000);
         panel.addView(textField);
-        textField.setBackgroundColor(element.getColor() | 0xFF000000);
         setInfoClick(textField);
         }
     public ArrayList<String> createStateText(int regNum, int bitMask, long regVal){

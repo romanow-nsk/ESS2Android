@@ -31,6 +31,10 @@ public abstract class FormContext2 extends FormContextBase {
         return menuFormStack; }
     public void setMenuFormStack(String[] menuFormStack) {
         this.menuFormStack = menuFormStack; }
+    @Override
+    public int x(int x){
+        return super.x(x);
+        }
     /*
     private ESS2ArchitectureData main;
     private Meta2GUIView view;              // Общие данные ЧМИ

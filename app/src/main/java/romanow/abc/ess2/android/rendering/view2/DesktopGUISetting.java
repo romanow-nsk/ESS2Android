@@ -42,20 +42,22 @@ public class DesktopGUISetting extends View2BaseDesktop {
         setBounds(textField,
                 context.x(element.getX()+element.getDx()+DefaultSpace),
                 context.y(element.getY()),
-                context.x(w2),
-                context.y(hh));
-        //textField.setEditable(false);
-        int textSize = element.getFontSize();
-        if (textSize==0) textSize = DefaultTextSize;
-        setTextSize(textField,textSize);
-        textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        panel.addView(textField);
+                context.dx(w2),
+                context.dy(hh));
+        setTextFieldParams(textField);
+        //int textSize = element.getFontSize();
+        //if (textSize==0) textSize = DefaultTextSize;
+        //setTextSize(textField,textSize);
+        //textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
+        //textField.setTextColor(textColor);
+        panel.addView(textField);
         setInfoClick(textField);
         final boolean remoteDisable = !context.isSuperUser() &&  !context.isLocalUser() && !(register).isRemoteEnable();
-        int color=remoteDisable || !context.isActionEnable() ? Values.AccessDisableColor : getBackColor();
-        textField.setBackgroundColor(color | 0xFF000000);
-        textField.setTextColor(textColor);
+        boolean disable = remoteDisable || !context.isActionEnable();
+        if (disable)
+            textField.setBackgroundColor(Values.AccessDisableColor | 0xFF000000);
+        textField.setEnabled(!disable);
         setLongClickInfo(textField);
         textField.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -38,18 +38,19 @@ public class DesktopGUIScript extends View2BaseDesktop {
         setBounds(textField,
                 context.x(element.getX()+getDxOffset()+element.getDx()+DefaultSpace),
                 context.y(element.getY()+getDyOffset()),
-                context.x(dd),
-                context.y(hh));
+                context.dx(dd),
+                context.dy(hh));
+        setTextFieldParams(textField);
         //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
-        int textSize = element.getFontSize();
-        if (textSize==0) textSize = DefaultTextSize;
-        setTextSize(textField,textSize);
-        textField.setClickable(false);
-        textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        panel.addView(textField);
-        textField.setBackgroundColor(getBackColor());
+        //int textSize = element.getFontSize();
+        //if (textSize==0) textSize = DefaultTextSize;
+        //setTextSize(textField,textSize);
+        //textField.setClickable(false);
+        //textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        //textField.setBackgroundColor(getBackColor());
         //textField.setBorder(BorderFactory.createLineBorder(textColor,1));
-        textField.setTextColor(textColor);
+        //textField.setTextColor(textColor);
+        panel.addView(textField);
         setInfoClick(textField);
         }
     public void showInfoMessage() {

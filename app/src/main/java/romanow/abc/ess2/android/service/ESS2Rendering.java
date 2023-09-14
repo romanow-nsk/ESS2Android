@@ -1,5 +1,11 @@
 package romanow.abc.ess2.android.service;
 
+import static romanow.abc.core.Utils.httpError;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
@@ -11,14 +17,20 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.awt.Image;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import romanow.abc.core.ErrorList;
 import romanow.abc.core.UniException;
 import romanow.abc.core.constants.IntegerList;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.entity.UnitRegisterList;
+import romanow.abc.core.entity.artifacts.Artifact;
 import romanow.abc.core.entity.metadata.Meta2Array;
 import romanow.abc.core.entity.metadata.Meta2Entity;
 import romanow.abc.core.entity.metadata.Meta2EntityList;
@@ -31,6 +43,7 @@ import romanow.abc.core.entity.metadata.render.ScreenMode;
 import romanow.abc.core.entity.metadata.view.Meta2GUI;
 import romanow.abc.core.entity.metadata.view.Meta2GUIArray;
 import romanow.abc.core.entity.metadata.view.Meta2GUICollection;
+import romanow.abc.core.entity.metadata.view.Meta2GUIImage;
 import romanow.abc.core.entity.metadata.view.Meta2GUIReg;
 import romanow.abc.core.entity.subject2area.ESS2Device;
 import romanow.abc.core.entity.subject2area.ESS2Equipment;
@@ -69,6 +82,7 @@ public class ESS2Rendering {
     private int formPixHeight;
     public final static int HeaderHeight = 75;
     public final static int MenuLayoutHeight = 60;
+    private HashMap<String,Bitmap> iconsMap = new HashMap<>();
     //------------------------------------------------------------------------------------------------------------------
     public void openFormDialog(){
         if (formView!=null){
@@ -93,7 +107,9 @@ public class ESS2Rendering {
         LinearLayout layout = main2.main().getLogLayout();
         layout.removeAllViews();
         layout.addView(formView);
-        context.setScreen(new ScreenMode(displayMetrics.widthPixels, formPixHeight));      // pdMode координат
+        Meta2GUIView meta2GUIView = main2.currentView.getView();
+        ScreenMode screenMode = new ScreenMode(true,meta2GUIView.getWidth(), meta2GUIView.getHeight(),displayMetrics.widthPixels, formPixHeight);
+        context.setScreen(screenMode);      // pdMode координат
         main2.main().scrollDown();
         }
     public void openUpperForm(){
@@ -265,6 +281,53 @@ public class ESS2Rendering {
         guiLoop.start();
         }
     //------------------------------------------------------------------------------------------------------------------------
+    public void loadImage(String formName,ImageButton button, Artifact art){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Call<ResponseBody> call2 = AppData.ctx().getService().downLoad(AppData.ctx().loginSettings().getSessionToken(),art.getOid());
+                    Response<ResponseBody> response = call2.execute();
+                    if (response.isSuccessful()) {
+                        ResponseBody body = response.body();
+                        final Bitmap bitmap0 = BitmapFactory.decodeStream(body.byteStream());
+                        main2.main().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Bitmap bitmap = Bitmap.createScaledBitmap(bitmap0,100,100,false);
+                                iconsMap.put(formName,bitmap);
+                                button.setImageBitmap(bitmap);
+                                }
+                            });
+                        }
+                    else{
+                        main2.main().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Bitmap bitmap2 = BitmapFactory.decodeResource(main2.main().getResources(), R.drawable.no_problem);
+                                    iconsMap.put(formName, bitmap2);
+                                    button.setImageBitmap(bitmap2);
+                                    main2.main().popupAndLog(response.message()+response.errorBody().string());
+                                    } catch (IOException e) {}
+                                }
+                            });
+                        }
+                } catch (Exception ee){
+                    main2.main().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Bitmap bitmap2 = BitmapFactory.decodeResource(main2.main().getResources(), R.drawable.no_problem);
+                            iconsMap.put(formName, bitmap2);
+                            button.setImageBitmap(bitmap2);
+                            main2.main().popupAndLog("Ошибка загрузки: "+art.getTitle()+"\n"+ee.toString());
+                            }
+                         });
+                    }
+                }
+            }).start();
+        }
+    //-----------------------------------------------------------------------------------------------------------------------
     public void createChildFormList(){
         Meta2GUIView currentView = main2.currentView.getView();
         Meta2EntityList<Meta2GUIForm> formList = currentView.getForms();
@@ -293,8 +356,9 @@ public class ESS2Rendering {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (backFormName==null)
+                if (backFormName==null){
                     main2.setRenderingOff();
+                    }
                 else
                     context.openForm(mainFormName,true);
                 }
@@ -307,10 +371,23 @@ public class ESS2Rendering {
                 continue;
             ll = (LinearLayout)main.getLayoutInflater().inflate(R.layout.menu_button,null);
             ll.setBackgroundColor(main.getResources().getColor(R.color.colorESS2Back));
-            button = (ImageButton) ll.findViewById(R.id.menu_button_press);
+            final ImageButton button2 = (ImageButton) ll.findViewById(R.id.menu_button_press);
             //button.setBackgroundColor(currentView.getBackColor());
-            button.setImageResource(R.drawable.no_problem);
+            //------------------------ id ресурса по имени файла -----------------------------------
+            //int resourceId = main.getResources().getIdentifier("no_problem", "drawable", main.getPackageName());
+            //button.setImageResource(resourceId);
             final String formName =  next.getTitle().replace("_","");
+            Bitmap bitmap = iconsMap.get(formName);
+            if (bitmap==null){
+                if (next.getIcon().getOid()==0){
+                    bitmap = BitmapFactory.decodeResource(main2.main().getResources(), R.drawable.no_problem);
+                    iconsMap.put(formName,bitmap);
+                    }
+                else{
+                    loadImage(formName,button2,next.getIcon().getRef());
+                    }
+                }
+            button.setImageBitmap(bitmap);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -413,7 +490,7 @@ public class ESS2Rendering {
             int  access = context.getManager().getCurrentAccessLevel();
             String ss = "  "+context.getManager().getUser().getTitle()+" ["+Values.title("AccessLevel",access)+"] ";
             userTitle.setText(ss);
-            View2BaseDesktop.setBounds(userTitle,context.x(20),context.y(FrameH-50), context.x(400),context.y(50));
+            View2BaseDesktop.setBounds(userTitle,context.x(20),context.y(FrameH-50), context.dx(400),context.dy(50));
             userTitle.setClickable(false);
             //userTitle.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
             formPanel.addView(userTitle);

@@ -41,8 +41,8 @@ public class DesktopGUIESSSettingBoolean extends View2BaseDesktop {
         setBounds(textField,
                 context.x(element.getX() + element.getDx() + getDxOffset() + 5 + offset),
                 context.y(element.getY() + getDyOffset() + (hh - 15) / 2 - 5 + offset),
-                context.x(sz),
-                context.y(sz));
+                context.dx(sz),
+                context.dy(sz));
         panel.addView(textField);
         setInfoClick(textField);
         final boolean remoteDisable = !context.isSuperUser() && !context.isLocalUser();
@@ -55,15 +55,15 @@ public class DesktopGUIESSSettingBoolean extends View2BaseDesktop {
                 if (((Meta2GUIESSSettingBoolean) element).isEditDisable()) {
                     context.getMain().main().popupInfo("Настройка не редактируется");
                     return;
-                }
+                    }
                 if (remoteDisable) {
                     context.getMain().main().popupInfo("Запрет удаленного управления");
                     return;
-                }
+                    }
                 if (!context.isActionEnable()) {
                     context.getMain().main().popupInfo("Недостаточен уровень доступа");
                     return;
-                }
+                    }
                 new OKDialog(context.getMain().main(), element.getTitle() + (setValue ? ": выключить" : ": включить"), new I_EventListener() {
                     @Override
                     public void onEvent(String zz) {

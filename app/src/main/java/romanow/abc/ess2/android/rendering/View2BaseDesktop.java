@@ -3,6 +3,7 @@ package romanow.abc.ess2.android.rendering;
 import android.graphics.Typeface;
 import android.graphics.fonts.Font;
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -45,7 +46,7 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
             label.setBackgroundColor(getBackColor());
             int fontSize = element.getFontSize();
             if (fontSize==0) fontSize=DefaultTextSize;
-            setTextSize(label,fontSize);
+            setTextSize(label,context.dy(fontSize));
             setLongClickInfo(label);
             panel.addView(label);
             if (element.isBold())
@@ -53,7 +54,7 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
             return label;
             }
         public void setTextSize(TextView textView, int size){
-            textView.setTextSize((float) (size*AppData.ScreenMas+5));
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);// (float) (size*AppData.ScreenMas+5));
             }
         public void setLongClickInfo(View view){
             view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -78,7 +79,7 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
         textField.setTextColor(context.getView().getTextColor() | 0xFF000000);
         int fontSize = element.getFontSize();
         if (fontSize == 0) fontSize = 12;
-        textField.setTextSize(fontSize);
+        setTextSize(textField,context.dy(fontSize));
         }
     public void setButtonParams(Button textField) {
         setButtonParams(textField, false);
@@ -89,6 +90,9 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
         textField.setText(!noOneString ? ss : "<html>"+(element.isOnCenter() ? "<center>" : "") + ss.replaceAll(" ", "<br>") + "</html>");
         textField.setTextAlignment(element.isOnCenter() ? View.TEXT_ALIGNMENT_CENTER : View.TEXT_ALIGNMENT_VIEW_START);
         textField.setTextColor(context.getView().getTextColor() | 0xFF000000);
+        int fontSize = element.getFontSize();
+        if (fontSize == 0) fontSize = 12;
+        setTextSize(textField,context.dy(fontSize));
         }
     public int getElemBackColor(){
         if (element.isBackColor()){
