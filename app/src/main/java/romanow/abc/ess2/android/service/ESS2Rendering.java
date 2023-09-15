@@ -238,7 +238,7 @@ public class ESS2Rendering {
             }
         else{
             context.setCurrentView(main2.currentView);
-            context.openForm(mainFormName,true);
+            context.openForm(backFormName,false);
             }
         return false;
         }
@@ -868,7 +868,7 @@ public class ESS2Rendering {
         for(int i=0;i<regSize;i++){
             Integer vv = device.getValue(unitIdx,regNumFull+i);
             if (vv==null){
-                popup("Не найден регистр в ответе сервера "+(regNumFull+i));
+                main2.main().addToLog("Не найден регистр в ответе сервера "+(regNumFull+i));
                 good=false;
                 break;
                 }

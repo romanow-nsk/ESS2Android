@@ -54,7 +54,7 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
             label.setText(element.isLabelBold() ? Html.fromHtml("<b>" + text + "</b>") : text);
             label.setTextColor(context.getView().getTextColor() | 0xFF000000);
             label.setTextAlignment(element.isLabelOnCenter() ? View.TEXT_ALIGNMENT_CENTER : View.TEXT_ALIGNMENT_TEXT_START);
-            label.setBackgroundColor(getBackColor());
+            label.setBackgroundColor(getLabelColor() | 0xFF000000);
             int fontSize = element.getFontSize();
             if (fontSize==0) fontSize=DefaultTextSize;
             setTextSize(label,context.dy(fontSize));
@@ -83,7 +83,7 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
                 return element.getColor() | 0xFF000000;
             }
     public void setTextFieldParams(TextView textField) {
-        textField.setBackgroundColor(getElemBackColor());
+        textField.setBackgroundColor(getElemBackColor() | 0xFF000000);
         // border = true
         textField.setText(element.isBold() ? Html.fromHtml("<b>" + element.getTitle() + "</b>") : element.getTitle());
         textField.setTextAlignment(element.isOnCenter() ? View.TEXT_ALIGNMENT_CENTER : View.TEXT_ALIGNMENT_VIEW_START);
@@ -96,7 +96,7 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
         setButtonParams(textField, false);
         }
     public void setButtonParams(Button textField, boolean noOneString) {
-        textField.setBackgroundColor(getElemBackColor());
+        textField.setBackgroundColor(getElemBackColor() | 0xFF000000);
         String ss = element.getTitle();
         textField.setText(!noOneString ? ss : "<html>"+(element.isOnCenter() ? "<center>" : "") + ss.replaceAll(" ", "<br>") + "</html>");
         textField.setTextAlignment(element.isOnCenter() ? View.TEXT_ALIGNMENT_CENTER : View.TEXT_ALIGNMENT_VIEW_START);
@@ -108,16 +108,17 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
     public int getElemBackColor(){
         if (element.isBackColor()){
             return  context.getView().getBackColor();
-        }
+            }
         else{
             if (element.getColor()==0 || element.isCommonColor()){
                 return context.getView().getCommonBackColor();
-            }
+                }
             else{
                 return element.getColor();
                 }
             }
         }
+
     public int getLabelColor(){
         if (element.isLabelBackColor()){
             return  context.getView().getBackColor();

@@ -45,7 +45,7 @@ public class DesktopGUIData extends View2BaseDesktop {
         }
     public void showInfoMessage() {
         Meta2DataRegister set = (Meta2DataRegister)  getRegister();
-        String ss = "Регистр данных "+(set.getRegNum()+regOffset)+" ["+set.getRegNum()+"] "+set.getShortName()+"$"+set.getTitle()+"$";
+        String ss = "Регистр данных ["+getUnitIdx()+"] "+(set.getRegNum()+regOffset)+" ["+set.getRegNum()+"] "+set.getShortName()+"$"+set.getTitle()+"$";
         ss+="Потоковый  - "+(set.getStreamType()!=Values.DataStreamNone ? "да":"нет")+",";
         ss+=" Ед.изм. "+ set.getUnit();
         context.getMain().main().popupInfo(ss);

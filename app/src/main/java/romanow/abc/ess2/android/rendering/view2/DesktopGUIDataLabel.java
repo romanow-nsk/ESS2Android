@@ -10,6 +10,7 @@ import romanow.abc.core.entity.metadata.Meta2Register;
 import romanow.abc.core.entity.metadata.Meta2SettingRegister;
 import romanow.abc.core.entity.metadata.view.Meta2GUI;
 import romanow.abc.core.entity.metadata.view.Meta2GUIData;
+import romanow.abc.core.entity.metadata.view.Meta2GUIRegW2;
 import romanow.abc.core.entity.subject2area.ESS2Architecture;
 import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.rendering.I_GUI2Event;
@@ -24,6 +25,7 @@ public class DesktopGUIDataLabel extends View2BaseDesktop {
     @Override
     public void addToPanel(RelativeLayout panel) {
         label = setLabel(panel);
+        label.setTextColor(getElemBackColor() | 0xFF000000);
         setInfoClick(label);
         }
     public void showInfoMessage() {
@@ -37,10 +39,9 @@ public class DesktopGUIDataLabel extends View2BaseDesktop {
     public void putValue(long vv) throws UniException {
         Meta2Register register = (Meta2Register) getRegister();
         int type = register.getFormat();
-        if (type == Values.FloatValue)
-            label.setText(" " + getElement().getTitle() + " = " + Double.longBitsToDouble(vv) + " " + register.getUnit());
-        else
-            label.setText(" " + getElement().getTitle() + " = " + register.regValueToFloat(getUnitIdx(),(int)vv) + " " + register.getUnit());
+        Meta2GUIRegW2 metaGUI = (Meta2GUIRegW2)getElement();
+        String ss = register.regValueToString(getUnitIdx(),(int)vv,metaGUI);
+        label.setText("" + getElement().getTitle() + "=" + ss + " " + register.getUnit());
         /* ------------ Старая версия
         Meta2Register register = getRegister();
         if (((Meta2GUIData)getElement()).isByteSize()){

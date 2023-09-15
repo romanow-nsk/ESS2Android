@@ -1,6 +1,10 @@
 package romanow.abc.ess2.android.rendering.view2;
 
+import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import romanow.abc.core.UniException;
@@ -8,19 +12,23 @@ import romanow.abc.core.constants.Values;
 import romanow.abc.core.entity.metadata.view.Meta2GUI;
 import romanow.abc.core.entity.metadata.view.Meta2GUIFormButton;
 import romanow.abc.core.entity.subject2area.ESS2Architecture;
+import romanow.abc.ess2.android.MainActivity;
+import romanow.abc.ess2.android.R;
 import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.rendering.I_GUI2Event;
 import romanow.abc.ess2.android.rendering.View2BaseDesktop;
 
 public class DesktopGUIFormButton extends View2BaseDesktop {
-    private BorderedButton textField;
+    private  Button textField;
     public DesktopGUIFormButton(){
         type = Values.GUIFormButton;
         }
     @Override
     public void addToPanel(RelativeLayout panel) {
         int textColor = context.getView().getTextColor() | 0xFF000000;
-        textField = new BorderedButton(context.getMain().main(),textColor);
+        MainActivity main = context.getMain().main();
+        ContextThemeWrapper newContext = new ContextThemeWrapper(main, R.style.BlackButton);
+        textField = new Button(newContext);
         FormContext2 context= getContext();
         Meta2GUI element = getElement();
         int hh = element.getH();
@@ -30,18 +38,23 @@ public class DesktopGUIFormButton extends View2BaseDesktop {
                 context.y(element.getY()),
                 context.dx(element.getDx()),
                 context.dy(hh));
+        //setButtonParams(textField,true);
         textField.setClickable(true);
-        setButtonParams(textField,false);
-        //int textSize = element.getFontSize();
-        //if (textSize==0) textSize = DefaultTextSize;
-        //setTextSize(textField,textSize);
-        //textField.setText(element.getTitle());
-        //textField.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
-        //textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        int textSize = element.getFontSize();
+        if (textSize==0) textSize = DefaultTextSize;
+        setTextSize(textField,context.dy(textSize));
+        textField.setText(element.getTitle());
+        textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        //textField.setBackgroundColor(getElemBackColor() | 0xFF000000);
+        textField.setTextColor(context.getView().getTextColor() | 0xFF000000);
         textField.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.openForm(((Meta2GUIFormButton)element).getFormName());
+                Meta2GUIFormButton elem =(Meta2GUIFormButton)element;
+                if (elem.isOwnUnit() && elem.getUnitLevel()!=0){
+                    context.setIndex(elem.getUnitLevel(),elem.getUnitIdx());
+                    }
+                context.openForm(elem.getFormName(),FormContext2.ModeNext);
                 }
             });
         setInfoClick(textField);
