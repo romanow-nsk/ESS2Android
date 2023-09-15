@@ -544,4 +544,7 @@ public class ESS2ArchitectureData {
     //---------------------------------------------------------------------------------------------------------------------------
     public ImageView getRenderState() {
         return renderState; }
+    public boolean onBackPressed(){
+        return rendering.onBackPressed();
+        }
 }

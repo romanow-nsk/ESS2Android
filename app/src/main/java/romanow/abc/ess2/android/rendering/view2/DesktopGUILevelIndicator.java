@@ -51,6 +51,7 @@ public class DesktopGUILevelIndicator extends View2BaseDesktop {
                 context.dx(w2-1),
                 context.dy(h));
         setTextFieldParams(textField);
+        textField.setText("");
         panel.addView(textField);
         backColor = element.getColor() | 0xFF000000;
         setInfoClick(textField);

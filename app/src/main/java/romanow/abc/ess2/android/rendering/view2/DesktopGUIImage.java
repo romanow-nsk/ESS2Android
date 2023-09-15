@@ -38,7 +38,8 @@ public class DesktopGUIImage extends View2BaseDesktop {
         setLabel(panel);
         element = (Meta2GUIImage) getElement();
         imagePanel = new ImageButton(context.getMain().main(),null);
-        imagePanel.setBackgroundColor(getBackColor());
+        int color = getBackColor();
+        imagePanel.setBackgroundColor(color);
         dx = context.dx(element.getImageW());
         dy = context.dy(element.getImageH());
         setBounds(imagePanel,

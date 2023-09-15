@@ -24,6 +24,9 @@ public abstract class View2Base implements I_View2 {
     protected ESS2Device device=null;         // Описание unit-драйвер
     protected int devUnit=0;                  // Явный номер Unit-а (физический)
     protected int unitIdx=0;                  // Явный индекс Unit-а (логический)
+    private ESS2Device deviceTwo=null;     // Для второго линка
+    private int devUnitTwo=0;              // Для второго линка
+
     protected int regOffset=0;
     protected int dxOffset=0;
     protected int dyOffset=0;
@@ -41,7 +44,15 @@ public abstract class View2Base implements I_View2 {
         return element.getDataLinks();
         }
     public void repaintBefore(){}                               // Для исключительных действий (скрипты)
-    public void repaintValues(){}                               // После прочтения всех данных
+    public void repaintValues(){}                               // После прочтения всех данныx
+    public ESS2Device getDeviceTwo() {
+        return deviceTwo==null ? device : deviceTwo; }
+    public int getDevUnitTwo() {
+        return deviceTwo==null ? devUnit : devUnitTwo; }
+    public void setDeviceTwo(ESS2Device deviceTwo) {
+        this.deviceTwo = deviceTwo; }
+    public void setDevUnitTwo(int devUnitTwo) {
+        this.devUnitTwo = devUnitTwo; }
     public void putValue(Meta2Register register, long value, int idx){}
     public void putValue(int data[]) throws UniException {
         putValue(toOneWord(data));

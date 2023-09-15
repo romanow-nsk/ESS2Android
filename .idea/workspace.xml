@@ -12,11 +12,19 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="Рендеринг БАРС - меню иконки">
+    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="Рендеринг БАРС">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/BorderedImageView.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUILevelWB.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/libs/ESS2Core.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/libs/ESS2Core.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/View2BaseDesktop.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/View2BaseDesktop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/View2Base.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/View2Base.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIButton.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIImage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIImageBit.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIImageBit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIImageDataLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIImageDataLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUILevelIndicator.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUILevelIndicator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2ArchitectureData.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2ArchitectureData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -62,6 +70,8 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="android-custom-viewC:/android-sdk-windows/sources/android-29/android/view/View.java_SELECTED" value="View" />
+    <property name="android-custom-viewC:/android-sdk-windows/sources/android-31/android/view/View.java_SELECTED" value="View" />
+    <property name="android-custom-viewC:/android-sdk-windows/sources/android-31/android/view/View.java_View_DIMENSIONS" value="1080&#10;1920" />
     <property name="android-custom-viewC:/android-sdk-windows/sources/android-31/android/view/ViewGroup.java_SELECTED" value="ViewGroup" />
     <property name="android-custom-viewC:/android-sdk-windows/sources/android-31/android/view/ViewGroup.java_ViewGroup_DIMENSIONS" value="1080&#10;1920" />
     <property name="android-custom-viewC:/android-sdk-windows/sources/android-31/android/widget/RelativeLayout.java_RelativeLayout_DIMENSIONS" value="1080&#10;1920" />
@@ -73,6 +83,10 @@
     <property name="android-custom-viewD:/ABC/ESS2Android/app/src/main/java/romanow/abc/ess2/android/rendering/view2/BorderedButton.java_BorderedButton_DIMENSIONS" value="1080&#10;1920" />
     <property name="android-custom-viewD:/ABC/ESS2Android/app/src/main/java/romanow/abc/ess2/android/rendering/view2/BorderedButton.java_SELECTED" value="BorderedButton" />
     <property name="android-custom-viewD:/ABC/ESS2Android/app/src/main/java/romanow/abc/ess2/android/rendering/view2/BorderedTextView.java_SELECTED" value="BorderedTextView" />
+    <property name="android-custom-viewF:/ABC/ESS2Android/app/src/main/java/romanow/abc/ess2/android/rendering/view2/BorderedImageView.java_BorderedImageView_DIMENSIONS" value="1080&#10;1920" />
+    <property name="android-custom-viewF:/ABC/ESS2Android/app/src/main/java/romanow/abc/ess2/android/rendering/view2/BorderedImageView.java_SELECTED" value="BorderedImageView" />
+    <property name="android-custom-viewF:/ABC/ESS2Android/app/src/main/java/romanow/abc/ess2/android/rendering/view2/BorderedTextView.java_BorderedTextView_DIMENSIONS" value="1080&#10;1920" />
+    <property name="android-custom-viewF:/ABC/ESS2Android/app/src/main/java/romanow/abc/ess2/android/rendering/view2/BorderedTextView.java_SELECTED" value="BorderedTextView" />
     <property name="cidr.known.project.marker" value="true" />
     <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/java" />
@@ -222,13 +236,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623228750650</updated>
-    </task>
-    <task id="LOCAL-00099" summary="fix0">
-      <created>1645607007794</created>
-      <option name="number" value="00099" />
-      <option name="presentableId" value="LOCAL-00099" />
-      <option name="project" value="LOCAL" />
-      <updated>1645607007794</updated>
     </task>
     <task id="LOCAL-00100" summary="fix0">
       <created>1645608912520</created>
@@ -566,7 +573,14 @@
       <option name="project" value="LOCAL" />
       <updated>1694671887689</updated>
     </task>
-    <option name="localTasksCounter" value="148" />
+    <task id="LOCAL-00148" summary="Рендеринг БАРС">
+      <created>1694689184450</created>
+      <option name="number" value="00148" />
+      <option name="presentableId" value="LOCAL-00148" />
+      <option name="project" value="LOCAL" />
+      <updated>1694689184451</updated>
+    </task>
+    <option name="localTasksCounter" value="149" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -635,9 +649,9 @@
     <MESSAGE value="Регистры, недоступные для чтения" />
     <MESSAGE value="2.0.2 Под jar" />
     <MESSAGE value="2.0.2 ИСключение параллельных http" />
-    <MESSAGE value="Рендеринг БАРС" />
     <MESSAGE value="Рендеринг БАРС - меню иконки" />
-    <option name="LAST_COMMIT_MESSAGE" value="Рендеринг БАРС - меню иконки" />
+    <MESSAGE value="Рендеринг БАРС" />
+    <option name="LAST_COMMIT_MESSAGE" value="Рендеринг БАРС" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -788,11 +802,6 @@
           <option name="timeStamp" value="400" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUI2StateBox.java</url>
-          <line>55</line>
-          <option name="timeStamp" value="424" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/NetCall.java</url>
           <line>43</line>
           <option name="timeStamp" value="435" />
@@ -811,6 +820,11 @@
           <url>jar://$PROJECT_DIR$/app/libs/ESS2Core.jar!/romanow/abc/core/entity/metadata/view/Meta2GUI.class</url>
           <line>209</line>
           <option name="timeStamp" value="445" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUILevelWB.java</url>
+          <line>81</line>
+          <option name="timeStamp" value="465" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -944,16 +944,17 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
 
     @Override
     public void notify(String s) {
-
-    }
-
+        }
     @Override
     public boolean isFinish() {
         return false;
     }
-
     @Override
     public void onClose() {
-
+        }
+    @Override
+    public void onBackPressed() {
+        if (architectureData.onBackPressed())
+            finish();
     }
 }

@@ -93,4 +93,6 @@ public class DesktopGUIButton extends View2BaseDesktop {
             return "Недопустимый "+getRegister().getTypeName()+" для "+getElement().getFullTitle();
         return null;
         }
+    //-----------------------------------------------------------------------------------------------
+
 }

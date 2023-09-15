@@ -1,23 +1,15 @@
 package romanow.abc.ess2.android.service;
 
-import static romanow.abc.core.Utils.httpError;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +19,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 import romanow.abc.core.ErrorList;
 import romanow.abc.core.UniException;
+import romanow.abc.core.Utils;
 import romanow.abc.core.constants.IntegerList;
 import romanow.abc.core.constants.Values;
 import romanow.abc.core.entity.UnitRegisterList;
@@ -43,18 +36,17 @@ import romanow.abc.core.entity.metadata.render.ScreenMode;
 import romanow.abc.core.entity.metadata.view.Meta2GUI;
 import romanow.abc.core.entity.metadata.view.Meta2GUIArray;
 import romanow.abc.core.entity.metadata.view.Meta2GUICollection;
-import romanow.abc.core.entity.metadata.view.Meta2GUIImage;
 import romanow.abc.core.entity.metadata.view.Meta2GUIReg;
 import romanow.abc.core.entity.subject2area.ESS2Device;
 import romanow.abc.core.entity.subject2area.ESS2Equipment;
+import romanow.abc.core.entity.subject2area.ESS2LogUnit;
 import romanow.abc.core.entity.subjectarea.WorkSettings;
 import romanow.abc.core.utils.OwnDateTime;
-import romanow.abc.ess2.android.I_ListBoxListener;
-import romanow.abc.ess2.android.ListBoxDialog;
 import romanow.abc.ess2.android.MainActivity;
 import romanow.abc.ess2.android.R;
 import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.rendering.I_GUI2Event;
+import romanow.abc.ess2.android.rendering.I_Value;
 import romanow.abc.ess2.android.rendering.module.Module;
 import romanow.abc.ess2.android.rendering.View2Base;
 import romanow.abc.ess2.android.rendering.View2BaseDesktop;
@@ -83,6 +75,8 @@ public class ESS2Rendering {
     public final static int HeaderHeight = 75;
     public final static int MenuLayoutHeight = 60;
     private HashMap<String,Bitmap> iconsMap = new HashMap<>();
+    private HashMap<String,Bitmap> backImgMap = new HashMap<>();
+    private String backFormName=null;
     //------------------------------------------------------------------------------------------------------------------
     public void openFormDialog(){
         if (formView!=null){
@@ -134,7 +128,7 @@ public class ESS2Rendering {
             }
         @Override
         public void repaintView() {
-            ESS2Rendering.this.repaintView();
+            ESS2Rendering.this.renderView();
             }
         @Override
         public void repaintValues() {
@@ -146,7 +140,7 @@ public class ESS2Rendering {
             }
         @Override
         public void forceRepaint() {
-            ESS2Rendering.this.repaintView();
+            ESS2Rendering.this.renderView();
             }
         };
     private FormContext2 context = new FormContext2(contextBack){
@@ -218,7 +212,7 @@ public class ESS2Rendering {
         userLoginTime = new OwnDateTime();
         setMainForm();
         createLoopThread();
-        repaintView();
+        renderView();
         }
     public void renderOff(){            // Вызывается из ESS2ArchitectureData
         setRenderingOnOff(false);
@@ -235,6 +229,18 @@ public class ESS2Rendering {
     private boolean renderingOn=false;
     private void setRenderingOnOff(boolean vv){
         renderingOn = vv;
+        }
+    public boolean onBackPressed(){
+        if (!renderingOn)
+            return true;
+        if (backFormName==null){
+            main2.setRenderingOff();
+            }
+        else{
+            context.setCurrentView(main2.currentView);
+            context.openForm(mainFormName,true);
+            }
+        return false;
         }
     //private boolean repaintValuesOn=false;                           // Обновление данных
     //private boolean repaintBusy=false;                               // Обновление формы
@@ -281,7 +287,7 @@ public class ESS2Rendering {
         guiLoop.start();
         }
     //------------------------------------------------------------------------------------------------------------------------
-    public void loadImage(String formName,ImageButton button, Artifact art){
+    public void loadImage(final String formName,final ImageButton button, final Artifact art){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -328,12 +334,12 @@ public class ESS2Rendering {
             }).start();
         }
     //-----------------------------------------------------------------------------------------------------------------------
-    public void createChildFormList(){
+    public void renderFormMenuList(){
         Meta2GUIView currentView = main2.currentView.getView();
         Meta2EntityList<Meta2GUIForm> formList = currentView.getForms();
         Meta2GUIForm baseForm = context.getBaseForm();
         String currentName = baseForm.getTitle();
-        final String backFormName = !currentName.equals(mainFormName) ? baseForm.getParentName() : null;
+        backFormName = !currentName.equals(mainFormName) ? baseForm.getParentName() : null;
         formMenu.removeAllViews();
         MainActivity main = main2.main();
         LinearLayout ll = (LinearLayout)main.getLayoutInflater().inflate(R.layout.menu_button,null);
@@ -348,6 +354,7 @@ public class ESS2Rendering {
                 }
             });
         formMenu.addView(ll);
+        /*      Кнопка выхода наверх
         ll = (LinearLayout)main.getLayoutInflater().inflate(R.layout.menu_button,null);
         ll.setBackgroundColor(main.getResources().getColor(R.color.colorESS2Back));
         button = (ImageButton) ll.findViewById(R.id.menu_button_press);
@@ -364,12 +371,16 @@ public class ESS2Rendering {
                 }
             });
         formMenu.addView(ll);
+         */
         for (Meta2GUIForm next : formList.getList()) {
             if (!next.getParentName().equals(currentName))
                 continue;
             if (next.isBaseForm())
                 continue;
+            if (next.isDebugForm())
+                continue;
             ll = (LinearLayout)main.getLayoutInflater().inflate(R.layout.menu_button,null);
+            formMenu.addView(ll);
             ll.setBackgroundColor(main.getResources().getColor(R.color.colorESS2Back));
             final ImageButton button2 = (ImageButton) ll.findViewById(R.id.menu_button_press);
             //button.setBackgroundColor(currentView.getBackColor());
@@ -377,28 +388,32 @@ public class ESS2Rendering {
             //int resourceId = main.getResources().getIdentifier("no_problem", "drawable", main.getPackageName());
             //button.setImageResource(resourceId);
             final String formName =  next.getTitle().replace("_","");
+            final String formName0 = next.getTitle();
             Bitmap bitmap = iconsMap.get(formName);
             if (bitmap==null){
                 if (next.getIcon().getOid()==0){
                     bitmap = BitmapFactory.decodeResource(main2.main().getResources(), R.drawable.no_problem);
+                    button2.setImageBitmap(bitmap);
                     iconsMap.put(formName,bitmap);
                     }
                 else{
                     loadImage(formName,button2,next.getIcon().getRef());
                     }
                 }
-            button.setImageBitmap(bitmap);
-            button.setOnClickListener(new View.OnClickListener() {
+            else{
+                button2.setImageBitmap(bitmap);
+                }
+            button2.setClickable(true);
+            button2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.openForm(formName,true);
+                    context.openForm(formName0,FormContext2.ModeNext);
                     }
                 });
-            formMenu.addView(ll);
             }
         }
     //------------------------------------------------------------------------------------------------------------------------
-    public synchronized void  repaintView() {
+    public synchronized void renderView() {
         AppData ctx = AppData.ctx();
         setRenderingOnOff(true);
         Meta2GUIView currentView = main2.currentView.getView();
@@ -415,15 +430,84 @@ public class ESS2Rendering {
                 }
         if (context.getForm().isEmpty()){         // Рекурсивно пропустить пустые экраны
             context.setForm(formList.getByTitle(context.getForm().getChilds().get(0).getTitle()));
-            repaintView();
+            renderView();
             }
         for(ESS2Device device : main2.deployed.getDevices()){          // Очистить кэши
             device.clearCash();
             }
         //-----------------------------------------------------------------------------------
         Meta2GUIForm form = context.getForm();
-        Meta2GUIForm baseForm = context.getBaseForm();
+        final Meta2GUIForm baseForm = context.getBaseForm();
         int level = context.getForm().getLevel();
+        renderCommonButtons();
+        renderBackImage(baseForm);
+        //----------------------------------- Рисование элементов управления
+        level = baseForm.getLevel();
+        renderFormMenuList();
+        guiList.clear();
+        int idx[] = new int[Values.FormStackSize];
+        renderGuiElement(baseForm.getControls(),0,0,0,idx);  // Рекурсивный рендеринг для всех уровней
+        for(View2Base view :  guiList)
+            ((View2BaseDesktop)view).addToPanel(formPanel);                         // Добавить на панель
+        //----------------------------------------------------------------------------------
+        module=null;
+        Meta2GUIForm ff = context.getForm();
+        if (!ff.noModule()){
+            try {
+                Class clazz = Class.forName(AppData.ESS2ModulePackage+"."+ff.getModuleName());
+                if (clazz==null){
+                    errorList.addError("Не найден класс модуля "+ ff.getModuleName());
+                    }
+                else{
+                    module = (Module)clazz.newInstance();
+                    module.init(main2,formPanel,ctx.getService(),ctx.getService2(),ctx.loginSettings().getSessionToken(), context.getForm(),context);
+                    }
+                } catch (Exception ee){
+                    errorList.addError("Ошибка создания объекта для модуля "+ ff.getModuleName());
+                    }
+            }
+        //------------------------------------------------------------------------------------
+        //repaintBusy=false;
+        if (!errorList.valid()){
+            main2.main().errorMes(""+errorList.getErrCount()+ " ошибок рендеринга");
+            main2.main().errorMes(errorList.toString());
+            }
+        //formDialog.show();
+        wokeUp();
+        }
+    //----------------------------------- Фоновая картинка -------------------------------------
+    public void renderBackImage(Meta2GUIForm baseForm){
+        String formName =  baseForm.getTitle().replace("_","");
+            if (baseForm.getPicture().getOid()!=0){
+                final Artifact backImg = baseForm.getPicture().getRef();
+                Bitmap bitmap = backImgMap.get(formName);
+                final int x0 = context.x(baseForm.getImageX0());
+                final int y0 = context.y(baseForm.getImageY0());
+                final int dx = context.dx(baseForm.getImageW());
+                final int dy = context.dy(baseForm.getImageH());
+                if (bitmap!=null){
+                    ImageView imagePanel = new ImageView(main2.main(),null);
+                    View2BaseDesktop.setBounds(imagePanel, x0,y0, dx,dy );
+                    imagePanel.setImageBitmap(bitmap);
+                    formPanel.addView(imagePanel);
+                    }
+                else{
+                        View2BaseDesktop.loadImage(context.getMain().main(), backImg, new I_Value<Bitmap>() {
+                            @Override
+                            public void onEnter(Bitmap value) {
+                                Bitmap bitmap = Bitmap.createScaledBitmap(value,dx,dy,false);
+                                backImgMap.put(formName,bitmap);
+                                ImageView imagePanel = new ImageView(main2.main(),null);
+                                View2BaseDesktop.setBounds(imagePanel, x0,y0, dx,dy );
+                                imagePanel.setImageBitmap(bitmap);
+                                formPanel.addView(imagePanel);
+                            }
+                        });
+                    }
+            }
+        }
+    //------------------------------------------------------------------------------------------------------------------------
+    public void renderCommonButtons(){
         /*--------------- TODO   OnOff Button ----------------------------------------------------
         OnOff = new JButton();
         OnOff.setBorderPainted(false);
@@ -485,6 +569,7 @@ public class ESS2Rendering {
         logout.setBounds(context.x(870), context.y(10), context.x(40), context.y(40));
          */
         //-----------------------------------------------------------------------------------
+        /*
         if (context.getForm().getTitle().equals(mainFormName)){
             TextView userTitle = new TextView(main2.main());
             int  access = context.getManager().getCurrentAccessLevel();
@@ -495,9 +580,7 @@ public class ESS2Rendering {
             //userTitle.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
             formPanel.addView(userTitle);
             }
-        //-----------------------------------------------------------------------------------
-        level = baseForm.getLevel();
-        createChildFormList();
+         */
         /* Старая кнопка с выпадающим меню --------------------------
         LinearLayout layout =   (LinearLayout)main2.main().getLayoutInflater().inflate(R.layout.render_menu_button,null);
         formPanel.addView(layout);
@@ -518,39 +601,8 @@ public class ESS2Rendering {
                 }
             });
          */
-        //----------------------------------- Рисование элементов управления
-        guiList.clear();
-        int idx[] = new int[Values.FormStackSize];
-        renderGuiElement(baseForm.getControls(),0,0,0,idx);  // Рекурсивный рендеринг для всех уровней
-        for(View2Base view :  guiList)
-            ((View2BaseDesktop)view).addToPanel(formPanel);                      // Добавить на панель
-        //----------------------------------------------------------------------------------
-        module=null;
-        Meta2GUIForm ff = context.getForm();
-        if (!ff.noModule()){
-            try {
-                Class clazz = Class.forName(AppData.ESS2ModulePackage+"."+ff.getModuleName());
-                if (clazz==null){
-                    errorList.addError("Не найден класс модуля "+ ff.getModuleName());
-                    }
-                else{
-                    module = (Module)clazz.newInstance();
-                    module.init(main2,formPanel,ctx.getService(),ctx.getService2(),ctx.loginSettings().getSessionToken(), context.getForm(),context);
-                    }
-                } catch (Exception ee){
-                    errorList.addError("Ошибка создания объекта для модуля "+ ff.getModuleName());
-                    }
-            }
-        //------------------------------------------------------------------------------------
-        //repaintBusy=false;
-        if (!errorList.valid()){
-            main2.main().errorMes(""+errorList.getErrCount()+ " ошибок рендеринга");
-            main2.main().errorMes(errorList.toString());
-            }
-        //formDialog.show();
-        wokeUp();
-        }
-    //------------------------------------------------------------------------------------------------------------------------
+    }
+    //-------------------------------------------------------------------------------------------------
     public boolean setMainForm(){
         if (context.getForm()==null){
             Meta2GUIForm form = main2.currentView.getView().getForms().getByTitle(mainFormName);
@@ -564,7 +616,7 @@ public class ESS2Rendering {
         }
     private void setForm(Meta2GUIForm aaa){
         context.setForm(aaa);
-        repaintView();
+        renderView();
         }
     //------------------------------------------------------------------------------------------------------------------------
     private I_GUI2Event retryPaintValues = new I_GUI2Event(){
@@ -572,12 +624,11 @@ public class ESS2Rendering {
         public void onEnter(View2Base element, int iParam, String sParam) {
             guiLoop.interrupt();
             userLoginTime = new OwnDateTime();
-            repaintView();
+            renderView();
             }
         };
-    //-----------------------------------------------------------------------------------------------------------------------
     //----------------------- Рендеринг элементов ----------------------------------------
-    public void renderGuiElement(Meta2GUI meta, int baseX, int baseY, int groupLevel, int groupIndexes[]){
+    public void renderGuiElement(Meta2GUI meta,int baseX, int baseY, int groupLevel, int groupIndexes[]){
         if (meta instanceof Meta2GUIArray){
             Meta2GUIArray array = (Meta2GUIArray) meta;
             Meta2GUI elem = array.getElem();
@@ -606,11 +657,16 @@ public class ESS2Rendering {
             View2Base newElem = View2Base.createGUIElement(errorList,context.getPlatformName(),meta);
             if (newElem==null)
                 return;
-            String ss = newElem.setParams(context,main2.deployed,meta,retryPaintValues);
-            if (ss!=null){
-                errorList.addError(ss);
-                return;
+            try {
+                String mes = newElem.setParams(context, main2.deployed, meta, retryPaintValues);
+                if (mes!=null){
+                    errorList.addError("Ошибка настройки элемента "+newElem.getTitle()+"\n"+ mes);
+                    return;
                 }
+            } catch (Exception ee){
+                errorList.addError("Ошибка настройки элемента "+newElem.getTitle()+"\n"+ Utils.createFatalMessage(ee));
+                return;
+            }
             newElem.setDxOffset(baseX);
             newElem.setDyOffset(baseY);
             newElem.setGroupLevel(groupLevel);
@@ -636,7 +692,7 @@ public class ESS2Rendering {
                 int treeLevel = register.getArrayLevel()-1;         // Кол-во массивов в дереве Meta-элементов (+device+units) -1
                 int grlevel = groupLevel-1;                         // Кол-во массивов в форме
                 int stacklevel = context.getForm().getLevel()-1;    // Вершина стека индексов форм для тек. уровня
-                if (!link.isOwnUnit() && treeLevel > stacklevel){
+                if (!link.isOwnUnit() && treeLevel > stacklevel+1){
                     errorList.addError("Уровень массива мета-данных > уровня формы "+
                             equipName+" для "+regGUI.getFullTitle()+"="+(treeLevel+1)+" "+
                             context.getForm().getTitle()+"="+(stacklevel+1));
@@ -675,9 +731,31 @@ public class ESS2Rendering {
                     errorList.addError("Индекс Unit "+newElem.getUnitIdx()+" превышен  "+equipName+" для "+regGUI.getFullTitle());
                     return;
                 }
-                newElem.setDevice(equipment.getLogUnits().get(newElem.getUnitIdx()).getDevice().getRef());
-                newElem.setDevUnit(equipment.getLogUnits().get(newElem.getUnitIdx()).getUnit());        // Физический Unit
-            }
+                ESS2LogUnit unit = equipment.getLogUnits().get(newElem.getUnitIdx());
+                newElem.setDevice(unit.getDevice().getRef());
+                newElem.setDevUnit(unit.getUnit());        // Физический Unit
+                //----------------------ВТОРОЙ ЛИНК БЕЗ ИНДЕКСАЦИИ -----------------------------------------------------
+                ESS2Equipment equipment2 = null;
+                Meta2RegLink link2= meta.getSecondLink();
+                if (link2!=null){
+                    Meta2Register register2 = link2.getRegister();
+                    String equipName2= link2.getEquipName();
+                    equipment2 = main2.deployed.getEquipments().getByName(equipName2);
+                    if (equipment2==null){
+                        errorList.addError("Не найдено оборудование "+equipName2+" для "+regGUI.getFullTitle());
+                        return;
+                    }
+                    int connectorsSize2 = equipment2.getLogUnits().size();
+                    if (connectorsSize2==0){
+                        errorList.addError("Нет устройств для "+equipName2);
+                        return;
+                    }
+                    ESS2LogUnit unit2 = equipment2.getLogUnits().get(link2.getUnitIdx());
+                    newElem.setDeviceTwo(unit2.getDevice().getRef());
+                    newElem.setDevUnitTwo(unit2.getUnit());        // Физический Unit
+                    }
+                //-------------------------------------------------------------------------------------------------------
+                }
             guiList.add(newElem);
         }
     }
