@@ -51,7 +51,9 @@ import romanow.abc.core.utils.Pair;
 import romanow.abc.ess2.android.I_DownLoadString;
 import romanow.abc.ess2.android.I_DownLoadXML;
 import romanow.abc.ess2.android.I_Event;
+import romanow.abc.ess2.android.I_EventListener;
 import romanow.abc.ess2.android.MainActivity;
+import romanow.abc.ess2.android.OKDialog;
 import romanow.abc.ess2.android.R;
 
 public class ESS2ArchitectureData {
@@ -77,14 +79,15 @@ public class ESS2ArchitectureData {
     private ImageView renderState;
     private TextView deployStateText;
     private TextView renderStateText;
-    //private Button formMenuButton;
     private AppData ctx;
-    public ESS2Architecture deployed=null;         // Развернутая архитектура
+    public ESS2Architecture deployed=null;  // Развернутая архитектура
     ESS2View currentView=null;              // Текущий вид
     AccessManager manager;
     private int loadCount=0;                // Счетчик загрузок XML-файлов
     private ESS2Architecture arch=null;     // Используется при загрузке
     private ESS2Rendering rendering=null;
+    private int serverState=Values.ASNotDeployed;
+    private boolean wasRendering=false;
     public MainActivity main(){ return base; }
     public ESS2ArchitectureData(MainActivity main0){
         rendering = new ESS2Rendering(this);
@@ -100,6 +103,24 @@ public class ESS2ArchitectureData {
             @Override
             public void onClick(View v) {
                 OnOffActionPerformed();
+                }
+            });
+        deployState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (serverState==Values.ASNotDeployed)
+                    return;
+                new OKDialog(main(), "Перезагрузка", new I_EventListener() {
+                    @Override
+                    public void onEvent(String zz) {
+                        if (zz==null)
+                            return;
+                        wasRendering = rendering.isRenderingOn();
+                        AccessManager accessManager = manager;
+                        clearDeployedMetaData();
+                        refreshArchtectureState(manager);
+                        }
+                    });
                 }
             });
         /*
@@ -133,11 +154,11 @@ public class ESS2ArchitectureData {
             @Override
             public void onSuccess(Object vv) {
                 ArrayList<Long> val = (ArrayList<Long>)vv;
-                int state = val.get(0).intValue();
-                deployState.setImageResource(archStateIcons[state]);
-                connectState.setImageResource(connStateIcons[state]);
-                base.addToLog("Состояние архитектуры: "+ Values.constMap().getGroupMapByValue("ArchState").get(state).title());
-                if (state==Values.ASNotDeployed)
+                serverState = val.get(0).intValue();
+                deployState.setImageResource(archStateIcons[serverState]);
+                connectState.setImageResource(connStateIcons[serverState]);
+                base.addToLog("Состояние архитектуры: "+ Values.constMap().getGroupMapByValue("ArchState").get(serverState).title());
+                if (serverState==Values.ASNotDeployed)
                     return;
                 long oid = val.get(1);
                 /*
@@ -152,7 +173,7 @@ public class ESS2ArchitectureData {
                     return;
                     }
                 */
-                loadDeployedArchitecture(oid, state);
+                loadDeployedArchitecture(oid, serverState);
                 }
             });
         }
@@ -186,7 +207,10 @@ public class ESS2ArchitectureData {
                 }
         refreshDeployedMetaData();
         deployed.createStreamRegisterList();
-        //refreshSelectedArchitecture();
+        if (wasRendering){
+            wasRendering=false;
+            setRenderingOn();
+            }
         }
     //-------------------------------------------------------------------------------------------------------------------
     private void testXMlFileLoading(){

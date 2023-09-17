@@ -227,6 +227,8 @@ public class ESS2Rendering {
     private boolean shutDown=false;
     private int renderSeqNum=0;                                         // Последовательный номер рендеринга
     private boolean renderingOn=false;
+    public boolean isRenderingOn() {
+        return renderingOn; }
     private void setRenderingOnOff(boolean vv){
         renderingOn = vv;
         }
