@@ -24,9 +24,9 @@ public class DesktopGUI3StateBox extends View2BaseDesktop {
         type = Values.GUI3StateBox;
         }
     private int iconsWarning[]={
-            R.drawable.balllightgray,R.drawable.ballyellow,R.drawable.ballred,R.drawable.ballwhite };
+            R.drawable.balllightgray,R.drawable.ballyellow,R.drawable.ballred,R.drawable.ballblue };
     private int iconsWorking[]={
-            R.drawable.balllightgray,R.drawable.ballgreen,R.drawable.ballred,R.drawable.ballwhite };
+            R.drawable.balllightgray,R.drawable.ballgreen,R.drawable.ballred,R.drawable.ballblue };
     protected View createComponent(){
         return new ImageView(context.getMain().main());
     }

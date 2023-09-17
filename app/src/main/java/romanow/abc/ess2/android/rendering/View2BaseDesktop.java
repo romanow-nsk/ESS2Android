@@ -59,6 +59,7 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
             if (fontSize==0) fontSize=DefaultTextSize;
             setTextSize(label,context.dy(fontSize));
             setLongClickInfo(label);
+            setInfoClick(label);
             panel.addView(label);
             if (element.isBold())
                 label.setTypeface(null, Typeface.BOLD);

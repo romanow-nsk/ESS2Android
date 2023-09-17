@@ -26,7 +26,6 @@ public class DesktopGUIDataLabel extends View2BaseDesktop {
     public void addToPanel(RelativeLayout panel) {
         label = setLabel(panel);
         label.setTextColor(getElemBackColor() | 0xFF000000);
-        setInfoClick(label);
         }
     public void showInfoMessage() {
         Meta2DataRegister set = (Meta2DataRegister) getRegister();
