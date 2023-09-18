@@ -50,7 +50,7 @@ public abstract class SettingsMenuBase {
             public boolean onLongClick(View v) {
                 if (prevValues==null)
                     return false;
-                new ListBoxDialog(base, prevValues, name, new I_ListBoxListener() {
+                new ListBoxDialog(base, MainActivity.createMenuList(prevValues), name, new I_ListBoxListener() {
                     @Override
                     public void onSelect(int index) {
                         tt.setText(prevValues[index]);
@@ -89,7 +89,7 @@ public abstract class SettingsMenuBase {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ListBoxDialog(base,values,"Функ.окна", new I_ListBoxListener(){
+                new ListBoxDialog(base,MainActivity.createMenuList(values),"Функ.окна", new I_ListBoxListener(){
                     @Override
                     public void onSelect(int index) {
                         lsn.onSelect(index);

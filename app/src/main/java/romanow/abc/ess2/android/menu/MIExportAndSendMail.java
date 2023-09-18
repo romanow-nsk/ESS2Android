@@ -3,13 +3,9 @@ package romanow.abc.ess2.android.menu;
 import android.content.Intent;
 import android.net.Uri;
 
-import androidx.core.content.FileProvider;
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 
-import romanow.abc.ess2.android.BuildConfig;
 import romanow.abc.ess2.android.FileDescription;
 import romanow.abc.ess2.android.FileDescriptionList;
 import romanow.abc.ess2.android.I_ArchiveMultiSelector;

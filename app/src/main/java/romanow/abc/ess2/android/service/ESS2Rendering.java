@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ import romanow.abc.core.entity.subjectarea.WorkSettings;
 import romanow.abc.core.utils.OwnDateTime;
 import romanow.abc.ess2.android.MainActivity;
 import romanow.abc.ess2.android.R;
+import romanow.abc.ess2.android.menu.MenuItemRenderAction;
 import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.rendering.I_GUI2Event;
 import romanow.abc.ess2.android.rendering.I_Value;
@@ -65,8 +67,8 @@ public class ESS2Rendering {
     private ArrayList<View2Base> guiList = new ArrayList<>();
     private RelativeLayout formPanel=null;
     //private ConstraintLayout formView=null;
+    //private LinearLayout formMenu;
     private RelativeLayout formView=null;
-    private LinearLayout formMenu;
     private Button formMenuButton=null;
     private volatile int asyncCount=0;  // Счетчик асинхронных вызовов
     private float dpHeight;             // Размерности экрана dp
@@ -77,7 +79,10 @@ public class ESS2Rendering {
     private HashMap<String,Bitmap> iconsMap = new HashMap<>();
     private HashMap<String,Bitmap> backImgMap = new HashMap<>();
     private String backFormName=null;
+    private ArrayList<MenuItemRenderAction> menuActions = new ArrayList<>();
     //------------------------------------------------------------------------------------------------------------------
+    public ArrayList<MenuItemRenderAction> getMenuActions(){
+        return menuActions; }
     public void openFormDialog(){
         if (formView!=null){
             main2.main().getLogLayout().removeView(formView);
@@ -96,8 +101,8 @@ public class ESS2Rendering {
         formPixHeight = displayMetrics.heightPixels-(int)(displayMetrics.density*(HeaderHeight+MenuLayoutHeight));
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(-1,(int)(MenuLayoutHeight*displayMetrics.density));
         params.setMargins(0, formPixHeight, 0, 0);
-        formMenu = (LinearLayout)formView.findViewById(R.id.form_frame_menu);
-        formMenu.setLayoutParams(params);
+        //formMenu = (LinearLayout)formView.findViewById(R.id.form_frame_menu);
+        //formMenu.setLayoutParams(params);
         LinearLayout layout = main2.main().getLogLayout();
         layout.removeAllViews();
         layout.addView(formView);
@@ -289,7 +294,7 @@ public class ESS2Rendering {
         guiLoop.start();
         }
     //------------------------------------------------------------------------------------------------------------------------
-    public void loadImage(final String formName,final ImageButton button, final Artifact art){
+    public void loadImage(final String formName,final MenuItemRenderAction action, final Artifact art){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -304,7 +309,7 @@ public class ESS2Rendering {
                             public void run() {
                                 Bitmap bitmap = Bitmap.createScaledBitmap(bitmap0,100,100,false);
                                 iconsMap.put(formName,bitmap);
-                                button.setImageBitmap(bitmap);
+                                action.setBitmap(bitmap);
                                 }
                             });
                         }
@@ -315,7 +320,7 @@ public class ESS2Rendering {
                                 try {
                                     Bitmap bitmap2 = BitmapFactory.decodeResource(main2.main().getResources(), R.drawable.no_problem);
                                     iconsMap.put(formName, bitmap2);
-                                    button.setImageBitmap(bitmap2);
+                                    action.setBitmap(bitmap2);
                                     main2.main().popupAndLog(response.message()+response.errorBody().string());
                                     } catch (IOException e) {}
                                 }
@@ -327,7 +332,7 @@ public class ESS2Rendering {
                         public void run() {
                             Bitmap bitmap2 = BitmapFactory.decodeResource(main2.main().getResources(), R.drawable.no_problem);
                             iconsMap.put(formName, bitmap2);
-                            button.setImageBitmap(bitmap2);
+                            action.setBitmap(bitmap2);
                             main2.main().popupAndLog("Ошибка загрузки: "+art.getTitle()+"\n"+ee.toString());
                             }
                          });
@@ -337,43 +342,23 @@ public class ESS2Rendering {
         }
     //-----------------------------------------------------------------------------------------------------------------------
     public void renderFormMenuList(){
+        menuActions.clear();
         Meta2GUIView currentView = main2.currentView.getView();
         Meta2EntityList<Meta2GUIForm> formList = currentView.getForms();
         Meta2GUIForm baseForm = context.getBaseForm();
         String currentName = baseForm.getTitle();
         backFormName = !currentName.equals(mainFormName) ? baseForm.getParentName() : null;
-        formMenu.removeAllViews();
+        //formMenu.removeAllViews();
         MainActivity main = main2.main();
-        LinearLayout ll = (LinearLayout)main.getLayoutInflater().inflate(R.layout.menu_button,null);
-        ll.setBackgroundColor(main.getResources().getColor(R.color.colorESS2Back));
-        ImageButton button = (ImageButton) ll.findViewById(R.id.menu_button_press);
-        button.setImageResource(R.drawable.refresh);
-        //button.setBackgroundColor(currentView.getMenuButtonOnColor() | 0xFF000000);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Runnable action = new Runnable() {
             @Override
-            public void onClick(View v) {
+            public void run() {
                 context.openForm(mainFormName,true);
                 }
-            });
-        formMenu.addView(ll);
-        /*      Кнопка выхода наверх
-        ll = (LinearLayout)main.getLayoutInflater().inflate(R.layout.menu_button,null);
-        ll.setBackgroundColor(main.getResources().getColor(R.color.colorESS2Back));
-        button = (ImageButton) ll.findViewById(R.id.menu_button_press);
-        //button.setBackgroundColor(currentView.getBackColor());
-        button.setImageResource(R.drawable.up);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (backFormName==null){
-                    main2.setRenderingOff();
-                    }
-                else
-                    context.openForm(mainFormName,true);
-                }
-            });
-        formMenu.addView(ll);
-         */
+            };
+        MenuItemRenderAction menuAction = new MenuItemRenderAction("Главная",action);
+        menuAction.setBitmap(BitmapFactory.decodeResource(main.getResources(), R.drawable.refresh));
+        menuActions.add(menuAction);
         for (Meta2GUIForm next : formList.getList()) {
             if (!next.getParentName().equals(currentName))
                 continue;
@@ -381,37 +366,33 @@ public class ESS2Rendering {
                 continue;
             if (next.isDebugForm())
                 continue;
-            ll = (LinearLayout)main.getLayoutInflater().inflate(R.layout.menu_button,null);
-            formMenu.addView(ll);
-            ll.setBackgroundColor(main.getResources().getColor(R.color.colorESS2Back));
-            final ImageButton button2 = (ImageButton) ll.findViewById(R.id.menu_button_press);
-            //button.setBackgroundColor(currentView.getBackColor());
             //------------------------ id ресурса по имени файла -----------------------------------
             //int resourceId = main.getResources().getIdentifier("no_problem", "drawable", main.getPackageName());
             //button.setImageResource(resourceId);
             final String formName =  next.getTitle().replace("_","");
             final String formName0 = next.getTitle();
+            final Runnable action2 = new Runnable() {
+                @Override
+                public void run() {
+                    context.openForm(formName0,FormContext2.ModeNext);
+                    }
+                };
+            final MenuItemRenderAction menuAction2 = new MenuItemRenderAction(formName,action2);
+            menuActions.add(menuAction2);
             Bitmap bitmap = iconsMap.get(formName);
             if (bitmap==null){
                 if (next.getIcon().getOid()==0){
                     bitmap = BitmapFactory.decodeResource(main2.main().getResources(), R.drawable.no_problem);
-                    button2.setImageBitmap(bitmap);
+                    menuAction2.setBitmap(bitmap);
                     iconsMap.put(formName,bitmap);
                     }
                 else{
-                    loadImage(formName,button2,next.getIcon().getRef());
+                    loadImage(formName,menuAction2,next.getIcon().getRef());
                     }
                 }
             else{
-                button2.setImageBitmap(bitmap);
+                menuAction2.setBitmap(bitmap);
                 }
-            button2.setClickable(true);
-            button2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    context.openForm(formName0,FormContext2.ModeNext);
-                    }
-                });
             }
         }
     //------------------------------------------------------------------------------------------------------------------------
@@ -475,6 +456,7 @@ public class ESS2Rendering {
             main2.main().errorMes(errorList.toString());
             }
         //formDialog.show();
+        main2.main().scrollUp();
         wokeUp();
         }
     //----------------------------------- Фоновая картинка -------------------------------------

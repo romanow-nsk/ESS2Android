@@ -23,6 +23,7 @@ import romanow.abc.core.mongo.I_DBQuery;
 import romanow.abc.core.utils.OwnDateTime;
 import romanow.abc.ess2.android.I_ListBoxListener;
 import romanow.abc.ess2.android.ListBoxDialog;
+import romanow.abc.ess2.android.MainActivity;
 import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.service.ESS2ArchitectureData;
 import romanow.abc.ess2.android.service.NetBack;
@@ -58,7 +59,8 @@ public class ModuleEventAll extends Module {
                 ss+="\n"+essEvent.getTitle();
                 list.add(ss);
                 }
-        ListBoxDialog dialog = new ListBoxDialog(context.getMain().main(),list,getTitle(),back).setnLines(3).setTextSize(15).setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+        ListBoxDialog dialog = new ListBoxDialog(context.getMain().main(),
+                MainActivity.createMenuList(list),getTitle(),back).setnLines(3).setTextSize(15).setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
         dialog.create();
         }
 

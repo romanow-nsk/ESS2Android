@@ -120,7 +120,7 @@ public class SetOneParameter {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ListBoxDialog(base,values,"Функ.окна", new I_ListBoxListener(){
+                new ListBoxDialog(base,MainActivity.createMenuList(values),"Функ.окна", new I_ListBoxListener(){
                     @Override
                     public void onSelect(int index) {
                         lsn.onSelect(index);

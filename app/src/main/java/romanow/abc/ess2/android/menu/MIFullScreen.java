@@ -6,7 +6,6 @@ import romanow.abc.ess2.android.FullScreenGraph;
 import romanow.abc.ess2.android.I_ArchiveMultiSelector;
 import romanow.abc.ess2.android.MainActivity;
 import romanow.abc.ess2.android.service.AppData;
-import romanow.abc.ess2.android.FileDescription;
 import romanow.abc.ess2.android.FileDescriptionList;
 
 

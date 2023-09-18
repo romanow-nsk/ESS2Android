@@ -46,7 +46,7 @@ public class MIFileBrowser extends MenuItem {
                 storages.add("Внутренняя память");
                 for(int i=1;i<extRootPaths.size();i++)
                     storages.add("SD-карта"+(i>1 ? ""+(i-1) : ""));
-                new ListBoxDialog(main, storages, "Память", new I_ListBoxListener() {
+                new ListBoxDialog(main, MainActivity.createMenuList(storages), "Память", new I_ListBoxListener() {
                     @Override
                     public void onSelect(int index) {
                         basePath = extRootPaths.get(index).getAbsolutePath();
@@ -72,7 +72,7 @@ public class MIFileBrowser extends MenuItem {
         for(FileDescription zz : dirs){
             fileList.add(zz.getOriginalFileName());
             }
-        new ListBoxDialog(main, fileList, subPath, new I_ListBoxListener() {
+        new ListBoxDialog(main, MainActivity.createMenuList(fileList), subPath, new I_ListBoxListener() {
             @Override
             public void onSelect(int index) {
                 if (index==0){

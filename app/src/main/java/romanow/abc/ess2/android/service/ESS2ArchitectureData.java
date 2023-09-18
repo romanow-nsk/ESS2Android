@@ -89,6 +89,8 @@ public class ESS2ArchitectureData {
     private int serverState=Values.ASNotDeployed;
     private boolean wasRendering=false;
     public MainActivity main(){ return base; }
+    public ESS2Rendering getRendering(){
+        return rendering; }
     public ESS2ArchitectureData(MainActivity main0){
         rendering = new ESS2Rendering(this);
         base = main0;

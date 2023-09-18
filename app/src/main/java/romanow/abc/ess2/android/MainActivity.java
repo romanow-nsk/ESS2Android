@@ -59,7 +59,6 @@ import romanow.abc.ess2.android.service.AppData;
 import romanow.abc.ess2.android.service.ESS2ArchitectureData;
 import romanow.abc.ess2.android.service.Base64Coder;
 import romanow.abc.ess2.android.service.BaseActivity;
-import romanow.abc.ess2.android.service.GPSService;
 import romanow.abc.ess2.android.service.GPSService11;
 import romanow.abc.ess2.android.service.I_GPSService;
 import romanow.abc.ess2.android.service.NetBack;
@@ -97,7 +96,20 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     private ImageView GPSState;
     private ImageView NETState;
     private ESS2ArchitectureData architectureData;
+    private ArrayList<MenuItemAction> menuList = new ArrayList<>();
     //--------------------------------------------------------------------------
+    public static ArrayList<MenuItemAction> createMenuList(ArrayList<String> in){
+        ArrayList<MenuItemAction> out = new ArrayList<>();
+        for(String ss : in)
+            out.add(new MenuItemNull(ss));
+        return out;
+        }
+    public static ArrayList<MenuItemAction> createMenuList(String in[]){
+        ArrayList<MenuItemAction> out = new ArrayList<>();
+        for(String ss : in)
+            out.add(new MenuItemNull(ss));
+        return out;
+        }
     private BroadcastReceiver gpsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -273,10 +285,10 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                 @Override
                 public void onClick(View v) {
                     createMenuList();
-                    menuDialog = new ListBoxDialog(MainActivity.this, createMenuTitles(), "Меню", new I_ListBoxListener() {
+                    menuDialog = new ListBoxDialog(MainActivity.this, menuList, "Меню", new I_ListBoxListener() {
                         @Override
                         public void onSelect(int index) {
-                            procMenuItem(index);
+                            menuList.get(index).onSelect();
                             menuDialog = null;
                             }
                         @Override
@@ -357,8 +369,16 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             @Override
             public void run() {
                 scroll.fullScroll(ScrollView.FOCUS_DOWN);
+                }
+            });
+        }
+    public void scrollUp() {
+        scroll.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                scroll.fullScroll(ScrollView.FOCUS_UP);
             }
-        });
+        },1000);
     }
 
     public void errorMes(int emoCode,String text){
@@ -608,25 +628,13 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         }
         popupInfo("Ошибка записи архива");
     }
-
     //------------------------------------------------------------------------
-    private ArrayList<MenuItemAction> menuList = new ArrayList<>();
-
-    private String[] createMenuTitles() {
-        String out[] = new String[menuList.size()];
-        for (int i = 0; i < out.length; i++)
-            out[i] = menuList.get(i).title;
-        return out;
-    }
-
-    public void procMenuItem(int index) {
-        menuList.get(index).onSelect();
-    }
-
     public void createMenuList() {
         menuList.clear();
+        for(MenuItemAction action :  architectureData.getRendering().getMenuActions())
+            menuList.add(action);
         //if (isAllEnabled()){
-            menuList.add(new MenuItemAction("Связь с сервером") {
+            menuList.add(new MenuItemAction("Подключение") {
                 @Override
                 public void onSelect() {
                     new LoginSettingsMenu(MainActivity.this);
@@ -671,6 +679,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         new MIExportAndSendMail(this);
          */
         new MIAbout(this);
+        /*
         if (!ctx.loginSettings().isTechnicianMode()) {
             menuList.add(new MenuItemAction("Регистрация") {
                 @Override
@@ -686,8 +695,9 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             public void onSelect() {
                 finish();
             }
-        }   );
-    }
+            });
+         */
+        }
 
     private I_ArchiveSelector uploadSelector = new I_ArchiveSelector() {
         @Override
@@ -738,7 +748,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         ArrayList<String> out = new ArrayList<>();
         for (FileDescription ff : ss)
             out.add(ff.toString());
-        new ListBoxDialog(this, out, title, new I_ListBoxListener() {
+        new ListBoxDialog(this, MainActivity.createMenuList(out), title, new I_ListBoxListener() {
             @Override
             public void onSelect(int index) {
                 selector.onSelect(ss.get(index), false);
@@ -782,7 +792,7 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         ArrayList<String> out = new ArrayList<>();
         for (FileDescription ff : ss)
             out.add(ff.toString());
-        new ListBoxDialog(this, out, "Просмотр волны", new I_ListBoxListener() {
+        new ListBoxDialog(this, MainActivity.createMenuList(out), "Просмотр волны", new I_ListBoxListener() {
             @Override
             public void onSelect(int index) {
 

@@ -2,13 +2,10 @@ package romanow.abc.ess2.android.menu;
 
 import okhttp3.MultipartBody;
 import romanow.abc.core.API.RestAPICommon;
-import romanow.abc.core.entity.artifacts.Artifact;
 import romanow.abc.core.utils.FileNameExt;
 import romanow.abc.ess2.android.I_ArchiveMultiSelector;
 import romanow.abc.ess2.android.MainActivity;
 import romanow.abc.ess2.android.service.AppData;
-import romanow.abc.ess2.android.service.NetBackDefault;
-import romanow.abc.ess2.android.service.NetCall;
 import romanow.abc.ess2.android.FileDescription;
 import romanow.abc.ess2.android.FileDescriptionList;
 
