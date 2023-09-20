@@ -1,5 +1,7 @@
 package romanow.abc.ess2.android.rendering.view2;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -34,7 +36,7 @@ public class DesktopGUI3StateBox extends View2BaseDesktop {
         ((ImageView)textField).setImageResource(R.drawable.ballwhite); // NOI18N
         }
     protected int getSize(){
-        return 24;
+        return 30;
         }
     protected int getOffset(){
         return 0;
@@ -71,14 +73,20 @@ public class DesktopGUI3StateBox extends View2BaseDesktop {
         String ss = "Разряды регистра "+(set.getRegNum()+getRegOffset()+" ["+set.getRegNum()+"]("+bitNum+"/"+(bitNum+1)+") "+set.getShortName()+"$"+set.getTitle()+"$");
         ss+=bit.getTitle();
         context.getMain().main().popupInfo(ss);
-    }
+        }
+    private Bitmap getColorIconBitmap(int color){
+        int szz = context.dy(getSize());
+        Bitmap bitmap2 = BitmapFactory.decodeResource(context.getMain().main().getResources(), color);
+        return Bitmap.createScaledBitmap(bitmap2,szz,szz,false);
+        }
     @Override
     public void putValue(long vv) throws UniException {
         int pair = (int)((vv>>bitNum) & 03);
         ImageView bb = (ImageView) textField;
         Meta2GUI3StateBox element = (Meta2GUI3StateBox) getElement();
         int ss = getContext().getForm().getFormLevel()==0 ? iconsWarning[pair] : iconsWorking[pair];
-        bb.setImageResource(ss);
+        //bb.setImageResource(ss);
+        bb.setImageBitmap(getColorIconBitmap(ss));
         }
     @Override
     public String setParams(FormContext2 context, ESS2Architecture meta, Meta2GUI element0, I_GUI2Event onEvent0) {

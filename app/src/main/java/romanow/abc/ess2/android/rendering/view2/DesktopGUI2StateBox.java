@@ -1,5 +1,7 @@
 package romanow.abc.ess2.android.rendering.view2;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,6 +31,7 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
     private Button cmdButton=null;     // Кнопка
     private int lastBitValue=-1;        // Последнее значение разряда
     private int lastValue=0;            //
+    private int sz=0;
     public DesktopGUI2StateBox(){
         type = Values.GUI2StateBox;
         }
@@ -41,10 +44,11 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
         }
     protected void putValueOwn(int cc){
         ImageView bb = (ImageView) textField;
-        bb.setImageResource(getColorIconName(cc));
+        //bb.setImageResource(getColorIconName(cc));
+        bb.setImageBitmap(getColorIconBitmap(cc));
         }
     protected int getSize(){
-        return 24; }
+        return 35; }
     //-----------------------------------------------------------------------
     private int getColorIconName(int color){
         switch (color){
@@ -55,7 +59,12 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
             }
         int v=0;
         return R.drawable.ballwhite;
-    }
+        }
+    private Bitmap getColorIconBitmap(int color){
+        int szz = context.dy(getSize());
+        Bitmap bitmap2 = BitmapFactory.decodeResource(context.getMain().main().getResources(), getColorIconName(color));
+        return Bitmap.createScaledBitmap(bitmap2,szz,szz,false);
+        }
     @Override
     public void addToPanel(RelativeLayout panel) {
         Meta2GUI2StateBox element = (Meta2GUI2StateBox) getElement();
@@ -67,7 +76,7 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
         textField = createComponent();
         int dd = element.getW2();
         if (dd==0) dd=50;
-        int sz = getSize();
+        sz = getSize();
         int offset = (25-sz)/2;
         FormContext2 context = getContext();
         int xx = element.getX()+element.getDx()+getDxOffset()+dd-5+offset;

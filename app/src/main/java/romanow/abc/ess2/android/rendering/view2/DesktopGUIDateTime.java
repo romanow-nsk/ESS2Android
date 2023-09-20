@@ -22,11 +22,12 @@ import romanow.abc.ess2.android.rendering.View2BaseDesktop;
 
 public class DesktopGUIDateTime  extends View2BaseDesktop {
     private TextView textField;
+    private Meta2GUIDateTime element2;
     public DesktopGUIDateTime(){ type = Values.GUIDateTime; }
     @Override
     public void addToPanel(RelativeLayout panel) {
         setLabel(panel);
-        Meta2GUIDateTime element2 = (Meta2GUIDateTime) element;
+        element2 = (Meta2GUIDateTime) element;
         int textColor = context.getView().getTextColor() | 0xFF000000;
         textField = new BorderedTextView(context.getMain().main(),textColor);
         int dd=element2.getW2();
@@ -80,7 +81,7 @@ public class DesktopGUIDateTime  extends View2BaseDesktop {
         ss2 = ss2+String.format("%2d-",vv & 0x0FF);
         vv >>=8;
         ss2 = ss2+String.format("%2d",(vv & 0x0FF)+2000);
-        textField.setText(" "+ss2+" "+ss);
+        textField.setText(" "+(element2.isOnlyTime() ? "" : ss2)+" "+ss);
         }
 
     @Override

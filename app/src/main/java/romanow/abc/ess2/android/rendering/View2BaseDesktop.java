@@ -61,7 +61,7 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
             setLongClickInfo(label);
             setInfoClick(label);
             panel.addView(label);
-            if (element.isBold())
+            if (element.isLabelBold())
                 label.setTypeface(null, Typeface.BOLD);
             return label;
             }
