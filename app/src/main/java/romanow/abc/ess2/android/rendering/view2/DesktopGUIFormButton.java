@@ -1,5 +1,6 @@
 package romanow.abc.ess2.android.rendering.view2;
 
+import android.graphics.Bitmap;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
@@ -27,18 +28,24 @@ public class DesktopGUIFormButton extends View2BaseDesktop {
     public void addToPanel(RelativeLayout panel) {
         int textColor = context.getView().getTextColor() | 0xFF000000;
         MainActivity main = context.getMain().main();
-        ContextThemeWrapper newContext = new ContextThemeWrapper(main, R.style.BlackButton);
-        textField = new Button(newContext);
+        //ContextThemeWrapper newContext = new ContextThemeWrapper(main, R.style.BlackButton);
+        //textField = new Button(newContext);
+        LinearLayout xx=(LinearLayout)main.getLayoutInflater().inflate(R.layout.listbox_item, null);
+        xx.setPadding(5, 5, 5, 5);
+        textField=(Button) xx.findViewById(R.id.dialog_listbox_name);
+        ImageButton img=(ImageButton) xx.findViewById(R.id.dialog_listbox_img);
+        xx.removeView(img);
         FormContext2 context= getContext();
         Meta2GUI element = getElement();
         int hh = element.getH();
         if (hh==0) hh=DefaultH;
-        setBounds(textField,
+        setBounds(xx,
                 context.x(element.getX()),
                 context.y(element.getY()),
                 context.dx(element.getDx()),
                 context.dy(hh));
         //setButtonParams(textField,true);
+        xx.setBackgroundColor(context.getView().getBackColor() | 0xFF000000);
         textField.setClickable(true);
         int textSize = element.getFontSize();
         if (textSize==0) textSize = DefaultTextSize;
@@ -46,7 +53,7 @@ public class DesktopGUIFormButton extends View2BaseDesktop {
         textField.setText(element.getTitle());
         textField.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         //textField.setBackgroundColor(getElemBackColor() | 0xFF000000);
-        textField.setTextColor(context.getView().getTextColor() | 0xFF000000);
+        //textField.setTextColor(context.getView().getTextColor() | 0xFF000000);
         textField.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +65,7 @@ public class DesktopGUIFormButton extends View2BaseDesktop {
                 }
             });
         setInfoClick(textField);
-        panel.addView(textField);
+        panel.addView(xx);
         }
     @Override
     public void putValue(long vv) throws UniException {}
