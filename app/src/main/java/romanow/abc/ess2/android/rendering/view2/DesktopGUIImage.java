@@ -3,6 +3,7 @@ package romanow.abc.ess2.android.rendering.view2;
 import static romanow.abc.core.Utils.httpError;
 
 import android.graphics.Bitmap;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -52,6 +53,15 @@ public class DesktopGUIImage extends View2BaseDesktop {
                 public void onEnter(Bitmap value) {
                     Bitmap bitmap = Bitmap.createScaledBitmap(value,dx,dy,false);
                     imagePanel.setImageBitmap(bitmap);
+                }
+            });
+        imagePanel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (element.isOwnUnit() && element.getUnitLevel()!=0){
+                    context.setIndex(element.getUnitLevel(),element.getUnitIdx());
+                    }
+                context.openForm(element.getFormName(),FormContext2.ModeNext);
                 }
             });
         panel.addView(imagePanel);

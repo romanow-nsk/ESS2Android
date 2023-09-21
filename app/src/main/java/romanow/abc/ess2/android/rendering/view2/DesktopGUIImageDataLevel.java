@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -26,6 +27,7 @@ import romanow.abc.core.entity.metadata.Meta2Register;
 import romanow.abc.core.entity.metadata.Meta2SettingRegister;
 import romanow.abc.core.entity.metadata.view.Meta2GUI;
 import romanow.abc.core.entity.metadata.view.Meta2GUI2StateBox;
+import romanow.abc.core.entity.metadata.view.Meta2GUIFormButton;
 import romanow.abc.core.entity.metadata.view.Meta2GUIImageBit;
 import romanow.abc.core.entity.metadata.view.Meta2GUIImageDataLevel;
 import romanow.abc.core.entity.subject2area.ESS2Architecture;
@@ -99,6 +101,15 @@ public class DesktopGUIImageDataLevel extends View2BaseDesktop {
                     imagePanel.setImageBitmap(img);
                     }
                 });
+        imagePanel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (element.isOwnUnit() && element.getUnitLevel()!=0){
+                    context.setIndex(element.getUnitLevel(),element.getUnitIdx());
+                }
+                context.openForm(element.getFormName(),FormContext2.ModeNext);
+            }
+        });
         panel.addView(imagePanel);
         setInfoClick(imagePanel);
         }
