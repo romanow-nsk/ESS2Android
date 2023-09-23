@@ -12,17 +12,16 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="Картинка с переходом на форму">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIIndexLabel.java" afterDir="false" />
+    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="Надпись-индекс">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/libs/ESS2Core.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/libs/ESS2Core.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[YTCY9H7HT879CE69]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -226,13 +225,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623228750650</updated>
-    </task>
-    <task id="LOCAL-00109" summary="Рендеринг">
-      <created>1645870961907</created>
-      <option name="number" value="00109" />
-      <option name="presentableId" value="LOCAL-00109" />
-      <option name="project" value="LOCAL" />
-      <updated>1645870961908</updated>
     </task>
     <task id="LOCAL-00110" summary="Рендеринг">
       <created>1645885127264</created>
@@ -570,7 +562,14 @@
       <option name="project" value="LOCAL" />
       <updated>1695289164974</updated>
     </task>
-    <option name="localTasksCounter" value="158" />
+    <task id="LOCAL-00158" summary="Надпись-индекс">
+      <created>1695404326801</created>
+      <option name="number" value="00158" />
+      <option name="presentableId" value="LOCAL-00158" />
+      <option name="project" value="LOCAL" />
+      <updated>1695404326802</updated>
+    </task>
+    <option name="localTasksCounter" value="159" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -616,7 +615,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Скрипты" />
     <MESSAGE value="Рендеринг" />
     <MESSAGE value="Асинхронное чтение регистров (отдельное)" />
     <MESSAGE value="Выполнение скриптов GUI в потоке (для функций скриптов)" />
@@ -641,7 +639,8 @@
     <MESSAGE value="....." />
     <MESSAGE value="Сборка 2.0.3" />
     <MESSAGE value="Картинка с переходом на форму" />
-    <option name="LAST_COMMIT_MESSAGE" value="Картинка с переходом на форму" />
+    <MESSAGE value="Надпись-индекс" />
+    <option name="LAST_COMMIT_MESSAGE" value="Надпись-индекс" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

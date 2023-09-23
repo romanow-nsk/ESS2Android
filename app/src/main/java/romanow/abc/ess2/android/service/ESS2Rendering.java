@@ -683,7 +683,7 @@ public class ESS2Rendering {
                     return;
                 }
                 int regOffset=0;
-                stacklevel = treeLevel;
+                int regLevel = treeLevel;
                 if (link.isOwnUnit()){      // Unit задан явно - не групповые = явно перечисленные
                     newElem.setRegOffset(0);
                     newElem.setUnitIdx(link.getUnitIdx());
@@ -693,7 +693,7 @@ public class ESS2Rendering {
                         if (!(cc instanceof Meta2Array))
                             continue;
                         Meta2Array array = (Meta2Array) cc;
-                        int elemIdx = context.getIndex(stacklevel + 1);
+                        int elemIdx = context.getIndex(regLevel + 1);
                         elemIdx += grlevel < 0 ? 0 : groupIndexes[grlevel];
                         if (elemIdx >= array.getSize())          // Выход за пределы массива
                             return;
@@ -707,7 +707,7 @@ public class ESS2Rendering {
                                 break;
                         }
                         grlevel--;
-                        stacklevel--;
+                        regLevel--;
                     }
                     newElem.setRegOffset(regOffset);
                 }
