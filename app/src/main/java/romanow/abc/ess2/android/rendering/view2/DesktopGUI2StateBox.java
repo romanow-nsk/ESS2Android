@@ -55,6 +55,7 @@ public class DesktopGUI2StateBox extends View2BaseDesktop {
             case 0x00C0C0C0: return R.drawable.balllightgray;
             case 0x00FF0000: return R.drawable.ballred;
             case 0x0000FF00: return R.drawable.ballgreen;
+            case 0x0000A000: return R.drawable.balldarkgreen;
             case 0x00FFFF00: return R.drawable.ballyellow;
             case 0x00F0A000: return R.drawable.balldarkyellow;
             }
