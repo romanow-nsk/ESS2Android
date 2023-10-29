@@ -77,8 +77,7 @@ public class DesktopGUIScript extends View2BaseDesktop {
                         public void run() {
                             if (result==null)
                                 context.getMain().main().errorMes("Ошибка исполнения скрипта\nОтстутствует результат");
-                            else
-                                {
+                            else {
                                     String res;
                                     if (element.getAfterPoint() > 0)
                                         res = String.format("%6." + element.getAfterPoint() + "f", result.getRealValue()).trim();
