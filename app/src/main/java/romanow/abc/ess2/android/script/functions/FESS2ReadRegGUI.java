@@ -1,5 +1,6 @@
 package romanow.abc.ess2.android.script.functions;
 
+import romanow.abc.core.Pair;
 import romanow.abc.core.UniException;
 import romanow.abc.core.constants.ValuesBase;
 import romanow.abc.core.entity.subject2area.ESS2Architecture;
@@ -46,7 +47,18 @@ public class FESS2ReadRegGUI extends ESS2LocalFunction {
             } catch (Exception ee){
                 throw new ScriptException(ValuesBase.SEBug,"Исключение: "+ee.toString());
                 }
-        ESS2Device device = findDevice(architecture,devName.formatTo());
+        Pair<ESS2Device,Integer> res=null;
+        try {
+            res = findDevice(architecture, devName.formatTo(), (int) unit.toLong());
+            int vv = res.o1.getDriver().readRegister(res.o1.getShortName(), res.o2, (int) regNum.toLong());
+            stack.push(new TypeShort((short) vv));
+            } catch (UniException ee){
+            throw new ScriptException(ValuesBase.SEConfiguration, "Ошибки оборудования "+devName.formatTo()+
+                    ": "+res.o1.getErrors().toString());
+                };
+        }
+    /*
+    ESS2Device device = findDevice(architecture,devName.formatTo());
         if (device==null){
             throw new ScriptException(ValuesBase.SEConfiguration, "Не найдено ед.оборудования: "+devName.formatTo());
             }
@@ -62,4 +74,5 @@ public class FESS2ReadRegGUI extends ESS2LocalFunction {
                 throw new ScriptException(ValuesBase.SEConfiguration, "Ошибки оборудования "+devName.formatTo()+ ": "+ss);
                 }
             }
+     */
     }

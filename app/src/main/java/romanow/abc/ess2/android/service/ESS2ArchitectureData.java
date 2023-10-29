@@ -340,7 +340,7 @@ public class ESS2ArchitectureData {
             base.errorMes("Не найден ЧМИ для Android");
             return;
             }
-        preCompileLocalScripts();
+        //preCompileLocalScripts();
         new NetCall<ESS2EnvValuesList>().call(base,ctx.getService2().getEnvValues(ctx.loginSettings().getSessionToken()), new NetBackDefault(){
             @Override
             public void onSuccess(Object val) {

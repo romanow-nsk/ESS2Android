@@ -456,7 +456,7 @@ public class ESS2Rendering {
             main2.main().errorMes(errorList.toString());
             }
         //formDialog.show();
-        main2.main().scrollUp();
+        main2.main().scrollDown();
         wokeUp();
         }
     //----------------------------------- Фоновая картинка -------------------------------------
