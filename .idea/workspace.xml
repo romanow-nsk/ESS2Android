@@ -12,21 +12,16 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="Состояние-селектор">
+    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="ИСполнение функций скрипта">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/libs/ESS2Core.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/libs/ESS2Core.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/script/functions/ESS2LocalFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/script/functions/ESS2LocalFunction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/script/functions/FESS2ReadRegFloatGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/script/functions/FESS2ReadRegFloatGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/script/functions/FESS2ReadRegGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/script/functions/FESS2ReadRegGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2ArchitectureData.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2ArchitectureData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIScript.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIScript.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[YTCY9H7HT879CE69]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -230,13 +225,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623228750650</updated>
-    </task>
-    <task id="LOCAL-00114" summary="Элементы ЧМИ">
-      <created>1645973920310</created>
-      <option name="number" value="00114" />
-      <option name="presentableId" value="LOCAL-00114" />
-      <option name="project" value="LOCAL" />
-      <updated>1645973920310</updated>
     </task>
     <task id="LOCAL-00115" summary="Элементы ЧМИ">
       <created>1645981224756</created>
@@ -574,7 +562,14 @@
       <option name="project" value="LOCAL" />
       <updated>1696434299366</updated>
     </task>
-    <option name="localTasksCounter" value="163" />
+    <task id="LOCAL-00163" summary="ИСполнение функций скрипта">
+      <created>1698594711125</created>
+      <option name="number" value="00163" />
+      <option name="presentableId" value="LOCAL-00163" />
+      <option name="project" value="LOCAL" />
+      <updated>1698594711126</updated>
+    </task>
+    <option name="localTasksCounter" value="164" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -620,7 +615,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Асинхронное чтение регистров (отдельное)" />
     <MESSAGE value="Выполнение скриптов GUI в потоке (для функций скриптов)" />
     <MESSAGE value="Элементы ЧМИ" />
     <MESSAGE value="GPS и popup" />
@@ -645,7 +639,8 @@
     <MESSAGE value="Картинка с переходом на форму" />
     <MESSAGE value="Надпись-индекс" />
     <MESSAGE value="Состояние-селектор" />
-    <option name="LAST_COMMIT_MESSAGE" value="Состояние-селектор" />
+    <MESSAGE value="ИСполнение функций скрипта" />
+    <option name="LAST_COMMIT_MESSAGE" value="ИСполнение функций скрипта" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

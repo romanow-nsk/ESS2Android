@@ -78,9 +78,19 @@ public class DesktopGUIScript extends View2BaseDesktop {
                             if (result==null)
                                 context.getMain().main().errorMes("Ошибка исполнения скрипта\nОтстутствует результат");
                             else
-                                textField.setText(result.valueToString());
+                                {
+                                    String res;
+                                    if (element.getAfterPoint() > 0)
+                                        res = String.format("%6." + element.getAfterPoint() + "f", result.getRealValue()).trim();
+                                    else if (element.getAfterPoint() == 0)
+                                        res = "" + result.valueToInt();
+                                    else
+                                        res = "" + result.valueToString();
+                                    textField.setText(res);
+                                    //textField.setText(result.valueToString());
                                 }
-                            });
+                            }
+                        });
                     } catch (ScriptException e) {
                         context.getMain().main().errorMes("Ошибка исполнения скрипта\n"+e.toString());
                         }
