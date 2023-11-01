@@ -1,6 +1,7 @@
 package romanow.abc.ess2.android.rendering.module;
 
 
+import android.app.UiAutomation;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -25,6 +26,7 @@ import romanow.abc.ess2.android.I_ListBoxListener;
 import romanow.abc.ess2.android.ListBoxDialog;
 import romanow.abc.ess2.android.MainActivity;
 import romanow.abc.ess2.android.rendering.FormContext2;
+import romanow.abc.ess2.android.service.BaseActivity;
 import romanow.abc.ess2.android.service.ESS2ArchitectureData;
 import romanow.abc.ess2.android.service.NetBack;
 import romanow.abc.ess2.android.service.NetBackDefault;
@@ -36,32 +38,63 @@ public class ModuleEventAll extends Module {
     public final static int EventsDeepth=1;                 // "Глубина" в днях чтения событий
     protected ArrayList<ArchESSEvent> events = new ArrayList<>();
     protected ArrayList<ArchESSEvent> selected = new ArrayList<>();
-    private I_ListBoxListener back=null;
+    private I_ModuleBack back=null;
     public ModuleEventAll(){}
     private int types[] = {};
     public int[] eventTypes(){ return types; }
-    public void setBack(I_ListBoxListener back0){
+    public String getTitle(){ return "Все"; }
+    public void setBack(I_ModuleBack back0){
         back = back0;
         }
     @Override
     public void init(ESS2ArchitectureData client0, RelativeLayout panel, RestAPIBase service, RestAPIESS2 service2, String token, Meta2GUIForm form, FormContext2 formContext) {
-        super.init(client, panel, service, service2,token, form, formContext);
-        repaintValues();
+        super.init(client0, panel, service, service2,token, form, formContext);
         }
-    private void showTable(){
+    public void showTable(){
         HashMap<Integer, ConstValue> map = Values.constMap().getGroupMapByValue("EventType");
-            ArrayList<String> list = new ArrayList<>();
-            for(ArchESSEvent essEvent : selected){
-                OwnDateTime dd = essEvent.getArrivalTime();
-                String ss = dd.dateToString()+" "+dd.timeFullToString()+" ";
-                ConstValue vv = map.get(essEvent.getType());
-                if (vv!=null) ss+=vv.title();
-                ss+="\n"+essEvent.getTitle();
-                list.add(ss);
+        ArrayList<String> list = new ArrayList<>();
+        for(ArchESSEvent essEvent : selected){
+            OwnDateTime dd = essEvent.getArrivalTime();
+            String ss = dd.dateToString()+" "+dd.timeFullToString()+" ";
+            ConstValue vv = map.get(essEvent.getType());
+            if (vv!=null) ss+=vv.title();
+            ss+="\n"+essEvent.getTitle();
+            list.add(ss);
+            }
+        MainActivity main = context.getMain().main();
+        main.clearLog();
+        main.addToLogButton(getTitle(), BaseActivity.greatTextSize, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (back!=null)
+                    back.onHeader();
                 }
-        ListBoxDialog dialog = new ListBoxDialog(context.getMain().main(),
-                MainActivity.createMenuList(list),getTitle(),back).setnLines(3).setTextSize(15).setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-        dialog.create();
+            });
+        int idx=0;
+        for(String ss : list){
+            final int idxx = idx++;
+            main.addToLogButton(ss, false,BaseActivity.middleTextSize,
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (back != null)
+                                back.onSelect(idxx);
+                            }
+                        },
+                    new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            if (back != null)
+                                back.onLongSelect(idxx);
+                            return false;
+                        }
+                    }
+            );
+            }
+        main.scrollUp();
+        //ListBoxDialog dialog = new ListBoxDialog(context.getMain().main(),
+        //        MainActivity.createMenuList(list),getTitle(),back).setnLines(3).setTextSize(15).setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
+        //dialog.create();
         }
 
     @Override

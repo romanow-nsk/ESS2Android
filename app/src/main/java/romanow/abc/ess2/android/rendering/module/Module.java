@@ -26,7 +26,6 @@ public class Module implements I_Module{
         this.service2 = service2;
         this.token = token;
         context = formContext;
-        //System.out.println("Модуль формы "+form.getModuleName());
         }
     @Override
     public String getTitle(){ return ""; }

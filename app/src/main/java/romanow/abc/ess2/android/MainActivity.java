@@ -20,6 +20,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -452,16 +453,23 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     public LinearLayout addToLogButton(String ss) {
         return addToLogButton(ss, false,null, null);
     }
+    public LinearLayout addToLogButton(String ss, int textSize,View.OnClickListener listener) {
+        return addToLogButton(ss, false,textSize,listener, null);
+        }
 
     public LinearLayout addToLogButton(String ss, View.OnClickListener listener) {
         return addToLogButton(ss, false,listener, null);
         }
-
     public LinearLayout addToLogButton(String ss, boolean jetBrain,View.OnClickListener listener, View.OnLongClickListener listenerLong) {
-        LinearLayout button = (LinearLayout) getLayoutInflater().inflate(R.layout.log_item, null);
-        Button bb = (Button) button.findViewById(R.id.ok_button);
+        return addToLogButton(ss,jetBrain,greatTextSize,listener,listenerLong);
+        }
+    public LinearLayout addToLogButton(String ss, boolean jetBrain,int textSize,View.OnClickListener listener, View.OnLongClickListener listenerLong) {
+        LinearLayout button = (LinearLayout) getLayoutInflater().inflate(R.layout.listbox_item, null);
+        Button bb = (Button) button.findViewById(R.id.dialog_listbox_name);
         bb.setText(ss);
-        bb.setTextSize(greatTextSize);
+        bb.setTextSize(textSize);
+        ImageButton img=(ImageButton) button.findViewById(R.id.dialog_listbox_img);
+        button.removeView(img);
         if (jetBrain)
             bb.setTypeface(ResourcesCompat.getFont(getApplicationContext(), R.font.jetbrainsmonolight));
         if (listener != null)

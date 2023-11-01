@@ -15,6 +15,7 @@ public class ModuleEventCommand extends ModuleEventAll {
     @Override
     public void init(ESS2ArchitectureData client0, RelativeLayout panel, RestAPIBase service, RestAPIESS2 service2, String token, Meta2GUIForm form, FormContext2 formContext) {
         super.init(client, panel, service, service2,token, form, formContext);
+        repaintValues();
         }
     public boolean typeFilter(int type) {
         return type== Values.EventCommand;
