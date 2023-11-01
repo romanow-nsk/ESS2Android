@@ -14,13 +14,9 @@
   <component name="ChangeListManager">
     <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="Аварии, События">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/OKDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/OKDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleEventAll.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleEventAll.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/libs/ESS2Core.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/libs/ESS2Core.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleFailure.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleFailure.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/listbox_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/listbox_item.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/ok_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/ok_item.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -231,13 +227,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623228750650</updated>
-    </task>
-    <task id="LOCAL-00118" summary="GPS и popup">
-      <created>1646112481698</created>
-      <option name="number" value="00118" />
-      <option name="presentableId" value="LOCAL-00118" />
-      <option name="project" value="LOCAL" />
-      <updated>1646112481698</updated>
     </task>
     <task id="LOCAL-00119" summary="GPS и popup">
       <created>1646665619549</created>
@@ -575,7 +564,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698828731663</updated>
     </task>
-    <option name="localTasksCounter" value="167" />
+    <task id="LOCAL-00167" summary="Аварии, События">
+      <created>1698837682003</created>
+      <option name="number" value="00167" />
+      <option name="presentableId" value="LOCAL-00167" />
+      <option name="project" value="LOCAL" />
+      <updated>1698837682003</updated>
+    </task>
+    <option name="localTasksCounter" value="168" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -792,24 +788,24 @@
           <option name="timeStamp" value="505" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleEventAll.java</url>
+          <line>107</line>
+          <option name="timeStamp" value="521" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java</url>
-          <line>448</line>
-          <option name="timeStamp" value="507" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleEventAll.java</url>
           <line>139</line>
-          <option name="timeStamp" value="516" />
+          <option name="timeStamp" value="522" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleEventAll.java</url>
-          <line>120</line>
-          <option name="timeStamp" value="517" />
+          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java</url>
+          <line>265</line>
+          <option name="timeStamp" value="525" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/OKDialog.java</url>
-          <line>19</line>
-          <option name="timeStamp" value="519" />
+          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleFailure.java</url>
+          <line>161</line>
+          <option name="timeStamp" value="533" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

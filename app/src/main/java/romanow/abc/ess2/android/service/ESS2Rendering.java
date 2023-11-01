@@ -754,9 +754,11 @@ public class ESS2Rendering {
         if (!renderingOn)
             return;
         testESSOnOffState();
+        if (module!=null)
+            module.repaintValues();
         for (View2Base element : guiList){
             element.repaintBefore();
-        }
+            }
         for (View2Base element : guiList){
             Meta2RegLink link = element.getRegLink();
             if (link==null)

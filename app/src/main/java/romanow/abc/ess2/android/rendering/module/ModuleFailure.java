@@ -27,6 +27,7 @@ import romanow.abc.ess2.android.service.NetCall;
 import java.util.ArrayList;
 
 public class ModuleFailure extends ModuleEventAll {
+    private ArrayList<Failure> prevEvents=new ArrayList<>();
     protected ArrayList<Failure> events = new ArrayList<>();
     protected ArrayList<Failure> events1 = new ArrayList<>();
     protected ArrayList<Failure> events2 = new ArrayList<>();
@@ -121,10 +122,11 @@ public class ModuleFailure extends ModuleEventAll {
                     } catch (Exception e1) {
                     }
                 }
-                new NetCall<ArrayList<DBRequest>>().call(client.main(), service.getEntityListLast(token, "FailureBit", 50, 0), new NetBackDefault() {
+                new NetCall<ArrayList<DBRequest>>().call(client.main(), service.getEntityListLast(token, "FailureSetting", 50, 0), new NetBackDefault() {
                     @Override
                     public void onSuccess(Object val) {
                         System.out.println("Прочитано событий " + res.size());        // Слияние по времени
+                        ArrayList<DBRequest> res = (ArrayList<DBRequest>) val;
                         events2.clear();
                         for (DBRequest request : res) {
                             try {
@@ -133,7 +135,7 @@ public class ModuleFailure extends ModuleEventAll {
                             }
                         }
                         selected.clear();
-                        events.clear();
+                        events = new ArrayList<>();
                         Failure ff;
                         int idx1 = events1.size() - 1, idx2 = events2.size() - 1;
                         ArrayList<Integer> colors = new ArrayList<>();
@@ -151,7 +153,20 @@ public class ModuleFailure extends ModuleEventAll {
                                 colors.add(getImgResource(ff));
                                 }
                             }
-                        showTable(colors);
+                        boolean diff=false;
+                        if (prevEvents.size()!=events.size())
+                            diff=true;
+                        else{
+                            for(int i=0;i<events.size();i++)
+                                if (!events.get(i).theSame(prevEvents.get(i))){
+                                    diff=true;
+                                    break;
+                                    }
+                            }
+                        if (diff){
+                            showTable(colors);
+                            prevEvents = events;
+                            }
                     }
                 });
             }
