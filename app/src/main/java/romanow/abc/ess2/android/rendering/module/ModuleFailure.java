@@ -1,5 +1,6 @@
 package romanow.abc.ess2.android.rendering.module;
 
+import android.graphics.Color;
 import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
@@ -13,8 +14,10 @@ import romanow.abc.core.entity.baseentityes.JEmpty;
 import romanow.abc.core.entity.metadata.Meta2GUIForm;
 import romanow.abc.core.entity.subjectarea.ArchESSEvent;
 import romanow.abc.core.entity.subjectarea.Failure;
+import romanow.abc.core.entity.subjectarea.FailureSetting;
 import romanow.abc.ess2.android.I_EventListener;
 import romanow.abc.ess2.android.OKDialog;
+import romanow.abc.ess2.android.R;
 import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.service.APICall2;
 import romanow.abc.ess2.android.service.ESS2ArchitectureData;
@@ -30,6 +33,31 @@ public class ModuleFailure extends ModuleEventAll {
     @Override
     public String getTitle(){ return "Аварии"; }
     public ModuleFailure(){}
+    public static int RGB(int r, int g, int b){
+        return r << 16 | g << 8 | b;
+        }
+    public static int getColor(Failure ff) {
+        if (ff.isDone() & ff.isQuited()) {
+            return RGB(240,240,240);
+        } else if (ff.isWarning()) {
+            return RGB(200,200, 0);
+        } else if (!ff.isQuited()) {
+            return !ff.isDone() ? RGB(240, 0, 0) : RGB(240, 100, 0);
+        } else {
+            return RGB(240, 240, 0);
+            }
+        }
+    public static int getImgResource(Failure ff) {
+        if (ff.isDone() & ff.isQuited()) {
+            return R.drawable.ballgray;
+        } else if (ff.isWarning()) {
+            return R.drawable.ballblue;
+        } else if (!ff.isQuited()) {
+            return !ff.isDone() ? R.drawable.problem : R.drawable.ballyellow;
+        } else {
+            return R.drawable.balldarkyellow;
+        }
+    }
     @Override
     public void init(ESS2ArchitectureData client0, RelativeLayout panel, RestAPIBase service, RestAPIESS2 service2, String token, Meta2GUIForm form, FormContext2 formContext) {
         super.init(client0,panel, service, service2,token, form, formContext);
@@ -50,138 +78,34 @@ public class ModuleFailure extends ModuleEventAll {
                 }
             @Override
             public void onSelect(int index) {
-
+                setQuited(events.get(index));
                 }
             @Override
             public void onLongSelect(int index) {
                 }
             });
         repaintValues();
-        /*
-        JButton bb = new MultiTextButton(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
-        bb.setText("Квитировать всё");
-        bb.setBounds(
-                context.x(20),
-                context.y(600),
-                context.x(ESSServiceGUIPanel.buttonXSize),
-                context.y(ESSServiceGUIPanel.buttonYSize));
-        bb.addActionListener(new ActionListener() {
+        }
+    //------------------------------------------------------------------------------------
+    public void setQuited(final Failure failure){
+        if (failure.isQuited()) return;
+        new OKDialog(client.main() ,"Квитировать "+failure.getTitle(), new I_EventListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                new OK(200, 200, "Квитировать всё", new I_Button() {
+            public void onEvent(String ss) {
+                new NetCall<JEmpty>().call(client.main(), service2.quitFailure(token, failure instanceof FailureSetting, failure.getEquipName(), failure.getLogUnit(), failure.getRegNum(), failure.getBitNum()), new NetBackDefault() {
                     @Override
-                    public void onPush() {
-                        try {
-                            new APICall2<JEmpty>(){
-                                @Override
-                                public Call<JEmpty> apiFun() {
-                                    return service2.quitAllFailures(token);
-                                }
-                            }.call(client);
-                        repaintValues();
-                        } catch (UniException ex) {
-                            System.out.println("Ошибка API: "+ex.toString());
-                            }
+                    public void onSuccess(Object val) {
+                         repaintValues();
                         }
                     });
                 }
             });
-        panel.add(bb);
-        repaintView();
-         */
-        }
-    //------------------------------------------------------------------------------------
-    /*
-    public void setQuited(final Failure failure){
-        if (failure.isQuited()) return;
-        new OK(200, 200, "Квитировать "+failure.getTitle(), new I_Button() {
-            @Override
-            public void onPush() {
-                try {
-                    new APICall2<JEmpty>(){
-                        @Override
-                        public Call<JEmpty> apiFun() {
-                            return service2.quitFailure(token,failure instanceof FailureSetting,
-                                    failure.getEquipName(), failure.getLogUnit(), failure.getRegNum(),failure.getBitNum());
-                        }
-                    }.call(client);
-                    repaintValues();
-                } catch (UniException ex) {
-                    System.out.println("Ошибка API: "+ex.toString());
-                }
-            }
-        });
         }
     //------------------------------------------------------------------------------------
     @Override
     public void repaintView() {
         super.repaintView();
         }
-
-    private String[] columnsHeader = new String[] {"дата","время", "тип","событие"};
-    private int sizes[] = {100,80,120,700};
-    private void showTable(){
-            Vector<Vector<String>> data = new Vector<Vector<String>>();
-            Vector<String> header = new Vector<String>();
-            for(String ss : columnsHeader)
-                header.add(ss);
-            for(ArchESSEvent essEvent : events){
-                Vector<String> row = new Vector<String>();
-                OwnDateTime dd = essEvent.getArrivalTime();
-                row.add(dd.dateToString());
-                row.add(dd.timeFullToString());
-                row.add(Values.title("EventType",essEvent.getType()));
-                row.add(essEvent.getTitle());
-                data.add(row);
-                }
-            if (table!=null) {
-                DefaultTableModel model = (DefaultTableModel) table.getModel();
-                model.setRowCount(events.size());
-                model.setDataVector(data,header);
-                }
-            else{
-                table = new JTable(data,header);
-                JScrollPane scroll = new JScrollPane(table);
-                scroll.setBounds(
-                        context.x(10),
-                        context.y(100),
-                        context.x(Client.PanelW-20),
-                        context.y(Client.PanelH-150));
-                panel.add(scroll);
-                table.setFont(new Font("Arial Cyr", Font.PLAIN, context.y(12)));
-                table.setRowHeight(context.y(20));
-                table.setSelectionForeground(Color.blue);
-                table.setSelectionBackground(Color.yellow);
-                table.setVisible(true);
-                table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-                table.setAutoscrolls(true);
-                table.setShowGrid(true);
-                listener = new ListSelectionListener() {
-                    public void valueChanged(ListSelectionEvent e) {
-                        if (e.getValueIsAdjusting())
-                            return;
-                        int[] selectedRows = table.getSelectedRows();
-                        for(int i = 0; i < selectedRows.length; i++) {
-                            System.out.println(events.get(selectedRows[i]));
-                            setQuited(events.get(selectedRows[i]));
-                            }
-                        }
-                    };
-                table.getSelectionModel().addListSelectionListener(listener);
-                table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-                    @Override
-                    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                        final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                        c.setBackground(events.get(row).getColor());
-                        return c;
-                        }
-                    });
-                }
-            for(int i=0;i<sizes.length;i++)
-                table.getColumnModel().getColumn(i).setPreferredWidth(sizes[i]);
-            //panel.repaint();
-        }
-    */
     @Override
     public void repaintValues() {
         new NetCall<ArrayList<DBRequest>>().call(client.main(), service.getEntityListLast(token, "FailureBit", 50, 0), new NetBackDefault() {
@@ -209,15 +133,25 @@ public class ModuleFailure extends ModuleEventAll {
                             }
                         }
                         selected.clear();
+                        events.clear();
+                        Failure ff;
                         int idx1 = events1.size() - 1, idx2 = events2.size() - 1;
+                        ArrayList<Integer> colors = new ArrayList<>();
                         while (!(idx1 < 0 && idx2 < 0)) {
-                            if (idx2 < 0 || idx1 >= 0 && events1.get(idx1).getArrivalTime().timeInMS() > events2.get(idx2).getArrivalTime().timeInMS())
-                                selected.add(events1.get(idx1--));
-                            else
-                                selected.add(events2.get(idx2--));
-                        }
-                        showTable();
-
+                            if (idx2 < 0 || idx1 >= 0 && events1.get(idx1).getArrivalTime().timeInMS() > events2.get(idx2).getArrivalTime().timeInMS()){
+                                ff = events1.get(idx1--);
+                                selected.add(ff);
+                                events.add(ff);
+                                colors.add(getImgResource(ff));
+                                }
+                            else{
+                                ff = events2.get(idx2--);
+                                selected.add(ff);
+                                events.add(ff);
+                                colors.add(getImgResource(ff));
+                                }
+                            }
+                        showTable(colors);
                     }
                 });
             }

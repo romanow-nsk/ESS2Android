@@ -7,7 +7,7 @@
     >
     <ImageButton style="@style/ListButton"
         android:id="@+id/dialog_listbox_img"
-        android:layout_width="40dp"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
         android:clickable="false"
         android:longClickable="false"

@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -454,22 +455,25 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         return addToLogButton(ss, false,null, null);
     }
     public LinearLayout addToLogButton(String ss, int textSize,View.OnClickListener listener) {
-        return addToLogButton(ss, false,textSize,listener, null);
+        return addToLogButton(ss, false,textSize,0,listener, null);
         }
 
     public LinearLayout addToLogButton(String ss, View.OnClickListener listener) {
         return addToLogButton(ss, false,listener, null);
         }
     public LinearLayout addToLogButton(String ss, boolean jetBrain,View.OnClickListener listener, View.OnLongClickListener listenerLong) {
-        return addToLogButton(ss,jetBrain,greatTextSize,listener,listenerLong);
+        return addToLogButton(ss,jetBrain,greatTextSize,0,listener,listenerLong);
         }
-    public LinearLayout addToLogButton(String ss, boolean jetBrain,int textSize,View.OnClickListener listener, View.OnLongClickListener listenerLong) {
+    public LinearLayout addToLogButton(String ss, boolean jetBrain, int textSize, int imgResource, View.OnClickListener listener, View.OnLongClickListener listenerLong) {
         LinearLayout button = (LinearLayout) getLayoutInflater().inflate(R.layout.listbox_item, null);
         Button bb = (Button) button.findViewById(R.id.dialog_listbox_name);
         bb.setText(ss);
         bb.setTextSize(textSize);
         ImageButton img=(ImageButton) button.findViewById(R.id.dialog_listbox_img);
-        button.removeView(img);
+        if (imgResource==0)
+            button.removeView(img);
+        else
+            img.setImageResource(imgResource);
         if (jetBrain)
             bb.setTypeface(ResourcesCompat.getFont(getApplicationContext(), R.font.jetbrainsmonolight));
         if (listener != null)

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,7 +17,7 @@ public class OKDialog {
     private LinearLayout createItem(final String name){
         LinearLayout xx=(LinearLayout)base.getLayoutInflater().inflate(R.layout.ok_item, null);
         xx.setPadding(5, 5, 5, 5);
-        TextView img=(TextView)xx.findViewById(R.id.ok_button);
+        Button img=(Button) xx.findViewById(R.id.ok_button);
         img.setText(name);
         img.setOnClickListener(new View.OnClickListener() {
             @Override

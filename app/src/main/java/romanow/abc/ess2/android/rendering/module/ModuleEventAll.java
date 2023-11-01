@@ -2,6 +2,7 @@ package romanow.abc.ess2.android.rendering.module;
 
 
 import android.app.UiAutomation;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -49,8 +50,13 @@ public class ModuleEventAll extends Module {
     @Override
     public void init(ESS2ArchitectureData client0, RelativeLayout panel, RestAPIBase service, RestAPIESS2 service2, String token, Meta2GUIForm form, FormContext2 formContext) {
         super.init(client0, panel, service, service2,token, form, formContext);
+        if (getClass() == ModuleEventAll.class)
+            repaintValues();
         }
     public void showTable(){
+        showTable(null);
+        }
+    public void showTable(ArrayList<Integer> colors){
         HashMap<Integer, ConstValue> map = Values.constMap().getGroupMapByValue("EventType");
         ArrayList<String> list = new ArrayList<>();
         for(ArchESSEvent essEvent : selected){
@@ -73,7 +79,7 @@ public class ModuleEventAll extends Module {
         int idx=0;
         for(String ss : list){
             final int idxx = idx++;
-            main.addToLogButton(ss, false,BaseActivity.middleTextSize,
+            main.addToLogButton(ss, false,BaseActivity.middleTextSize,colors==null ? 0 : colors.get(idxx),
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -89,7 +95,7 @@ public class ModuleEventAll extends Module {
                             return false;
                         }
                     }
-            );
+                );
             }
         main.scrollUp();
         //ListBoxDialog dialog = new ListBoxDialog(context.getMain().main(),
