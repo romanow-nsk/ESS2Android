@@ -7,14 +7,14 @@
     >
     <TextView style="@style/BlackButton"
         android:layout_width="120dp"
-        android:layout_height="35dp"
+        android:layout_height="50dp"
         android:textSize="20dp"
         android:id="@+id/dialog_settings_name"
         android:clickable="true" />
     <TextView style="@style/BlackButton"
         android:id="@+id/dialog_settings_value"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:gravity="center"
         android:clickable="true"

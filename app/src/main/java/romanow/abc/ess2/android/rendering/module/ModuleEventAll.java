@@ -41,6 +41,7 @@ public class ModuleEventAll extends Module {
     protected ArrayList<ArchESSEvent> selected = new ArrayList<>();
     private I_ModuleBack back=null;
     public ModuleEventAll(){}
+    private ArrayList<String> prevList = new ArrayList<>();
     private int types[] = {};
     public int[] eventTypes(){ return types; }
     public String getTitle(){ return "Все"; }
@@ -67,6 +68,19 @@ public class ModuleEventAll extends Module {
             ss+="\n"+essEvent.getTitle();
             list.add(ss);
             }
+        boolean diff=false;
+        if (prevList.size()!=list.size())
+            diff=true;
+        else{
+            for(int i=0;i<list.size();i++)
+                if (!list.get(i).equals(prevList.get(i))){
+                    diff=true;
+                    break;
+                    }
+                }
+        if (!diff)
+            return;
+        prevList = list;
         MainActivity main = context.getMain().main();
         main.clearLog();
         main.addToLogButton(getTitle(), BaseActivity.greatTextSize, new View.OnClickListener() {

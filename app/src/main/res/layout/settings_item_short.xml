@@ -7,7 +7,7 @@
     >
     <TextView style="@style/ListButton"
         android:layout_width="90dp"
-        android:layout_height="35dp"
+        android:layout_height="50dp"
         android:textSize="20dp"
         android:textColor="@color/White"
         android:id="@+id/dialog_settings_name"
@@ -15,7 +15,7 @@
     <EditText style="@style/ListButton"
         android:id="@+id/dialog_settings_value"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:gravity="center"
         android:clickable="true"
