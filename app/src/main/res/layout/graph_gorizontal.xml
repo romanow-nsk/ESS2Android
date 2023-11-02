@@ -11,9 +11,9 @@
         android:id="@+id/viewPanelHead"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:layout_height="25dp"
-        android:background="@color/colorPrimaryDark"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:background="@color/colorESS2Back"
+        android:orientation="vertical">
 
     </LinearLayout>
     <LinearLayout

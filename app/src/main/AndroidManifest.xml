@@ -42,7 +42,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".FullScreenGraph" android:screenOrientation="reverseLandscape"/>
+        <activity android:name=".service.ESS2FullScreenGraph" android:screenOrientation="reverseLandscape"/>
         <activity android:name=".yandexmap.MapFilesActivity" android:screenOrientation="reverseLandscape"/>
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -1,6 +1,9 @@
 package romanow.abc.ess2.android.rendering.module;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.Nullable;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphViewSeries;
@@ -29,6 +34,7 @@ import romanow.abc.core.entity.metadata.StreamRegisterGroup;
 import romanow.abc.core.utils.OwnDateTime;
 import romanow.abc.core.utils.Pair;
 import romanow.abc.ess2.android.CalendarDialog;
+import romanow.abc.ess2.android.GraphData;
 import romanow.abc.ess2.android.I_CalendarEvent;
 import romanow.abc.ess2.android.I_ListBoxListener;
 import romanow.abc.ess2.android.ListBoxDialog;
@@ -36,8 +42,10 @@ import romanow.abc.ess2.android.MainActivity;
 import romanow.abc.ess2.android.R;
 import romanow.abc.ess2.android.menu.MenuItemAction;
 import romanow.abc.ess2.android.rendering.FormContext2;
+import romanow.abc.ess2.android.service.AppData;
 import romanow.abc.ess2.android.service.BaseActivity;
 import romanow.abc.ess2.android.service.ESS2ArchitectureData;
+import romanow.abc.ess2.android.service.ESS2FullScreenGraph;
 import romanow.abc.ess2.android.service.NetBackDefault;
 import romanow.abc.ess2.android.service.NetCall;
 
@@ -57,13 +65,24 @@ public class ModuleTrend extends Module {
     private ArrayList<String> registerNames = new ArrayList<>();
     private ArrayList<StreamRegisterData> registerList = new ArrayList<>();
     private ArrayList<StreamRegisterData> selectedList = new ArrayList<>();
-    private ArrayList<ArrayList<StreamDataValue>> data = new ArrayList<>();
+    //private ArrayList<ArrayList<StreamDataValue>> data = new ArrayList<>();
     private MainActivity main;
     private LineGraphView multiGraph;
+    private ArrayList<GraphData> graphData;
+    private OwnDateTime getStartTime(){
+        long minStamp = 0;
+        for(GraphData seq : AppData.ctx().getGraphData()) {
+            if (minStamp==0 || seq.data.get(0).timeStamp < minStamp)
+                minStamp = seq.data.get(0).timeStamp;
+                }
+            return new OwnDateTime(minStamp);
+            }
     @Override
     public void init(ESS2ArchitectureData client0, RelativeLayout panel, RestAPIBase service, RestAPIESS2 service2, String token, Meta2GUIForm form, FormContext2 formContext) {
         super.init(client0, panel, service, service2,token, form, formContext);
         main = client.main();
+        graphData = AppData.ctx().getGraphData();
+        graphData.clear();
         modeList = Values.constMap().getGroupList("DataStream");
         streamTypes.clear();
         for(ConstValue cc : modeList)
@@ -116,11 +135,10 @@ public class ModuleTrend extends Module {
                     return;
                 new ListBoxDialog(main, MainActivity.createMenuList(registerNames), "Регистр", new I_ListBoxListener() {
                     @Override
-                    public void onSelect(int idx) {
-                        streamRegisterButton.setText(registerNames.get(idx));
+                    public void onSelect(final int idx) {
+                        //streamRegisterButton.setText(registerNames.get(idx));
                         StreamRegisterData selected = registerList.get(idx);
                         selectedList.add(selected);
-                        selectedButton.setText("Выбрано "+selectedList.size()+" регистров");
                         //-------------------- TODO ----- Чтение данных ????
                         new NetCall<Pair<ErrorList,ArrayList<StreamDataValue>>>().call(main,
                                 service2.getStreamData2(token, selectedMode.value(), idx, firstDateMS, lastDateMS), new NetBackDefault() {
@@ -131,7 +149,8 @@ public class ModuleTrend extends Module {
                                         if (!errors.valid())
                                             main.popupAndLog(errors.toString());
                                         else{
-                                            data.add(ans.o2);
+                                            graphData.add(new GraphData(registerNames.get(idx),ans.o2));
+                                            selectedButton.setText("Выбрано "+selectedList.size()+":  "+getStartTime().dateTimeToString());
                                             toGraphButton.setVisibility(View.VISIBLE);
                                             }
                                     }
@@ -205,11 +224,16 @@ public class ModuleTrend extends Module {
             public void onClick(View v) {
                 myDlg.cancel();
                 main.clearLog();
+                Intent intent = new Intent();
+                intent.setClass(main.getApplicationContext(), ESS2FullScreenGraph.class);
+                main.startActivityForResult(intent,MainActivity.TO_PREV_FORM);
+               /*
                LinearLayout graph = createMultiGraph(R.layout.graphview,0);
                 main.getLogLayout().addView(graph);
                 for(ArrayList<StreamDataValue> series : data){
                     paintOne(series, Color.BLUE);
                     }
+                */
                 }
             });
         //------------------------------------------------------------------------------------------
@@ -217,29 +241,4 @@ public class ModuleTrend extends Module {
         myDlg.show();
         }
     //----------------------------------------------------------------------------------------------
-    public LinearLayout createMultiGraph(int resId,double procHigh){
-        LinearLayout lrr=(LinearLayout) main.getLayoutInflater().inflate(resId, null);
-        LinearLayout panel = (LinearLayout)lrr.findViewById(R.id.viewPanel);
-        if (procHigh!=0){
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)panel.getLayoutParams();
-            params.height = (int)(main.getResources().getDisplayMetrics().widthPixels*procHigh);
-            panel.setLayoutParams(params);
-            }
-        multiGraph = new LineGraphView(main,"");
-        multiGraph.setScalable(true);
-        multiGraph.setScrollable(true);
-        multiGraph.getGraphViewStyle().setTextSize(15);
-        panel.addView(multiGraph);
-        return lrr;
-        }
-    public void paintOne(ArrayList<StreamDataValue> seq,int color){
-        GraphView.GraphViewData zz[] = new GraphView.GraphViewData[seq.size()];
-        for(int j=0;j<seq.size();j++){                    // Подпись значений факторов j-ой ячейки
-            StreamDataValue value = seq.get(j);
-            zz[j] = new GraphView.GraphViewData(value.timeStamp,value.value);
-            }
-        GraphViewSeries series = new GraphViewSeries(zz);
-        series.getStyle().color = color | 0xFF000000;
-        multiGraph.addSeries(series);
-        }
 }

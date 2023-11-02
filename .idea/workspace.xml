@@ -12,27 +12,18 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="Аварии, События">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/CalendarDialog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/I_CalendarEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/date.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/microphone.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/phone_blue.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/calendar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/calendar_item.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/calendar_item_small.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/calendar_row.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/trends.xml" afterDir="false" />
+    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="Тренды">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/GraphData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2FullScreenGraph.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/graph_button.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleEventAll.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleEventAll.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleTrend.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleTrend.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/NetBack.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/NetBack.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/NetBackDefault.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/NetBackDefault.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/settings_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/settings_item.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/settings_item_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/settings_item_list.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/settings_item_short.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/settings_item_short.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/AppData.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/AppData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/graph_gorizontal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/graph_gorizontal.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,11 +112,11 @@
       <recent name="D:\ABC\ESS2Android\app\src\main\java\romanow\abc\ess2\android\menu" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="romanow.abc.ess2.android.service" />
       <recent name="java.awt" />
       <recent name="romanow.abc.ess2.android.rendering.module" />
       <recent name="romanow.abc.ess2.android.rendering" />
       <recent name="romanow.abc.ess2.android.rendering.view2" />
-      <recent name="romanow.abc.ess2.android.service" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="romanow.abc.ess2.android.rendering.view2" />
@@ -243,13 +234,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623228750650</updated>
-    </task>
-    <task id="LOCAL-00120" summary="ESS2Core_jar.jar 060">
-      <created>1648292547629</created>
-      <option name="number" value="00120" />
-      <option name="presentableId" value="LOCAL-00120" />
-      <option name="project" value="LOCAL" />
-      <updated>1648292547630</updated>
     </task>
     <task id="LOCAL-00121" summary="217.71.138.13">
       <created>1648293219020</created>
@@ -587,7 +571,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698842551029</updated>
     </task>
-    <option name="localTasksCounter" value="169" />
+    <task id="LOCAL-00169" summary="Тренды">
+      <created>1698864640841</created>
+      <option name="number" value="00169" />
+      <option name="presentableId" value="LOCAL-00169" />
+      <option name="project" value="LOCAL" />
+      <updated>1698864640841</updated>
+    </task>
+    <option name="localTasksCounter" value="170" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -633,7 +624,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Элементы ЧМИ" />
     <MESSAGE value="GPS и popup" />
     <MESSAGE value="ESS2Core_jar.jar 060" />
     <MESSAGE value="217.71.138.13" />
@@ -658,7 +648,8 @@
     <MESSAGE value="Состояние-селектор" />
     <MESSAGE value="ИСполнение функций скрипта" />
     <MESSAGE value="Аварии, События" />
-    <option name="LAST_COMMIT_MESSAGE" value="Аварии, События" />
+    <MESSAGE value="Тренды" />
+    <option name="LAST_COMMIT_MESSAGE" value="Тренды" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -817,16 +808,6 @@
           <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java</url>
           <line>265</line>
           <option name="timeStamp" value="525" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleTrend.java</url>
-          <line>220</line>
-          <option name="timeStamp" value="528" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleTrend.java</url>
-          <line>240</line>
-          <option name="timeStamp" value="529" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

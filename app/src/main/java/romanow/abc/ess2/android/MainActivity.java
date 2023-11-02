@@ -86,14 +86,15 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
     //----------------------------------------------------------------------------
     private LinearLayout log;
     private ScrollView scroll;
-    private final int CHOOSE_RESULT = 100;
-    private final int CHOOSE_RESULT_COPY = 101;
-    public final int REQUEST_ENABLE_BT = 102;
-    public final int REQUEST_ENABLE_GPS = 103;
-    public final int REQUEST_ENABLE_READ = 104;
-    public final int REQUEST_ENABLE_WRITE = 105;
-    public final int REQUEST_ENABLE_PHONE = 106;
-    public final int REQUEST_ENABLE_AUDIO = 107;
+    private final static int CHOOSE_RESULT = 100;
+    private final static int CHOOSE_RESULT_COPY = 101;
+    public final static int REQUEST_ENABLE_BT = 102;
+    public final static int REQUEST_ENABLE_GPS = 103;
+    public final static int REQUEST_ENABLE_READ = 104;
+    public final static int REQUEST_ENABLE_WRITE = 105;
+    public final static int REQUEST_ENABLE_PHONE = 106;
+    public final static int REQUEST_ENABLE_AUDIO = 107;
+    public final static int TO_PREV_FORM=108;
     private ImageView MenuButton;
     private ImageView GPSState;
     private ImageView NETState;
@@ -551,9 +552,12 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
         if (resultCode != RESULT_OK) return;
         String path = "";
         try {
+            if (requestCode == TO_PREV_FORM) {
+                onBackPressed();
+                }
             if (requestCode == REQUEST_ENABLE_BT) {
                 popupAndLog("BlueTooth включен, повторите команду");
-            }
+                }
             if (requestCode == CHOOSE_RESULT) {
                 Pair<InputStream, FileDescription> res = openSelected(data);
                 InputStream is = res.o1;

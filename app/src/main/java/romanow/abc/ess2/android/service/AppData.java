@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import romanow.abc.core.API.RestAPIESS2;
 import romanow.abc.ess2.android.FileDescriptionList;
+import romanow.abc.ess2.android.GraphData;
 import romanow.abc.ess2.android.R;
 import romanow.abc.core.API.RestAPIBase;
 
@@ -147,7 +148,10 @@ public class AppData extends Application {
     private Thread.UncaughtExceptionHandler oldHandler;
     private boolean applicationOn = false;              // Приложение работает
     private Context context;
+    private ArrayList<GraphData> graphData = new ArrayList<>();
     //-----------------------------------------------------------------------------------
+    public ArrayList<GraphData> getGraphData() {
+        return graphData; }
     public void setCanSendPopup(boolean canSendPopup) {
         this.canSendPopup = canSendPopup; }
     public boolean isCanSendPopup() {
