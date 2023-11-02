@@ -3,6 +3,7 @@ package romanow.abc.ess2.android;
 import android.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ public class TimeSelector {
         myDlg=new AlertDialog.Builder(main).create();
         myDlg.setCancelable(true);
         myDlg.setTitle(null);
-        RelativeLayout layout = (RelativeLayout)main.getLayoutInflater().inflate(R.layout.timeselector,null);
+        LinearLayout layout = (LinearLayout) main.getLayoutInflater().inflate(R.layout.timeselector,null);
         TextView head = (TextView) layout.findViewById(R.id.timeHeader);
         head.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +51,7 @@ public class TimeSelector {
                     public void onLongSelect(int index) {}
                     @Override
                     public void onCancel() {}
-                    }).create();
+                }).setResources(R.layout.listbox_short,R.layout.listbox_item_short).create();
                 }
             });
         final Button minute = (Button)layout.findViewById(R.id.timeMinute);
@@ -70,7 +71,7 @@ public class TimeSelector {
                     public void onLongSelect(int index) {}
                     @Override
                     public void onCancel() {}
-                }).create();
+                }).setResources(R.layout.listbox_short,R.layout.listbox_item_short).create();
             }
         });
         myDlg.setView(layout);

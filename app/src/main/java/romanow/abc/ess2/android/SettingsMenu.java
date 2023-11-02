@@ -17,6 +17,8 @@ public class SettingsMenu extends SettingsMenuBase {
     public void createDialog(LinearLayout trmain){
         try {
             LoginSettings set = AppData.ctx().loginSettings();
+            LinearLayout layout;
+            /*
             LinearLayout layout = createItem("Mail ", ""+set.getMailToSend(), true,true,new I_EventListener(){
                 @Override
                 public void onEvent(String ss) {
@@ -41,6 +43,31 @@ public class SettingsMenu extends SettingsMenuBase {
                 public void onEvent(String ss) {
                     try {
                         set.setTechnicianMode(Integer.parseInt(ss)!=0);
+                        settingsChanged();
+                        base.overLoad(false);
+                    } catch (Exception ee){
+                        base.popupInfo("Формат числа");}
+                }
+            });
+            trmain.addView(layout);
+             */
+            layout = createItem("Авто коннект", set.isAutoConnect() ? "1" : "0" , new I_EventListener(){
+                @Override
+                public void onEvent(String ss) {
+                    try {
+                        set.setAutoConnect(Integer.parseInt(ss)!=0);
+                        settingsChanged();
+                        base.overLoad(false);
+                    } catch (Exception ee){
+                        base.popupInfo("Формат числа");}
+                }
+            });
+            trmain.addView(layout);
+            layout = createItem("Авто рендеринг", set.isAutoRender() ? "1" : "0" , new I_EventListener(){
+                @Override
+                public void onEvent(String ss) {
+                    try {
+                        set.setAutoRender(Integer.parseInt(ss)!=0);
                         settingsChanged();
                         base.overLoad(false);
                     } catch (Exception ee){

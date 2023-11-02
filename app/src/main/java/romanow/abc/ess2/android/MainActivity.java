@@ -335,6 +335,11 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
                         18,0);
                 }
             */
+            if (ctx.loginSettings().isAutoConnect()){
+                LoginSettingsMenu.loginAndDeploy(this);
+                if (ctx.loginSettings().isAutoRender())
+                    architectureData.setWasRendering();
+                }
             } catch (Exception ee) {
                 errorMes(createFatalMessage(ee, 10));
                 }

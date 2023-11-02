@@ -91,6 +91,9 @@ public class ESS2ArchitectureData {
     public MainActivity main(){ return base; }
     public ESS2Rendering getRendering(){
         return rendering; }
+    public void setWasRendering(){
+        wasRendering = true;
+        }
     public ESS2ArchitectureData(MainActivity main0){
         rendering = new ESS2Rendering(this);
         base = main0;

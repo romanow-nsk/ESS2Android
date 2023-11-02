@@ -28,6 +28,8 @@ public class ListBoxDialog {
     private I_ListBoxListener ls=null;
     private int nLines=1;
     private float textSize=0;
+    private int itemResource = R.layout.listbox_item;
+    private int listResource = R.layout.listbox;
     private int textAlignment=View.TEXT_ALIGNMENT_CENTER;
     AlertDialog myDlg=null;
     boolean imgMode = false;
@@ -38,6 +40,11 @@ public class ListBoxDialog {
         ls = ls0;
         imgMode = true;
         }
+    public ListBoxDialog setResources(int listResource0, int itemResource0) {
+        listResource = listResource0;
+        itemResource = itemResource0;
+        return this;
+    }
     public ListBoxDialog setAutoClose(boolean autoClose) {
         this.autoClose = autoClose;
         return this;
@@ -63,7 +70,7 @@ public class ListBoxDialog {
              myDlg=new AlertDialog.Builder(activity).create();
              myDlg.setCancelable(true);
              myDlg.setTitle(null);
-             LinearLayout lrr=(LinearLayout)activity.getLayoutInflater().inflate(R.layout.listbox, null);
+             LinearLayout lrr=(LinearLayout)activity.getLayoutInflater().inflate(listResource, null);
              LinearLayout trmain=(LinearLayout)lrr.findViewById(R.id.dialog_listbox_panel);
              trmain.setPadding(5, 5, 5, 5); 
              if (title!=null){
@@ -80,7 +87,7 @@ public class ListBoxDialog {
              });
             for (int i=0;i<menuList.size();i++){
                 final int ii = i;
-                LinearLayout xx=(LinearLayout)activity.getLayoutInflater().inflate(R.layout.listbox_item, null);
+                LinearLayout xx=(LinearLayout)activity.getLayoutInflater().inflate(itemResource, null);
                 xx.setPadding(5, 5, 5, 5);
                 Button tt=(Button) xx.findViewById(R.id.dialog_listbox_name);
                 ImageButton img=(ImageButton) xx.findViewById(R.id.dialog_listbox_img);

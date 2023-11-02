@@ -21,6 +21,16 @@ public class LoginSettings {
     private int mailPort=587;
     private String fatalMessage="";             // Текст фатального сообщения при перезагрузке
     private boolean technicianMode=false;       // Полнофункциональный режим
+    private boolean autoConnect=false;
+    private boolean autoRender=false;
+    public boolean isAutoConnect() {
+        return autoConnect; }
+    public void setAutoConnect(boolean autoConnect) {
+        this.autoConnect = autoConnect; }
+    public boolean isAutoRender() {
+        return autoRender; }
+    public void setAutoRender(boolean autoRender) {
+        this.autoRender = autoRender; }
     public boolean isTechnicianMode() {
         return technicianMode; }
     public void setTechnicianMode(boolean technicianMode) {

@@ -79,83 +79,7 @@ public class LoginSettingsMenu extends SettingsMenuBase {
                 public void onEvent(String ss) {
                     final SettingsMenuBase pp = LoginSettingsMenu.this;
                     if (!isLogin){
-                        base.retrofitConnect();
-                        Account acc = new Account("",set.getUserPhone(), set.getUserPass());
-                        new NetCall<User>().call(base,ctx.getService().login(acc), new NetBack(){
-                            @Override
-                            public void onError(int code, String mes) {
-                                if (code == Values.HTTPAuthorization)
-                                    ctx.toLog(false,"Ошибка авторизации: "+mes+"");
-                                else if (code==Values.HTTPNotFound)
-                                    ctx.toLog(false,"Ошибка соединения: "+mes+"");
-                                else
-                                    ctx.toLog(false,mes);
-                                }
-                            @Override
-                            public void onError(UniException ee) {
-                                ctx.popupToastFatal(ee);
-                                }
-                            @Override
-                            public void onSuccess(Object val) {
-                                base.sessionOn();
-                                User user =(User)val;
-                                final LoginSettings set = ctx.loginSettings();
-                                set.setUserId(user.getOid());
-                                set.setSessionToken(user.getSessionToken());
-                                base.putHeaderInfo(set.getDataSetverIP()+"\n"+user.shortUserName()+"\n"+user.typeName());
-                                new NetCall<DBRequest>().call(base,ctx.getService().workSettings(ctx.loginSettings().getSessionToken()), new NetBackDefault() {
-                                    @Override
-                                    public void onSuccess(Object val) {
-                                        try {
-                                            ctx.workSettings((WorkSettings)((DBRequest)val).get(new Gson()));
-                                            ctx.setRegisteredOnServer(true);
-                                            base.getArchitectureData().refreshArchtectureState(new AccessManager(user));
-                                            } catch (UniException e) {
-                                                base.errorMes("Загрузка параметров сервера:\n"+e.toString());
-                                                }
-                                            }
-                                        });
-                                /*---------------------------- Регистрация на сервере не нужна -----------------
-                                String serverSim = user.getSimCardICC();
-                                String regCode = base.createRegistrationCode();
-                                if (serverSim.length()==0){
-                                    user.setSimCardICC(regCode);
-                                    //--------------------------------------------------------------
-                                    new NetCall<JEmpty>().call(base,ctx.getService().updateEntityField(set.getSessionToken(),"simCardICC",
-                                            new DBRequest(user,new Gson())), new NetBack(){
-                                        @Override
-                                        public void onError(int code, String mes) {
-                                            ctx.toLog(true,""+code+": "+mes);
-                                            ctx.toLog(true,"Не зарегистрирован на сервере");
-                                            ctx.setRegisteredOnServer(false);
-                                            }
-                                        @Override
-                                        public void onError(UniException ee) {
-                                            ctx.popupToastFatal(ee);
-                                            ctx.toLog(true,"Не зарегистрирован на сервере");
-                                            ctx.setRegisteredOnServer(false);
-                                            }
-                                        @Override
-                                        public void onSuccess(Object val) {
-                                            ctx.toLog(true,"Зарегистрирован на сервере");
-                                            ctx.setRegisteredOnServer(true);
-                                            }
-                                        });
-                                    //--------------------------------------------------------------
-                                    }
-                                else{
-                                    if (serverSim.equals(regCode)){
-                                        ctx.toLog(true,"Зарегистрирован на сервере");
-                                        ctx.setRegisteredOnServer(true);
-                                        }
-                                    else{
-                                        ctx.toLog(true,"Другой код регистрации на сервере");
-                                        ctx.setRegisteredOnServer(false);
-                                        }
-                                    }
-                                    */
-                               }
-                            });
+                        loginAndDeploy(base);
                         pp.cancel();
                         }
                     else{
@@ -179,5 +103,48 @@ public class LoginSettingsMenu extends SettingsMenuBase {
             int u=0;
         }
     }
+    //----------------------------------------------------------------------------------------------------------------
+    public static void loginAndDeploy(MainActivity base){
+        final LoginSettings set = AppData.ctx().loginSettings();
+        final AppData ctx = AppData.ctx();
+            base.retrofitConnect();
+            Account acc = new Account("",set.getUserPhone(), set.getUserPass());
+            new NetCall<User>().call(base,ctx.getService().login(acc), new NetBack(){
+                @Override
+                public void onError(int code, String mes) {
+                    if (code == Values.HTTPAuthorization)
+                        ctx.toLog(false,"Ошибка авторизации: "+mes+"");
+                    else if (code==Values.HTTPNotFound)
+                        ctx.toLog(false,"Ошибка соединения: "+mes+"");
+                    else
+                        ctx.toLog(false,mes);
+                }
+                @Override
+                public void onError(UniException ee) {
+                    ctx.popupToastFatal(ee);
+                }
+                @Override
+                public void onSuccess(Object val) {
+                    base.sessionOn();
+                    User user =(User)val;
+                    final LoginSettings set = ctx.loginSettings();
+                    set.setUserId(user.getOid());
+                    set.setSessionToken(user.getSessionToken());
+                    base.putHeaderInfo(set.getDataSetverIP()+"\n"+user.shortUserName()+"\n"+user.typeName());
+                    new NetCall<DBRequest>().call(base,ctx.getService().workSettings(ctx.loginSettings().getSessionToken()), new NetBackDefault() {
+                        @Override
+                        public void onSuccess(Object val) {
+                            try {
+                                ctx.workSettings((WorkSettings)((DBRequest)val).get(new Gson()));
+                                ctx.setRegisteredOnServer(true);
+                                base.getArchitectureData().refreshArchtectureState(new AccessManager(user));
+                            } catch (UniException e) {
+                                base.errorMes("Загрузка параметров сервера:\n"+e.toString());
+                            }
+                        }
+                    });
+                }
+            });
+        }
 }
 
