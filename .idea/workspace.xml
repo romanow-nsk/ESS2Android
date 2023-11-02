@@ -13,17 +13,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="Тренды">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/GraphData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2FullScreenGraph.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/graph_button.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/add.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/clock.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/clock128.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/dialog_background_stroke_bottom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/remove.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/statistic.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleTrend.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleTrend.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/AppData.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/AppData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/graph_gorizontal.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/graph_gorizontal.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/date.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/date.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/trends.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/trends.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -234,13 +233,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623228750650</updated>
-    </task>
-    <task id="LOCAL-00121" summary="217.71.138.13">
-      <created>1648293219020</created>
-      <option name="number" value="00121" />
-      <option name="presentableId" value="LOCAL-00121" />
-      <option name="project" value="LOCAL" />
-      <updated>1648293219020</updated>
     </task>
     <task id="LOCAL-00122" summary="Размер поля рендеринга + скролл">
       <created>1648311293553</created>
@@ -578,7 +570,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698864640841</updated>
     </task>
-    <option name="localTasksCounter" value="170" />
+    <task id="LOCAL-00170" summary="Тренды">
+      <created>1698898527185</created>
+      <option name="number" value="00170" />
+      <option name="presentableId" value="LOCAL-00170" />
+      <option name="project" value="LOCAL" />
+      <updated>1698898527186</updated>
+    </task>
+    <option name="localTasksCounter" value="171" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

@@ -25,7 +25,7 @@ import romanow.abc.ess2.android.LoginSettings;
 import romanow.abc.ess2.android.StoryList;
 
 public class AppData extends Application {
-    public final static String apkVersion = "2.0.3, 18.09.2023";
+    public final static String apkVersion = "2.0.4, 2.12.2023";
     private final static String codeGenPassword="pi31415926";
     public final static String MAPKIT_API_KEY = "fda3e521-bbc6-4c75-9ec7-ccd4fdaa34d3";
     public final static String ESS2ScriptFunPackage="romanow.abc.ess2.android.script.functions";

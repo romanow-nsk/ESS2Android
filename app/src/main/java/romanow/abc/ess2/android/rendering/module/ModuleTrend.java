@@ -58,6 +58,10 @@ public class ModuleTrend extends Module {
     private Button firstDay;
     private Button lastDay;
     private Button selectedButton;
+    private ImageView calendar1;
+    private ImageView calendar2;
+    private ImageView clock1;
+    private ImageView clock2;
     private ImageView toGraphButton;
     private long firstDateMS=0;
     private long lastDateMS=0;
@@ -150,7 +154,7 @@ public class ModuleTrend extends Module {
                                             main.popupAndLog(errors.toString());
                                         else{
                                             graphData.add(new GraphData(registerNames.get(idx),ans.o2));
-                                            selectedButton.setText("Выбрано "+selectedList.size()+":  "+getStartTime().dateTimeToString());
+                                            selectedButton.setText("Выбрано "+selectedList.size());
                                             toGraphButton.setVisibility(View.VISIBLE);
                                             }
                                     }
@@ -167,32 +171,46 @@ public class ModuleTrend extends Module {
         firstDay = (Button) lrr.findViewById(R.id.startDay);
         firstDay.setPadding(5, 5, 5, 5);
         firstDay.setText("Начало");
-        firstDay.setOnClickListener(new View.OnClickListener() {
+        calendar1 = (ImageView) lrr.findViewById(R.id.startData);
+        calendar1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new CalendarDialog(main, "Дата начала", new I_CalendarEvent() {
                     @Override
                     public void onDate(long timeInMS) {
                         firstDateMS = timeInMS;
-                        firstDay.setText(new OwnDateTime(timeInMS).dateToString());
+                        firstDay.setText(new OwnDateTime(timeInMS).dateTimeToString());
                         }
                     });
+                }
+            });
+        clock1 = (ImageView) lrr.findViewById(R.id.startTime);
+        clock1.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
                 }
             });
         //-------------------------------------------------------------------------------------------
         lastDay = (Button) lrr.findViewById(R.id.endDay);
         lastDay.setPadding(5, 5, 5, 5);
         lastDay.setText("Окончание");
-        lastDay.setOnClickListener(new View.OnClickListener() {
+        calendar2 = (ImageView) lrr.findViewById(R.id.endData);
+        calendar2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new CalendarDialog(main, "Дата начала", new I_CalendarEvent() {
                     @Override
                     public void onDate(long timeInMS) {
                         lastDateMS = timeInMS;
-                        lastDay.setText(new OwnDateTime(timeInMS).dateToString());
+                        lastDay.setText(new OwnDateTime(timeInMS).dateTimeToString());
                         }
-                });
+                    });
+                }
+            });
+        clock2 = (ImageView) lrr.findViewById(R.id.endTime);
+        clock2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
             }
         });
         //------------------------------------------------------------------------------------------
