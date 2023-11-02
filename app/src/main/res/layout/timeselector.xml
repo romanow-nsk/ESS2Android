@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:layout_margin="100dp"
+                android:background="#FF000000"
+                android:orientation="vertical">
+    <TextView
+        android:id="@+id/timeHeader"
+        android:background="@drawable/background_head"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textSize="20dp"
+        android:textColor="@color/Yellow"
+        android:text=" Время "
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        />
+    <Button style="@style/ListButton"
+        android:id="@+id/timeHour"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
+        android:textColor="@color/White"
+        android:layout_below="@id/timeHeader"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:padding="5dp"
+        android:text="00"
+        android:textSize="20dp" />
+    <Button style="@style/ListButton"
+        android:id="@+id/timeMinute"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/White"
+        android:layout_below="@id/timeHeader"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:padding="5dp"
+        android:text="00"
+        android:textSize="20dp" />
+
+</RelativeLayout>

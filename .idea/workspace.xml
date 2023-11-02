@@ -12,17 +12,11 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="Тренды">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/add.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/clock.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/clock128.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/dialog_background_stroke_bottom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/remove.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/statistic.png" afterDir="false" />
+    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="2.0.4  Тренды">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/TimeSelector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/timeselector.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleTrend.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleTrend.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/date.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/date.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/trends.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/trends.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,13 +227,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623228750650</updated>
-    </task>
-    <task id="LOCAL-00122" summary="Размер поля рендеринга + скролл">
-      <created>1648311293553</created>
-      <option name="number" value="00122" />
-      <option name="presentableId" value="LOCAL-00122" />
-      <option name="project" value="LOCAL" />
-      <updated>1648311293554</updated>
     </task>
     <task id="LOCAL-00123" summary="Размер поля рендеринга + скролл">
       <created>1648312696585</created>
@@ -577,7 +564,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698898527186</updated>
     </task>
-    <option name="localTasksCounter" value="171" />
+    <task id="LOCAL-00171" summary="2.0.4  Тренды">
+      <created>1698909426856</created>
+      <option name="number" value="00171" />
+      <option name="presentableId" value="LOCAL-00171" />
+      <option name="project" value="LOCAL" />
+      <updated>1698909426857</updated>
+    </task>
+    <option name="localTasksCounter" value="172" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -623,7 +617,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="GPS и popup" />
     <MESSAGE value="ESS2Core_jar.jar 060" />
     <MESSAGE value="217.71.138.13" />
     <MESSAGE value="Размер поля рендеринга + скролл" />
@@ -648,7 +641,8 @@
     <MESSAGE value="ИСполнение функций скрипта" />
     <MESSAGE value="Аварии, События" />
     <MESSAGE value="Тренды" />
-    <option name="LAST_COMMIT_MESSAGE" value="Тренды" />
+    <MESSAGE value="2.0.4  Тренды" />
+    <option name="LAST_COMMIT_MESSAGE" value="2.0.4  Тренды" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -807,6 +801,21 @@
           <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java</url>
           <line>265</line>
           <option name="timeStamp" value="525" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/TimeSelector.java</url>
+          <line>21</line>
+          <option name="timeStamp" value="527" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/TimeSelector.java</url>
+          <line>59</line>
+          <option name="timeStamp" value="528" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/TimeSelector.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="529" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

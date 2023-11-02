@@ -40,6 +40,7 @@ import romanow.abc.ess2.android.I_ListBoxListener;
 import romanow.abc.ess2.android.ListBoxDialog;
 import romanow.abc.ess2.android.MainActivity;
 import romanow.abc.ess2.android.R;
+import romanow.abc.ess2.android.TimeSelector;
 import romanow.abc.ess2.android.menu.MenuItemAction;
 import romanow.abc.ess2.android.rendering.FormContext2;
 import romanow.abc.ess2.android.service.AppData;
@@ -65,6 +66,8 @@ public class ModuleTrend extends Module {
     private ImageView toGraphButton;
     private long firstDateMS=0;
     private long lastDateMS=0;
+    private long firstTimeMS=0;
+    private long lastTimeMS=0;
     private AlertDialog myDlg;
     private ArrayList<String> registerNames = new ArrayList<>();
     private ArrayList<StreamRegisterData> registerList = new ArrayList<>();
@@ -145,7 +148,9 @@ public class ModuleTrend extends Module {
                         selectedList.add(selected);
                         //-------------------- TODO ----- Чтение данных ????
                         new NetCall<Pair<ErrorList,ArrayList<StreamDataValue>>>().call(main,
-                                service2.getStreamData2(token, selectedMode.value(), idx, firstDateMS, lastDateMS), new NetBackDefault() {
+                                service2.getStreamData2(token, selectedMode.value(), idx,
+                                        firstDateMS+firstTimeMS*TimeSelector.TimeMinuteMask,
+                                        lastDateMS+lastTimeMS*TimeSelector.TimeMinuteMask), new NetBackDefault() {
                                     @Override
                                     public void onSuccess(Object val) {
                                         Pair<ErrorList,ArrayList<StreamDataValue>> ans = (Pair<ErrorList,ArrayList<StreamDataValue>>)val;
@@ -179,7 +184,7 @@ public class ModuleTrend extends Module {
                     @Override
                     public void onDate(long timeInMS) {
                         firstDateMS = timeInMS;
-                        firstDay.setText(new OwnDateTime(timeInMS).dateTimeToString());
+                        firstDay.setText(new OwnDateTime(firstDateMS+firstTimeMS*TimeSelector.TimeMinuteMask).dateTimeToString());
                         }
                     });
                 }
@@ -188,6 +193,16 @@ public class ModuleTrend extends Module {
         clock1.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
+                 new TimeSelector(main, new I_CalendarEvent() {
+                     @Override
+                     public void onDate(long timeInMS) {
+                        firstTimeMS = timeInMS;
+                         if (firstDateMS==0)
+                             firstDay.setText(String.format("%02d:%02d", firstTimeMS / 60, firstTimeMS % 60));
+                         else
+                             firstDay.setText(new OwnDateTime(firstDateMS+firstTimeMS*TimeSelector.TimeMinuteMask).dateTimeToString());
+                     }
+                 });
                 }
             });
         //-------------------------------------------------------------------------------------------
@@ -202,7 +217,10 @@ public class ModuleTrend extends Module {
                     @Override
                     public void onDate(long timeInMS) {
                         lastDateMS = timeInMS;
-                        lastDay.setText(new OwnDateTime(timeInMS).dateTimeToString());
+                        if (lastDateMS==0)
+                            lastDay.setText(String.format("%02d:%02d", lastTimeMS / 60, lastTimeMS % 60));
+                        else
+                            lastDay.setText(new OwnDateTime(lastDateMS+lastTimeMS*TimeSelector.TimeMinuteMask).dateTimeToString());
                         }
                     });
                 }
@@ -211,6 +229,16 @@ public class ModuleTrend extends Module {
         clock2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new TimeSelector(main, new I_CalendarEvent() {
+                    @Override
+                    public void onDate(long timeInMS) {
+                        lastTimeMS = timeInMS;
+                        if (lastDateMS==0)
+                            lastDay.setText(String.format("%02d:%02d", lastTimeMS / 60, lastTimeMS % 60));
+                        else
+                            lastDay.setText(new OwnDateTime(lastDateMS+lastTimeMS*TimeSelector.TimeMinuteMask).dateTimeToString());
+                    }
+                });
             }
         });
         //------------------------------------------------------------------------------------------
