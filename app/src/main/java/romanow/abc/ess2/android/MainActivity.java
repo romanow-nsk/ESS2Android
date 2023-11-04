@@ -667,8 +667,6 @@ public class MainActivity extends BaseActivity {     //!!!!!!!!!!!!!!!!!!!!!!!!!
             @Override
             public void onSelect() {
                 log.removeAllViews();
-                String title = "СНЭЭ-3";
-                addToLog(false, title, 22, 0);
                 }
             });
         menuList.add(new MenuItemAction("Настройки") {

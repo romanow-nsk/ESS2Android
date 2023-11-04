@@ -31,6 +31,7 @@ public class ModuleFailure extends ModuleEventAll {
     protected ArrayList<Failure> events = new ArrayList<>();
     protected ArrayList<Failure> events1 = new ArrayList<>();
     protected ArrayList<Failure> events2 = new ArrayList<>();
+    private boolean force=false;
     @Override
     public String getTitle(){ return "Аварии"; }
     public ModuleFailure(){}
@@ -71,6 +72,7 @@ public class ModuleFailure extends ModuleEventAll {
                         new  NetCall<JEmpty>().call(client.main(), service2.quitAllFailures(token), new NetBackDefault() {
                             @Override
                             public void onSuccess(Object val) {
+                                force = true;
                                 repaintValues();
                                 }
                             });
@@ -163,7 +165,8 @@ public class ModuleFailure extends ModuleEventAll {
                                     break;
                                     }
                             }
-                        if (diff){
+                        if (diff | force){
+                            force = false;
                             showTable(colors);
                             prevEvents = events;
                             }

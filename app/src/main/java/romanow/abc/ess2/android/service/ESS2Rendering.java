@@ -221,6 +221,7 @@ public class ESS2Rendering {
         }
     public void renderOff(){            // Вызывается из ESS2ArchitectureData
         setRenderingOnOff(false);
+        menuActions.clear();
         if (formMenuButton!=null)
             formMenuButton.setVisibility(View.INVISIBLE);
         context.setForm(null);

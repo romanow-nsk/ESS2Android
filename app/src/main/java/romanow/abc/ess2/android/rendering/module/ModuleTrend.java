@@ -52,6 +52,7 @@ import romanow.abc.ess2.android.service.NetCall;
 
 public class ModuleTrend extends Module {
     private ArrayList<ConstValue> modeList;
+    private ArrayList<ConstValue> modeList2 = new ArrayList<>();
     private ArrayList<String> streamTypes = new ArrayList<>();
     private ConstValue selectedMode=null;
     private Button streamTypeButton;
@@ -92,8 +93,13 @@ public class ModuleTrend extends Module {
         graphData.clear();
         modeList = Values.constMap().getGroupList("DataStream");
         streamTypes.clear();
-        for(ConstValue cc : modeList)
-            streamTypes.add(cc.title());
+        modeList2.clear();
+        for(ConstValue cc : modeList){
+            if (cc.value()==Values.DataStreamDayly || cc.value()==Values.DataStreamFrequent || cc.value()==Values.DataStreamRare){
+                streamTypes.add(cc.title());
+                modeList2.add(cc);
+                }
+            }
         selectedMode=modeList.get(0);
         myDlg=new AlertDialog.Builder(main).create();
         myDlg.setCancelable(true);
@@ -108,7 +114,7 @@ public class ModuleTrend extends Module {
                 new ListBoxDialog(main, MainActivity.createMenuList(streamTypes), "Тип потока", new I_ListBoxListener() {
                     @Override
                     public void onSelect(int idx) {
-                        selectedMode = modeList.get(idx);
+                        selectedMode = modeList2.get(idx);
                         streamTypeButton.setText(streamTypes.get(idx));
                         streamRegisterButton.setText("Регистр потоковых данных");
                         if (selectedMode.value()==Values.DataStreamNone){
