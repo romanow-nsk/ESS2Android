@@ -53,7 +53,10 @@ public abstract class View2BaseDesktop extends View2Base implements I_View2Deskt
             int size = element.getStringSize();
             label.setText(element.isLabelBold() ? Html.fromHtml("<b>" + text + "</b>") : text);
             label.setTextColor(context.getView().getTextColor() | 0xFF000000);
-            label.setTextAlignment(element.isLabelOnCenter() ? View.TEXT_ALIGNMENT_CENTER : View.TEXT_ALIGNMENT_TEXT_START);
+            if (element.isLabelOnCenter())
+                label.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            else
+                label.setTextAlignment(element.isLabelOnRight() ? View.TEXT_ALIGNMENT_TEXT_END: View.TEXT_ALIGNMENT_TEXT_START);
             label.setBackgroundColor(getLabelColor() | 0xFF000000);
             int fontSize = element.getFontSize();
             if (fontSize==0) fontSize=DefaultTextSize;

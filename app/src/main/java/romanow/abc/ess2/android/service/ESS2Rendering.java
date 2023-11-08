@@ -461,6 +461,10 @@ public class ESS2Rendering {
         wokeUp();
         }
     //----------------------------------- Фоновая картинка -------------------------------------
+    private int xCorrect=10;
+    private int yCorrect=-10;
+    private int dxCorrect=10;
+    private int dyCorrect=15;
     public void renderBackImage(Meta2GUIForm baseForm){
         String formName =  baseForm.getTitle().replace("_","");
             if (baseForm.getPicture().getOid()!=0){
@@ -472,7 +476,8 @@ public class ESS2Rendering {
                 final int dy = context.dy(baseForm.getImageH());
                 if (bitmap!=null){
                     ImageView imagePanel = new ImageView(main2.main(),null);
-                    View2BaseDesktop.setBounds(imagePanel, x0,y0, dx,dy );
+                    View2BaseDesktop.setBounds(imagePanel, x0+xCorrect,y0+yCorrect, dx+dxCorrect,dy+dyCorrect );
+                    bitmap = Bitmap.createScaledBitmap(bitmap,dx+dxCorrect,dy+dyCorrect,false);
                     imagePanel.setImageBitmap(bitmap);
                     formPanel.addView(imagePanel);
                     }
@@ -480,10 +485,10 @@ public class ESS2Rendering {
                         View2BaseDesktop.loadImage(context.getMain().main(), backImg, new I_Value<Bitmap>() {
                             @Override
                             public void onEnter(Bitmap value) {
-                                Bitmap bitmap = Bitmap.createScaledBitmap(value,dx,dy,false);
+                                Bitmap bitmap = Bitmap.createScaledBitmap(value,dx+dxCorrect,dy+dyCorrect,false);
                                 backImgMap.put(formName,bitmap);
                                 ImageView imagePanel = new ImageView(main2.main(),null);
-                                View2BaseDesktop.setBounds(imagePanel, x0,y0, dx,dy );
+                                View2BaseDesktop.setBounds(imagePanel, x0+xCorrect,y0+yCorrect, dx+dxCorrect,dy+dyCorrect );
                                 imagePanel.setImageBitmap(bitmap);
                                 formPanel.addView(imagePanel);
                             }

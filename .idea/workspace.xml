@@ -13,11 +13,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="2.0.4  Автоконнект, авторендеринг">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIBitsList.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/libs/ESS2Core.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/libs/ESS2Core.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleFailure.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleFailure.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleTrend.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/module/ModuleTrend.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/View2BaseDesktop.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/View2BaseDesktop.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,7 +23,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[YTCY9H7HT879CE69]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -229,13 +227,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623228750650</updated>
-    </task>
-    <task id="LOCAL-00125" summary="Рефакторинг API">
-      <created>1665242359880</created>
-      <option name="number" value="00125" />
-      <option name="presentableId" value="LOCAL-00125" />
-      <option name="project" value="LOCAL" />
-      <updated>1665242359881</updated>
     </task>
     <task id="LOCAL-00126" summary="Рефакторинг API">
       <created>1665246554748</created>
@@ -573,7 +564,14 @@
       <option name="project" value="LOCAL" />
       <updated>1698946918084</updated>
     </task>
-    <option name="localTasksCounter" value="174" />
+    <task id="LOCAL-00174" summary="2.0.4  Автоконнект, авторендеринг">
+      <created>1699084122991</created>
+      <option name="number" value="00174" />
+      <option name="presentableId" value="LOCAL-00174" />
+      <option name="project" value="LOCAL" />
+      <updated>1699084122991</updated>
+    </task>
+    <option name="localTasksCounter" value="175" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -818,6 +816,16 @@
           <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/TimeSelector.java</url>
           <line>63</line>
           <option name="timeStamp" value="529" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/View2BaseDesktop.java</url>
+          <line>171</line>
+          <option name="timeStamp" value="530" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/View2BaseDesktop.java</url>
+          <line>140</line>
+          <option name="timeStamp" value="531" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
