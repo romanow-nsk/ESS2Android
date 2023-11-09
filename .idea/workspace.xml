@@ -12,11 +12,13 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="2.0.4  Автоконнект, авторендеринг">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIBitsList.java" afterDir="false" />
+    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="2.0.4  BitsList">
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/form_frame_horiz.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/View2BaseDesktop.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/View2BaseDesktop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/libs/ESS2Core.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/libs/ESS2Core.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/form_frame.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/form_frame.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -227,13 +229,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623228750650</updated>
-    </task>
-    <task id="LOCAL-00126" summary="Рефакторинг API">
-      <created>1665246554748</created>
-      <option name="number" value="00126" />
-      <option name="presentableId" value="LOCAL-00126" />
-      <option name="project" value="LOCAL" />
-      <updated>1665246554748</updated>
     </task>
     <task id="LOCAL-00127" summary="Ошибка параллеьного чтения. Lenovo wifi">
       <created>1669399462500</created>
@@ -571,7 +566,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699084122991</updated>
     </task>
-    <option name="localTasksCounter" value="175" />
+    <task id="LOCAL-00175" summary="2.0.4  BitsList">
+      <created>1699465599255</created>
+      <option name="number" value="00175" />
+      <option name="presentableId" value="LOCAL-00175" />
+      <option name="project" value="LOCAL" />
+      <updated>1699465599256</updated>
+    </task>
+    <option name="localTasksCounter" value="176" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -617,7 +619,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="217.71.138.13" />
     <MESSAGE value="Размер поля рендеринга + скролл" />
     <MESSAGE value="Рефакторинг API" />
     <MESSAGE value="Ошибка параллеьного чтения. Lenovo wifi" />
@@ -642,7 +643,8 @@
     <MESSAGE value="Тренды" />
     <MESSAGE value="2.0.4  Тренды" />
     <MESSAGE value="2.0.4  Автоконнект, авторендеринг" />
-    <option name="LAST_COMMIT_MESSAGE" value="2.0.4  Автоконнект, авторендеринг" />
+    <MESSAGE value="2.0.4  BitsList" />
+    <option name="LAST_COMMIT_MESSAGE" value="2.0.4  BitsList" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -773,16 +775,6 @@
           <option name="timeStamp" value="445" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUILevelWB.java</url>
-          <line>81</line>
-          <option name="timeStamp" value="465" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIDataLabel.java</url>
-          <line>27</line>
-          <option name="timeStamp" value="466" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/script/functions/FESS2ReadRegFloatGUI.java</url>
           <line>64</line>
           <option name="timeStamp" value="505" />
@@ -794,13 +786,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java</url>
-          <line>139</line>
+          <line>151</line>
           <option name="timeStamp" value="522" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java</url>
-          <line>266</line>
-          <option name="timeStamp" value="525" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/TimeSelector.java</url>
@@ -816,16 +803,6 @@
           <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/TimeSelector.java</url>
           <line>63</line>
           <option name="timeStamp" value="529" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/View2BaseDesktop.java</url>
-          <line>171</line>
-          <option name="timeStamp" value="530" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/View2BaseDesktop.java</url>
-          <line>140</line>
-          <option name="timeStamp" value="531" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

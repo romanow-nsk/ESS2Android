@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -80,6 +81,8 @@ public class ESS2Rendering {
     private HashMap<String,Bitmap> backImgMap = new HashMap<>();
     private String backFormName=null;
     private ArrayList<MenuItemRenderAction> menuActions = new ArrayList<>();
+    private View scrollView=null;           // Контейнер
+    private boolean horizontal=false;       // Горизонтальный скролл
     //------------------------------------------------------------------------------------------------------------------
     public ArrayList<MenuItemRenderAction> getMenuActions(){
         return menuActions; }
@@ -90,10 +93,19 @@ public class ESS2Rendering {
             formPanel = null;
             }
         main2.main().clearLog();
-        formView =(RelativeLayout) main2.main().getLayoutInflater().inflate(R.layout.form_frame, null);
+        Meta2GUIForm form = context.getForm();
+        boolean horizontal = form.isScrollHorizontal();
+        formView =(RelativeLayout) main2.main().getLayoutInflater().inflate(
+                horizontal ?  R.layout.form_frame_horiz : R.layout.form_frame, null);
         formPanel = (RelativeLayout) formView.findViewById(R.id.form_frame_panel);
         formPanel.setPadding(0, 0, 0, 0);
         formPanel.setBackgroundColor(main2.currentView.getView().getBackColor()|0xFF000000);
+        if (horizontal){
+            scrollView = (HorizontalScrollView) formView.findViewById(R.id.form_frame_scroll);
+            }
+        else{
+            scrollView = (ScrollView)formView.findViewById(R.id.form_frame_scroll);
+            }
         //--------------- Вручную вычислить размер окна формы и перенести вниз поле меню
         DisplayMetrics displayMetrics = main2.main().getBaseContext().getResources().getDisplayMetrics();
         dpHeight = displayMetrics.heightPixels / displayMetrics.density;
