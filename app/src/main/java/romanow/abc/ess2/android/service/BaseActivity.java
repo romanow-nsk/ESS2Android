@@ -189,6 +189,7 @@ public abstract class BaseActivity extends AppCompatActivity implements I_Notify
         messageBox.show();
         }
     public void popupToast(int viewId, String ss) {
+        ss = ss.replace('$','\n');
         Toast toast3 = Toast.makeText(getApplicationContext(), ss, Toast.LENGTH_LONG);
         LinearLayout toastContainer = (LinearLayout) toast3.getView();
         if (toastContainer==null){

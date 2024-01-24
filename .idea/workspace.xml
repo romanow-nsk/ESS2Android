@@ -12,13 +12,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="2.0.4  BitsList">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/form_frame_horiz.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="c654bf1e-10a9-4828-ac00-c758e0df0b54" name="Default Changelist" comment="2.0.4  Горизонтальный скролл">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/libs/ESS2Core.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/libs/ESS2Core.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/ESS2Rendering.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/form_frame.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/form_frame.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIData.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/rendering/view2/DesktopGUIData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/BaseActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/romanow/abc/ess2/android/service/BaseActivity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -229,13 +226,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1623228750650</updated>
-    </task>
-    <task id="LOCAL-00127" summary="Ошибка параллеьного чтения. Lenovo wifi">
-      <created>1669399462500</created>
-      <option name="number" value="00127" />
-      <option name="presentableId" value="LOCAL-00127" />
-      <option name="project" value="LOCAL" />
-      <updated>1669399462501</updated>
     </task>
     <task id="LOCAL-00128" summary="СНЭЭ 3.0">
       <created>1675533015941</created>
@@ -573,7 +563,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699465599256</updated>
     </task>
-    <option name="localTasksCounter" value="176" />
+    <task id="LOCAL-00176" summary="2.0.4  Горизонтальный скролл">
+      <created>1699514118452</created>
+      <option name="number" value="00176" />
+      <option name="presentableId" value="LOCAL-00176" />
+      <option name="project" value="LOCAL" />
+      <updated>1699514118453</updated>
+    </task>
+    <option name="localTasksCounter" value="177" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -619,7 +616,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Размер поля рендеринга + скролл" />
     <MESSAGE value="Рефакторинг API" />
     <MESSAGE value="Ошибка параллеьного чтения. Lenovo wifi" />
     <MESSAGE value="СНЭЭ 3.0" />
@@ -644,7 +640,8 @@
     <MESSAGE value="2.0.4  Тренды" />
     <MESSAGE value="2.0.4  Автоконнект, авторендеринг" />
     <MESSAGE value="2.0.4  BitsList" />
-    <option name="LAST_COMMIT_MESSAGE" value="2.0.4  BitsList" />
+    <MESSAGE value="2.0.4  Горизонтальный скролл" />
+    <option name="LAST_COMMIT_MESSAGE" value="2.0.4  Горизонтальный скролл" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

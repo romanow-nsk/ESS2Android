@@ -44,10 +44,13 @@ public class DesktopGUIData extends View2BaseDesktop {
         setInfoClick(textField);
         }
     public void showInfoMessage() {
-        Meta2DataRegister set = (Meta2DataRegister)  getRegister();
-        String ss = "Регистр данных ["+getUnitIdx()+"] "+(set.getRegNum()+regOffset)+" ["+set.getRegNum()+"] "+set.getShortName()+"$"+set.getTitle()+"$";
-        ss+="Потоковый  - "+(set.getStreamType()!=Values.DataStreamNone ? "да":"нет")+",";
-        ss+=" Ед.изм. "+ set.getUnit();
+        Meta2Register reg = getRegister();
+        String ss = "Регистр данных ["+getUnitIdx()+"] "+(reg.getRegNum()+regOffset)+" ["+reg.getRegNum()+"] "+reg.getShortName()+"$"+reg.getTitle()+"$";
+        if (reg instanceof Meta2DataRegister){
+            Meta2DataRegister set = (Meta2DataRegister)  getRegister();
+            ss+="Потоковый  - "+(set.getStreamType()!=Values.DataStreamNone ? "да":"нет")+",";
+            }
+        ss+=" Ед.изм. "+ reg.getUnit();
         context.getMain().main().popupInfo(ss);
         }
     @Override
